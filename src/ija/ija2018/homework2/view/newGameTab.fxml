@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- @author Adam Janda <xjanda26@stud.fit.vutbr.cz> -->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="850.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="ija.ija2018.homework2.view.NewGameTab">
+   <children>
+      <VBox fx:id="vbox" prefHeight="520.0" prefWidth="850.0">
+         <children>
+            <HBox prefHeight="511.0" prefWidth="770.0" spacing="50.0">
+               <children>
+                  <Pane fx:id="boardPane">
+                     <children>
+                        <Group fx:id="rectangleGroup" layoutX="40" layoutY="40">
+                           <children>
+                              <Pane fx:id="row7">
+                                 <children>
+                                    <Rectangle fx:id="field0x7" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                    <Rectangle fx:id="field1x7" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="50.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                    <Rectangle fx:id="field2x7" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="100.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                    <Rectangle fx:id="field3x7" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="150.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                    <Rectangle fx:id="field4x7" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="200.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                    <Rectangle fx:id="field5x7" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="250.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                    <Rectangle fx:id="field6x7" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="300.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                    <Rectangle fx:id="field7x7" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="350.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                 </children>
+                              </Pane>
+                               <Pane fx:id="row6" layoutY="50.0">
+                                   <children>
+                                       <Rectangle fx:id="field0x6" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field1x6" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="50.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field2x6" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="100.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field3x6" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="150.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field4x6" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="200.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field5x6" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="250.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field6x6" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="300.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field7x6" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="350.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                   </children>
+                               </Pane>
+                               <Pane fx:id="row5" layoutY="100.0">
+                                   <children>
+                                       <Rectangle fx:id="field0x5" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field1x5" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="50.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field2x5" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="100.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field3x5" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="150.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field4x5" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="200.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field5x5" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="250.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field6x5" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="300.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field7x5" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="350.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                   </children>
+                               </Pane>
+                               <Pane fx:id="row4" layoutY="150">
+                                   <children>
+                                       <Rectangle fx:id="field0x4" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field1x4" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="50.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field2x4" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="100.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field3x4" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="150.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field4x4" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="200.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field5x4" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="250.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field6x4" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="300.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field7x4" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="350.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                   </children>
+                               </Pane>
+                               <Pane fx:id="row3" layoutY="200">
+                                   <children>
+                                       <Rectangle fx:id="field0x3" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field1x3" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="50.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field2x3" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="100.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field3x3" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="150.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field4x3" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="200.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field5x3" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="250.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field6x3" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="300.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field7x3" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="350.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                   </children>
+                               </Pane>
+                               <Pane fx:id="row2" layoutY="250">
+                                   <children>
+                                       <Rectangle fx:id="field0x2" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field1x2" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="50.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field2x2" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="100.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field3x2" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="150.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field4x2" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="200.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field5x2" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="250.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field6x2" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="300.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field7x2" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="350.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                   </children>
+                               </Pane>
+                               <Pane fx:id="row1" layoutY="300">
+                                   <children>
+                                       <Rectangle fx:id="field0x1" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field1x1" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="50.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field2x1" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="100.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field3x1" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="150.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field4x1" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="200.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field5x1" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="250.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field6x1" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="300.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field7x1" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="350.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                   </children>
+                               </Pane>
+                               <Pane fx:id="row0" layoutY="350">
+                                   <children>
+                                       <Rectangle fx:id="field0x0" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field1x0" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="50.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field2x0" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="100.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field3x0" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="150.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field4x0" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="200.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field5x0" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="250.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                       <Rectangle fx:id="field6x0" arcHeight="5.0" arcWidth="5.0" fill="#346b3f" height="50.0" layoutX="300.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square" width="50.0" />
+                                       <Rectangle fx:id="field7x0" arcHeight="5.0" arcWidth="5.0" fill="#e1c8a2" height="50.0" layoutX="350.0" stroke="BLACK" strokeType="INSIDE" styleClass="board_square_lt" width="50.0" />
+                                   </children>
+                               </Pane>
+                           </children>
+                        </Group>
+                     <!-- White figures -->
+                       <!-- White pawns -->
+                         <Rectangle fx:id="pawnW0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="40.0" layoutY="340" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                        </Rectangle>
+                         <Rectangle fx:id="pawnW1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="90.0" layoutY="340" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                        </Rectangle>
+                         <Rectangle fx:id="pawnW2" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="140.0" layoutY="340" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                        </Rectangle>
+                         <Rectangle fx:id="pawnW3" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="190.0" layoutY="340" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                        </Rectangle>
+                         <Rectangle fx:id="pawnW4" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="240.0" layoutY="340" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                        </Rectangle>
+                         <Rectangle fx:id="pawnW5" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="290.0" layoutY="340" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                        </Rectangle>
+                         <Rectangle fx:id="pawnW6" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="340.0" layoutY="340" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                        </Rectangle>
+                         <Rectangle fx:id="pawnW7" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="390.0" layoutY="340" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+                      <!-- White rooks -->
+                         <Rectangle fx:id="rookW0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="40.0" layoutY="390" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+      
+                         <Rectangle fx:id="rookW1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="390.0" layoutY="390" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+      
+                     <!-- White kinghts -->
+                         <Rectangle fx:id="knightW0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="90.0" layoutY="390" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+      
+                         <Rectangle fx:id="knightW1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="340.0" layoutY="390" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+      
+                     <!-- White bishop -->
+                         <Rectangle fx:id="bishopW0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="140.0" layoutY="390" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+      
+                        <Rectangle fx:id="bishopW1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="290.0" layoutY="390" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+      
+                     <!-- White Queen -->
+                         <Rectangle fx:id="queenW" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="190.0" layoutY="390" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+      
+                     <!-- White King -->
+                         <Rectangle fx:id="kingW" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="240.0" layoutY="390" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+      
+                     <!-- Black figures -->
+                         <Rectangle fx:id="pawnB0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="40.0" layoutY="90" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+                         <Rectangle fx:id="pawnB1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="90.0" layoutY="90" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+                         <Rectangle fx:id="pawnB2" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="140.0" layoutY="90" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+                         <Rectangle fx:id="pawnB3" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="190.0" layoutY="90" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+                         <Rectangle fx:id="pawnB4" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="240.0" layoutY="90" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+                         <Rectangle fx:id="pawnB5" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="290.0" layoutY="90" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+                         <Rectangle fx:id="pawnB6" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="340.0" layoutY="90" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+                         <Rectangle fx:id="pawnB7" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="390.0" layoutY="90" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+      
+                     <!-- Black rooks -->
+                         <Rectangle fx:id="rookB0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="40.0" layoutY="40" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+      
+                        <Rectangle fx:id="rookB1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="390.0" layoutY="40" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+      
+                     <!-- White kinghts -->
+                         <Rectangle fx:id="knightB0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="90.0" layoutY="40" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+      
+                        <Rectangle fx:id="knightB1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="340.0" layoutY="40" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+      
+                     <!-- White bishop -->
+                         <Rectangle fx:id="bishopB0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="140.0" layoutY="40" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+      
+                         <Rectangle fx:id="bishopB1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="290.0" layoutY="40" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+      
+                     <!-- White Queen -->
+                         <Rectangle fx:id="queenB" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="190.0" layoutY="40" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+      
+                     <!-- White King -->
+                         <Rectangle fx:id="kingB" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="240.0" layoutY="40" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
+                             <cursor>
+                                 <Cursor fx:constant="HAND" />
+                             </cursor>
+                         </Rectangle>
+      
+                        <Rectangle fx:id="previousPlace" fill="#ffffff00" height="50" opacity="0.0" stroke="blueviolet" strokeType="INSIDE" strokeWidth="5" width="50" />
+                        <VBox alignment="CENTER" layoutX="25.0" layoutY="40.0" prefHeight="400.0" prefWidth="13.0" spacing="30.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="8">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="7">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="6">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="5">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="4">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </VBox>
+                        <HBox alignment="CENTER" layoutX="40.0" layoutY="442.0" prefHeight="19.0" prefWidth="400.0" spacing="40.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="a">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="b">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="c">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="d">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="e">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="f">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="g">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="h">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                     </children>
+                  </Pane>
+                  <ListView fx:id="listView" prefHeight="352.0" prefWidth="200.0" />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Button fx:id="btnUndo" mnemonicParsing="false" onAction="#actionUndo" text="Undo" />
+                  <Pane prefHeight="25.0" prefWidth="136.0" />
+                  <Button fx:id="btnRedo" mnemonicParsing="false" onAction="#actionRedo" text="Redo" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+    <padding>
+        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+    </padding>
+</VBox>
