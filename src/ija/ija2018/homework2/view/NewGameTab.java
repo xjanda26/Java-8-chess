@@ -652,21 +652,30 @@ public class NewGameTab implements Initializable {
                 step++;
 
                 //Pesiak na druhom konci hracej dosky si moze zmenit figurku podla vlastneho vyberu
-                //System.out.println("Y: " + pickIdenxY( (int)(((Rectangle)(event.getSource())).getLayoutY())) + movingFigure.getState());
                 if ( ( !(movingFigure.getState() == "W Pawn") &&  pickIdenxY( (int)(((Rectangle)(event.getSource())).getLayoutY())) >= 8 ) ||
                         ( !(movingFigure.getState() == "B Pawn") &&  pickIdenxY( (int)(((Rectangle)(event.getSource())).getLayoutY())) <= 1) ){
-                    //System.out.println("Choose new figure"); //TODO
+
                     try{
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("chooseBox.fxml"));
                         Parent root = (Parent) loader.load();
+                        ChooseBoxController cbc = loader.getController();
+
+                        cbc.setChangeFigure( game, movingFigure.getState(), movingFigure.getCol(), movingFigure.getRow());
+
                         Stage stage = new Stage();
 
                         stage.setTitle("Výber figúrky");
                         stage.setScene(new Scene(root));
                         stage.show();
 
-                    } catch (Exception e){
-                        e.printStackTrace();
+                        stage.setOnCloseRequest( e -> {
+                            e.consume();
+                            Boolean answer = ConfirmBox.display("Ukončiť výber","Naozaj chcete zatvoriť výber?");
+                            if (answer) stage.close();
+                        });
+
+                    } catch (Exception ex){
+                        ex.printStackTrace();
                     }
 
                 }
