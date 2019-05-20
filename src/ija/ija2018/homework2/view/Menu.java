@@ -1,8 +1,6 @@
 package ija.ija2018.homework2.view;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,11 +9,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.input.MouseEvent;
+
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
 
 import java.io.File;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,10 +33,12 @@ public class Menu implements Initializable {
 
     @FXML private TabPane tabPane;
     @FXML private Tab tabNewGame;
+    @FXML private AnchorPane guiWindow;
 
     private SingleSelectionModel<Tab> selectionModel;
     private int gameCounter = 0;
     private File selectedFile = null;
+    private File file;
 
     @Override
     public void initialize (URL location, ResourceBundle recources){
@@ -47,7 +50,6 @@ public class Menu implements Initializable {
     @FXML public void newGame (ActionEvent event) {
             tabNewGame = new Tab();
 
-
             try {
 
                 tabNewGame.setText("Hra " + ++gameCounter);
@@ -58,20 +60,34 @@ public class Menu implements Initializable {
                 Parent root = (Parent) loader.load();
                 NewGameTab newTab = loader.getController();
 
-                String path = "lib/newgame" + gameCounter + ".txt";
-                File file = new File(path);
-                file.getParentFile().mkdirs();
-                file.createNewFile();
-                selectedFile = file;
+                if ( selectedFile == null) {
 
-                newTab.setFile(selectedFile);
+                    String path = "lib/newgame" + gameCounter + ".txt";
+                    file = new File(path);
+                    file.getParentFile().mkdirs();
+                    file.createNewFile();
 
-                tabNewGame.setContent(root);
+                    newTab.setFile(file);
 
-                tabNewGame.setOnCloseRequest(e -> {
-                    gameCounter--;
-                    file.delete();
-                });
+                    tabNewGame.setContent(root);
+
+                    tabNewGame.setOnCloseRequest(e -> {
+                        gameCounter--;
+                        file.delete();
+                    });
+                }
+                else {
+
+                    newTab.setFile(selectedFile);
+                    selectedFile = null;
+
+                    tabNewGame.setContent(root);
+
+                    tabNewGame.setOnCloseRequest(e -> {
+                        gameCounter--;
+                        selectedFile = null;
+                    });
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -81,9 +97,12 @@ public class Menu implements Initializable {
             selectionModel.selectLast();
         }
 
-    @FXML public void loadGame(ActionEvent event) {
+    @FXML public void loadGame(ActionEvent event) throws IOException {
         FileChooser fc = new FileChooser();
-        selectedFile = fc.showOpenDialog(null);
+        fc.setInitialDirectory(new File("lib"));
+        fc.setTitle("Náčítať hru");
+        Stage stage = (Stage)  guiWindow.getScene().getWindow();
+        selectedFile = fc.showOpenDialog(stage);
 
         if (selectedFile == null) {
             return;

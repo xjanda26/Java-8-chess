@@ -9,11 +9,14 @@ import ija.ija2018.homework2.common.Game;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.fxml.Initializable;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
@@ -23,10 +26,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -269,76 +275,124 @@ public class NewGameTab implements Initializable {
                             pawnsW.get(pawnWCounter).setLayoutX((column - 1) * 50 + 40);
                             pawnsW.get(pawnWCounter).setLayoutY(440 - 50* row);
                             pawnsW.get(pawnWCounter).setFill(new ImagePattern(whitePawn));
+                            pawnsW.get(pawnWCounter).setOpacity(1.0d);
                             pawnWCounter++;
                             break;
                         case "W Rook":
                             rooksW.get(rookWCounter).setLayoutX((column - 1) * 50 + 40);
                             rooksW.get(rookWCounter).setLayoutY(440 - 50* row);
                             rooksW.get(rookWCounter).setFill(new ImagePattern(whiteRook));
+                            rooksW.get(rookWCounter).setOpacity(1.0d);
                             rookWCounter++;
                             break;
                         case "W Knight":
                             knightsW.get(knightWCounter).setLayoutX((column - 1) * 50 + 40);
                             knightsW.get(knightWCounter).setLayoutY(440 - 50* row);
                             knightsW.get(knightWCounter).setFill(new ImagePattern(whiteKnight));
+                            knightsW.get(knightWCounter).setOpacity(1.0d);
                             knightWCounter++;
                             break;
                         case "W Bishop":
                             bishopsW.get(bishopWCounter).setLayoutX((column - 1) * 50 + 40);
                             bishopsW.get(bishopWCounter).setLayoutY(440 - 50* row);
                             bishopsW.get(bishopWCounter).setFill(new ImagePattern(whiteBishop));
+                            bishopsW.get(bishopWCounter).setOpacity(1.0d);
                             bishopWCounter++;
                             break;
                         case "W Queen":
                             queenW.setLayoutX((column - 1) * 50 + 40);
                             queenW.setLayoutY(440 - 50* row);
                             queenW.setFill(new ImagePattern(whiteQueen));
+                            queenW.setOpacity(1.0d);
                             break;
                         case "W King":
                             kingW.setLayoutX((column - 1) * 50 + 40);
                             kingW.setLayoutY(440 - 50* row);
                             kingW.setFill(new ImagePattern(whiteKing));
+                            kingW.setOpacity(1.0d);
                             break;
                         // Black figures
                         case "B Pawn":
                             pawnsB.get(pawnBCounter).setLayoutX((column - 1) * 50 + 40);
                             pawnsB.get(pawnBCounter).setLayoutY(440 - 50* row);
                             pawnsB.get(pawnBCounter).setFill(new ImagePattern(blackPawn));
+                            pawnsB.get(pawnBCounter).setOpacity(1.0d);
                             pawnBCounter++;
                             break;
                         case "B Rook":
                             rooksB.get(rookBCounter).setLayoutX((column - 1) * 50 + 40);
                             rooksB.get(rookBCounter).setLayoutY(440 - 50* row);
                             rooksB.get(rookBCounter).setFill(new ImagePattern(blackRook));
+                            rooksB.get(rookBCounter).setOpacity(1.0d);
                             rookBCounter++;
                             break;
                         case "B Knight":
                             knightsB.get(knightBCounter).setLayoutX((column - 1) * 50 + 40);
                             knightsB.get(knightBCounter).setLayoutY(440 - 50* row);
                             knightsB.get(knightBCounter).setFill(new ImagePattern(blackKnight));
+                            knightsB.get(knightBCounter).setOpacity(1.0d);
                             knightBCounter++;
                             break;
                         case "B Bishop":
                             bishopsB.get(bishopBCounter).setLayoutX((column - 1) * 50 + 40);
                             bishopsB.get(bishopBCounter).setLayoutY(440 - 50* row);
                             bishopsB.get(bishopBCounter).setFill(new ImagePattern(blackBishop));
+                            bishopsB.get(bishopBCounter).setOpacity(1.0d);
                             bishopBCounter++;
                             break;
                         case "B Queen":
                             queenB.setLayoutX((column - 1) * 50 + 40);
                             queenB.setLayoutY(440 - 50* row);
                             queenB.setFill(new ImagePattern(blackQueen));
+                            queenB.setOpacity(1.0d);
                             break;
                         case "B King":
                             kingB.setLayoutX((column - 1) * 50 + 40);
                             kingB.setLayoutY(440 - 50* row);
                             kingB.setFill(new ImagePattern(blackKing));
+                            kingB.setOpacity(1.0d);
                             break;
                     }
                 }
             }
         }
         previousPlace.setOpacity(0.0d);
+    }
+
+    private void resetListFigures(List<Rectangle> list){
+        for (Rectangle rec : list){
+            rec.setOpacity(0.0d);
+            rec.setLayoutX(0.0d);
+            rec.setLayoutY(0.0d);
+        }
+    }
+
+    private void resetFigures(){
+        resetListFigures(pawnsW);
+        resetListFigures(rooksW);
+        resetListFigures(knightsW);
+        resetListFigures(bishopsW);
+
+        queenW.setLayoutX(0);
+        queenW.setLayoutY(0);
+        queenW.setOpacity(0.0d);
+
+        kingW.setLayoutX(0);
+        kingW.setLayoutY(0);
+        kingW.setOpacity(0.0d);
+
+        resetListFigures(pawnsB);
+        resetListFigures(rooksB);
+        resetListFigures(knightsB);
+        resetListFigures(bishopsB);
+
+        queenB.setLayoutX(0);
+        queenB.setLayoutY(0);
+        queenB.setOpacity(0.0d);
+
+        kingB.setLayoutX(0);
+        kingB.setLayoutY(0);
+        kingB.setOpacity(0.0d);
     }
 
     /**
@@ -424,7 +478,7 @@ public class NewGameTab implements Initializable {
             tmp = movingWhite;
             movingWhite = movingBlack;
             movingBlack = tmp;
-
+            resetFigures();
             setFiguresOnBoard();
         }
     }
@@ -437,19 +491,20 @@ public class NewGameTab implements Initializable {
         tmp = movingWhite;
         movingWhite = movingBlack;
         movingBlack = tmp;
-
+        resetFigures();
         setFiguresOnBoard();
     }
 
 
-    public void setFile(File file) throws FileNotFoundException{
+    public void setFile(File file) throws IOException {
         this.selectedFile = file;
+
         printView();
     }
 
     public void printView () throws FileNotFoundException{
         Scanner scan = new Scanner(selectedFile);
-        ArrayList<String> listS = new ArrayList<String>();
+        ArrayList<String> listS = new ArrayList<>();
 
         while (scan.hasNextLine()) {
             listS.add(scan.nextLine());
@@ -467,7 +522,7 @@ public class NewGameTab implements Initializable {
      * jej nastaví nižšiu nepriehľadnosť a na jej staré miesto na hracej doske
      * vytvorí značku (orámuje políčko, z ktorého sa začinalo).
      *
-     * @param[in] event     Udalosť myši, ktorá spúšťa metódu
+     * @param event     Udalosť myši, ktorá spúšťa metódu
      * */
     @FXML
     public void figureStarts(MouseEvent event) {
@@ -503,7 +558,7 @@ public class NewGameTab implements Initializable {
      * Ak figúrka vyjde z hracej dosky, figúrka sa vráti na počiatočné pole odkiaľ
      * bola prenesená.
      *
-     * @param[in] event     Udalosť myši, ktorá spúšťa metódu
+     * @param event     Udalosť myši, ktorá spúšťa metódu
      * */
     @FXML
     public void figureMoves(MouseEvent event) {
@@ -535,7 +590,7 @@ public class NewGameTab implements Initializable {
      *  Pri úspechu presunie figúrku na nové miesto podĺa pravidiel šachu.
      *  Pri neúspechu presunie metóda figúrku naspäť kde bola pred presunom.
      *
-     * @param[in] event     Udalosť myši, ktorá spúšťa metódu
+     * @param event     Udalosť myši, ktorá spúšťa metódu
      * */
     @FXML
     public void figureLands (MouseEvent event) {
@@ -595,6 +650,27 @@ public class NewGameTab implements Initializable {
                 );
                 previousPlace.setOpacity(0.0d);
                 step++;
+
+                //Pesiak na druhom konci hracej dosky si moze zmenit figurku podla vlastneho vyberu
+                //System.out.println("Y: " + pickIdenxY( (int)(((Rectangle)(event.getSource())).getLayoutY())) + movingFigure.getState());
+                if ( ( !(movingFigure.getState() == "W Pawn") &&  pickIdenxY( (int)(((Rectangle)(event.getSource())).getLayoutY())) >= 8 ) ||
+                        ( !(movingFigure.getState() == "B Pawn") &&  pickIdenxY( (int)(((Rectangle)(event.getSource())).getLayoutY())) <= 1) ){
+                    //System.out.println("Choose new figure"); //TODO
+                    try{
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("chooseBox.fxml"));
+                        Parent root = (Parent) loader.load();
+                        Stage stage = new Stage();
+
+                        stage.setTitle("Výber figúrky");
+                        stage.setScene(new Scene(root));
+                        stage.show();
+
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+
                 if (movingFigure.getColor() == Field.Color.W){
                     movingWhite = false;
                     movingBlack = true;
@@ -616,8 +692,6 @@ public class NewGameTab implements Initializable {
             }
             ((Rectangle)(event.getSource())).setOpacity(1.0d);
             timeline.play();
-
-            return;
         }
     }
 
@@ -632,7 +706,6 @@ public class NewGameTab implements Initializable {
                                 new KeyValue(rec.layoutXProperty(), 0.0d),
                                 new KeyValue(rec.layoutYProperty(), 0.0d),
                                 new KeyValue(rec.opacityProperty(), 0.0d)
-
                         )
                 );
                 rec.setOpacity(0.0d);
@@ -723,8 +796,8 @@ public class NewGameTab implements Initializable {
     /**
      * Vyberanie indexu X(stĺpcu) pre manipuláciu s hash mapou hracej dosky
      *
-     * @param[in] value   Hodnota X súradnice
-     * @param[out] integer  Celočíselná hodnota, ktorá určuje stĺpec na hracej doske
+     * @param value   Hodnota X súradnice
+     * @return integer  Celočíselná hodnota, ktorá určuje stĺpec na hracej doske
      * */
     private int pickIdenxX(int value){
         if (20 <= value && 70 > value ){
@@ -757,8 +830,8 @@ public class NewGameTab implements Initializable {
     /**
      * Vyberanie indexu Y(riadku) pre manipuláciu s hash mapou hracej dosky
      *
-     * @param[in] value   Hodnota Y súradnice
-     * @param[out] integer  Celočíselná hodnota, ktorá určuje riadok na hracej doske
+     * @param value   Hodnota Y súradnice
+     * @return integer  Celočíselná hodnota, ktorá určuje riadok na hracej doske
      * */
     private int pickIdenxY(int value){
         if (20 <= value && 70 > value ){
@@ -793,10 +866,10 @@ public class NewGameTab implements Initializable {
      * Ak sa súradnice figúrky nenáchadzajú v rozsahu súradníc hracej dosky,
      * funkcia vráti hodnotu NULL.
      *
-     * @param[in] sceneX    X-ová súradnica figúrky, ktorá bola presunutá
-     * @param{in] sceneY    Y-ová súradnica figúrky, ktorá bola presunutá
+     * @param sceneX    X-ová súradnica figúrky, ktorá bola presunutá
+     * @param sceneY    Y-ová súradnica figúrky, ktorá bola presunutá
      *
-     * @param[out] pickedrectangle  Políčko hracej dosky, nad ktorým sa nachádza presúvaná figúrka
+     * @return pickedrectangle  Políčko hracej dosky, nad ktorým sa nachádza presúvaná figúrka
      * */
     private Rectangle pickRectangle(double sceneX, double sceneY) {
         Rectangle pickedRectangle = null;
