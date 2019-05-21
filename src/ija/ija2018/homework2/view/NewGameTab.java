@@ -461,6 +461,7 @@ public class NewGameTab implements Initializable {
 
         board = new Board(8);
         game = GameFactory.createChessGame(board);
+        // if (selectedFile.length() != 0) game.loadgame(selectedFile.getName());
 
         panes.add(row0);
         panes.add(row1);
