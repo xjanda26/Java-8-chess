@@ -42,9 +42,7 @@ public class Menu implements Initializable {
 
     @Override
     public void initialize (URL location, ResourceBundle recources){
-        //btnNewGame.setOnMouseClicked(addTabNewGame);
-
-        selectionModel = tabPane.getSelectionModel();
+          selectionModel = tabPane.getSelectionModel();
     }
 
     @FXML public void newGame (ActionEvent event) {
@@ -61,7 +59,6 @@ public class Menu implements Initializable {
                 NewGameTab newTab = loader.getController();
 
                 if ( selectedFile == null) {
-
                     String path = "lib/newgame" + gameCounter + ".txt";
                     file = new File(path);
                     file.getParentFile().mkdirs();
@@ -77,7 +74,6 @@ public class Menu implements Initializable {
                     });
                 }
                 else {
-
                     newTab.setFile(selectedFile);
                     selectedFile = null;
 
