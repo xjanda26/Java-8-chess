@@ -14,7 +14,7 @@ import ija.ija2018.homework2.common.Figure;
  */
 public class Rook extends AbstractFigure implements Figure{
     
-    Rook(Color color){
+    public Rook(Color color){
         this.c = color;
         col = row = 0;
     }

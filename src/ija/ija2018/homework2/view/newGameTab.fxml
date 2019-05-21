@@ -123,195 +123,23 @@
                            </children>
                         </Group>
                      <!-- White figures -->
-                       <!-- White pawns -->
-                         <Rectangle fx:id="pawnW0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="40.0" layoutY="340" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                        </Rectangle>
-                         <Rectangle fx:id="pawnW1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="90.0" layoutY="340" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                        </Rectangle>
-                         <Rectangle fx:id="pawnW2" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="140.0" layoutY="340" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                        </Rectangle>
-                         <Rectangle fx:id="pawnW3" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="190.0" layoutY="340" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                        </Rectangle>
-                         <Rectangle fx:id="pawnW4" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="240.0" layoutY="340" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                        </Rectangle>
-                         <Rectangle fx:id="pawnW5" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="290.0" layoutY="340" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                        </Rectangle>
-                         <Rectangle fx:id="pawnW6" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="340.0" layoutY="340" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                        </Rectangle>
-                         <Rectangle fx:id="pawnW7" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="390.0" layoutY="340" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-                      <!-- White rooks -->
-                         <Rectangle fx:id="rookW0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="40.0" layoutY="390" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-      
-                         <Rectangle fx:id="rookW1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="390.0" layoutY="390" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-      
-                     <!-- White kinghts -->
-                         <Rectangle fx:id="knightW0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="90.0" layoutY="390" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-      
-                         <Rectangle fx:id="knightW1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="340.0" layoutY="390" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-      
-                     <!-- White bishop -->
-                         <Rectangle fx:id="bishopW0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="140.0" layoutY="390" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-      
-                        <Rectangle fx:id="bishopW1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="290.0" layoutY="390" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-      
-                     <!-- White Queen -->
-                         <Rectangle fx:id="queenW" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="190.0" layoutY="390" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-      
+
                      <!-- White King -->
                          <Rectangle fx:id="kingW" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="240.0" layoutY="390" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
                              <cursor>
-                                 <Cursor fx:constant="HAND" />
+                                 <Cursor fx:constant="CLOSED_HAND" />
                              </cursor>
                          </Rectangle>
-      
+
                      <!-- Black figures -->
-                         <Rectangle fx:id="pawnB0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="40.0" layoutY="90" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-                         <Rectangle fx:id="pawnB1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="90.0" layoutY="90" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-                         <Rectangle fx:id="pawnB2" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="140.0" layoutY="90" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-                         <Rectangle fx:id="pawnB3" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="190.0" layoutY="90" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-                         <Rectangle fx:id="pawnB4" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="240.0" layoutY="90" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-                         <Rectangle fx:id="pawnB5" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="290.0" layoutY="90" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-                         <Rectangle fx:id="pawnB6" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="340.0" layoutY="90" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-                         <Rectangle fx:id="pawnB7" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="390.0" layoutY="90" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-      
-                     <!-- Black rooks -->
-                         <Rectangle fx:id="rookB0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="40.0" layoutY="40" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-      
-                        <Rectangle fx:id="rookB1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="390.0" layoutY="40" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-      
-                     <!-- White kinghts -->
-                         <Rectangle fx:id="knightB0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="90.0" layoutY="40" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-      
-                        <Rectangle fx:id="knightB1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="340.0" layoutY="40" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-      
-                     <!-- White bishop -->
-                         <Rectangle fx:id="bishopB0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="140.0" layoutY="40" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-      
-                         <Rectangle fx:id="bishopB1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="290.0" layoutY="40" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-      
-                     <!-- White Queen -->
-                         <Rectangle fx:id="queenB" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="190.0" layoutY="40" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
-                             <cursor>
-                                 <Cursor fx:constant="HAND" />
-                             </cursor>
-                         </Rectangle>
-      
-                     <!-- White King -->
+
+                     <!-- Black King -->
                          <Rectangle fx:id="kingB" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="50.0" layoutX="240.0" layoutY="40" onMouseDragged="#figureMoves" onMousePressed="#figureStarts" onMouseReleased="#figureLands" stroke="TRANSPARENT" strokeType="INSIDE" width="50.0">
                              <cursor>
-                                 <Cursor fx:constant="HAND" />
+                                 <Cursor fx:constant="CLOSED_HAND" />
                              </cursor>
                          </Rectangle>
-      
+
                         <Rectangle fx:id="previousPlace" fill="#ffffff00" height="50" opacity="0.0" stroke="blueviolet" strokeType="INSIDE" strokeWidth="5" width="50" />
                         <VBox alignment="CENTER" layoutX="25.0" layoutY="40.0" prefHeight="400.0" prefWidth="13.0" spacing="30.0">
                            <children>

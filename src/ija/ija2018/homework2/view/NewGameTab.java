@@ -6,10 +6,12 @@ import ija.ija2018.homework2.common.Figure;
 import ija.ija2018.homework2.game.Board;
 import ija.ija2018.homework2.common.Game;
 
+import ija.ija2018.homework2.game.HistoryMove;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.fxml.Initializable;
 
@@ -24,15 +26,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Color;
 
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeType;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -51,42 +54,9 @@ public class NewGameTab implements Initializable {
 
     public static int tabIndex = 0;
 
-    @FXML Rectangle pawnW0;
-    @FXML Rectangle pawnW1;
-    @FXML Rectangle pawnW2;
-    @FXML Rectangle pawnW3;
-    @FXML Rectangle pawnW4;
-    @FXML Rectangle pawnW5;
-    @FXML Rectangle pawnW6;
-    @FXML Rectangle pawnW7;
-
-    @FXML Rectangle pawnB0;
-    @FXML Rectangle pawnB1;
-    @FXML Rectangle pawnB2;
-    @FXML Rectangle pawnB3;
-    @FXML Rectangle pawnB4;
-    @FXML Rectangle pawnB5;
-    @FXML Rectangle pawnB6;
-    @FXML Rectangle pawnB7;
-
-    @FXML Rectangle rookW0;
-    @FXML Rectangle rookW1;
-    @FXML Rectangle bishopW0;
-    @FXML Rectangle bishopW1;
-    @FXML Rectangle knightW0;
-    @FXML Rectangle knightW1;
-    @FXML Rectangle queenW;
     @FXML Rectangle kingW;
 
-    @FXML Rectangle rookB0;
-    @FXML Rectangle rookB1;
-    @FXML Rectangle bishopB0;
-    @FXML Rectangle bishopB1;
-    @FXML Rectangle knightB0;
-    @FXML Rectangle knightB1;
-    @FXML Rectangle queenB;
     @FXML Rectangle kingB;
-
 
     /**
      *
@@ -214,11 +184,13 @@ public class NewGameTab implements Initializable {
     private final List<Rectangle> rooksB = new ArrayList<>();
     private final List<Rectangle> knightsB = new ArrayList<>();
     private final List<Rectangle> bishopsB = new ArrayList<>();
+    private final List<Rectangle> queensB = new ArrayList<>();
 
     private final List<Rectangle> pawnsW = new ArrayList<>();
     private final List<Rectangle> rooksW = new ArrayList<>();
     private final List<Rectangle> knightsW = new ArrayList<>();
     private final List<Rectangle> bishopsW = new ArrayList<>();
+    private final List<Rectangle> queensW = new ArrayList<>();
     private Point2D offset = new Point2D(0.0d,0.0d);
 
     private boolean movingWhite = true;
@@ -231,15 +203,18 @@ public class NewGameTab implements Initializable {
     private int boardSize;
     private int step = 0;
 
+
     private int pawnWCounter = 0;
     private int rookWCounter = 0;
     private int knightWCounter = 0;
     private int bishopWCounter = 0;
+    private int queenWCounter = 0;
 
     private int pawnBCounter = 0;
     private int rookBCounter = 0;
     private int knightBCounter = 0;
     private int bishopBCounter = 0;
+    private int queenBCounter = 0;
 
     private Image whitePawn ;
     private Image whiteRook ;
@@ -261,17 +236,33 @@ public class NewGameTab implements Initializable {
         rookWCounter = 0;
         knightWCounter = 0;
         bishopWCounter = 0;
+        queenWCounter = 0;
 
         pawnBCounter = 0;
         rookBCounter = 0;
         knightBCounter = 0;
         bishopBCounter = 0;
+        queenBCounter = 0;
 
         for (int row = 1; row <= boardSize; row++){
             for (int column = 1; column <= boardSize; column++ ){
                 if (! board.getField(column, row). isEmpty() ) {
+                    Rectangle rect = new Rectangle();
+                    rect.setOnMouseDragged(this::figureMoves);
+                    rect.setOnMousePressed(this::figureStarts);
+                    rect.setOnMouseReleased(this::figureLands);
+                    rect.setCursor(Cursor.CLOSED_HAND);
+                    rect.setFill(Color.web("#ffffff00"));
+                    rect.setHeight(50.0d);
+                    rect.setWidth(50.0d);
+                    rect.setStroke(Color.TRANSPARENT);
+                    rect.setStrokeType(StrokeType.INSIDE);
+                    rect.setArcHeight(5.0);
+                    rect.setArcWidth(5.0);
                     switch (board.getField(column, row).get().getState()) {
                         case "W Pawn":
+                            pawnsW.add(rect);
+                            boardPane.getChildren().add(rect);
                             pawnsW.get(pawnWCounter).setLayoutX((column - 1) * 50 + 40);
                             pawnsW.get(pawnWCounter).setLayoutY(440 - 50* row);
                             pawnsW.get(pawnWCounter).setFill(new ImagePattern(whitePawn));
@@ -279,6 +270,8 @@ public class NewGameTab implements Initializable {
                             pawnWCounter++;
                             break;
                         case "W Rook":
+                            rooksW.add(rect);
+                            boardPane.getChildren().add(rect);
                             rooksW.get(rookWCounter).setLayoutX((column - 1) * 50 + 40);
                             rooksW.get(rookWCounter).setLayoutY(440 - 50* row);
                             rooksW.get(rookWCounter).setFill(new ImagePattern(whiteRook));
@@ -286,6 +279,8 @@ public class NewGameTab implements Initializable {
                             rookWCounter++;
                             break;
                         case "W Knight":
+                            knightsW.add(rect);
+                            boardPane.getChildren().add(rect);
                             knightsW.get(knightWCounter).setLayoutX((column - 1) * 50 + 40);
                             knightsW.get(knightWCounter).setLayoutY(440 - 50* row);
                             knightsW.get(knightWCounter).setFill(new ImagePattern(whiteKnight));
@@ -293,6 +288,8 @@ public class NewGameTab implements Initializable {
                             knightWCounter++;
                             break;
                         case "W Bishop":
+                            bishopsW.add(rect);
+                            boardPane.getChildren().add(rect);
                             bishopsW.get(bishopWCounter).setLayoutX((column - 1) * 50 + 40);
                             bishopsW.get(bishopWCounter).setLayoutY(440 - 50* row);
                             bishopsW.get(bishopWCounter).setFill(new ImagePattern(whiteBishop));
@@ -300,10 +297,13 @@ public class NewGameTab implements Initializable {
                             bishopWCounter++;
                             break;
                         case "W Queen":
-                            queenW.setLayoutX((column - 1) * 50 + 40);
-                            queenW.setLayoutY(440 - 50* row);
-                            queenW.setFill(new ImagePattern(whiteQueen));
-                            queenW.setOpacity(1.0d);
+                            queensW.add(rect);
+                            boardPane.getChildren().add(rect);
+                            queensW.get(queenWCounter).setLayoutX((column - 1) * 50 + 40);
+                            queensW.get(queenWCounter).setLayoutY(440 - 50* row);
+                            queensW.get(queenWCounter).setFill(new ImagePattern(whiteQueen));
+                            queensW.get(queenWCounter).setOpacity(1.0d);
+                            queenWCounter++;
                             break;
                         case "W King":
                             kingW.setLayoutX((column - 1) * 50 + 40);
@@ -313,6 +313,8 @@ public class NewGameTab implements Initializable {
                             break;
                         // Black figures
                         case "B Pawn":
+                            pawnsB.add(rect);
+                            boardPane.getChildren().add(rect);
                             pawnsB.get(pawnBCounter).setLayoutX((column - 1) * 50 + 40);
                             pawnsB.get(pawnBCounter).setLayoutY(440 - 50* row);
                             pawnsB.get(pawnBCounter).setFill(new ImagePattern(blackPawn));
@@ -320,6 +322,8 @@ public class NewGameTab implements Initializable {
                             pawnBCounter++;
                             break;
                         case "B Rook":
+                            rooksB.add(rect);
+                            boardPane.getChildren().add(rect);
                             rooksB.get(rookBCounter).setLayoutX((column - 1) * 50 + 40);
                             rooksB.get(rookBCounter).setLayoutY(440 - 50* row);
                             rooksB.get(rookBCounter).setFill(new ImagePattern(blackRook));
@@ -327,6 +331,8 @@ public class NewGameTab implements Initializable {
                             rookBCounter++;
                             break;
                         case "B Knight":
+                            knightsB.add(rect);
+                            boardPane.getChildren().add(rect);
                             knightsB.get(knightBCounter).setLayoutX((column - 1) * 50 + 40);
                             knightsB.get(knightBCounter).setLayoutY(440 - 50* row);
                             knightsB.get(knightBCounter).setFill(new ImagePattern(blackKnight));
@@ -334,6 +340,8 @@ public class NewGameTab implements Initializable {
                             knightBCounter++;
                             break;
                         case "B Bishop":
+                            bishopsB.add(rect);
+                            boardPane.getChildren().add(rect);
                             bishopsB.get(bishopBCounter).setLayoutX((column - 1) * 50 + 40);
                             bishopsB.get(bishopBCounter).setLayoutY(440 - 50* row);
                             bishopsB.get(bishopBCounter).setFill(new ImagePattern(blackBishop));
@@ -341,10 +349,13 @@ public class NewGameTab implements Initializable {
                             bishopBCounter++;
                             break;
                         case "B Queen":
-                            queenB.setLayoutX((column - 1) * 50 + 40);
-                            queenB.setLayoutY(440 - 50* row);
-                            queenB.setFill(new ImagePattern(blackQueen));
-                            queenB.setOpacity(1.0d);
+                            queensB.add(rect);
+                            boardPane.getChildren().add(rect);
+                            queensB.get(queenBCounter).setLayoutX((column - 1) * 50 + 40);
+                            queensB.get(queenBCounter).setLayoutY(440 - 50* row);
+                            queensB.get(queenBCounter).setFill(new ImagePattern(blackQueen));
+                            queensB.get(queenBCounter).setOpacity(1.0d);
+                            queenBCounter++;
                             break;
                         case "B King":
                             kingB.setLayoutX((column - 1) * 50 + 40);
@@ -373,9 +384,7 @@ public class NewGameTab implements Initializable {
         resetListFigures(knightsW);
         resetListFigures(bishopsW);
 
-        queenW.setLayoutX(0);
-        queenW.setLayoutY(0);
-        queenW.setOpacity(0.0d);
+        resetListFigures(queensW);
 
         kingW.setLayoutX(0);
         kingW.setLayoutY(0);
@@ -386,9 +395,7 @@ public class NewGameTab implements Initializable {
         resetListFigures(knightsB);
         resetListFigures(bishopsB);
 
-        queenB.setLayoutX(0);
-        queenB.setLayoutY(0);
-        queenB.setOpacity(0.0d);
+        resetListFigures(queensB);
 
         kingB.setLayoutX(0);
         kingB.setLayoutY(0);
@@ -417,42 +424,6 @@ public class NewGameTab implements Initializable {
 
         board = new Board(8);
         game = GameFactory.createChessGame(board);
-
-        pawnsB.add(pawnB0);
-        pawnsB.add(pawnB2);
-        pawnsB.add(pawnB1);
-        pawnsB.add(pawnB3);
-        pawnsB.add(pawnB4);
-        pawnsB.add(pawnB5);
-        pawnsB.add(pawnB6);
-        pawnsB.add(pawnB7);
-
-        rooksB.add(rookB0);
-        rooksB.add(rookB1);
-
-        knightsB.add(knightB0);
-        knightsB.add(knightB1);
-
-        bishopsB.add(bishopB0);
-        bishopsB.add(bishopB1);
-
-        pawnsW.add(pawnW0);
-        pawnsW.add(pawnW2);
-        pawnsW.add(pawnW1);
-        pawnsW.add(pawnW3);
-        pawnsW.add(pawnW4);
-        pawnsW.add(pawnW5);
-        pawnsW.add(pawnW6);
-        pawnsW.add(pawnW7);
-
-        rooksW.add(rookW0);
-        rooksW.add(rookW1);
-
-        knightsW.add(knightW0);
-        knightsW.add(knightW1);
-
-        bishopsW.add(bishopW0);
-        bishopsW.add(bishopW1);
 
         panes.add(row0);
         panes.add(row1);
@@ -511,9 +482,18 @@ public class NewGameTab implements Initializable {
         }
         scan.close();
 
+        listView.getItems().clear();
         for (String line: listS ) {
             listView.getItems().add(line);
         }
+    }
+
+    public void writeIntoFile(String str) throws IOException{
+        BufferedWriter writer = new BufferedWriter(new FileWriter(selectedFile, true));
+        writer.append(str);
+        writer.newLine();
+
+        writer.close();
     }
 
     /**
@@ -645,39 +625,33 @@ public class NewGameTab implements Initializable {
                                 new KeyValue(((Rectangle)(event.getSource())).layoutXProperty(), parent.getX()),
                                 new KeyValue(((Rectangle)(event.getSource())).layoutYProperty(), parent.getY()),
                                 new KeyValue(((Rectangle)(event.getSource())).opacityProperty(), 1.0d)
-
                         )
                 );
                 previousPlace.setOpacity(0.0d);
                 step++;
 
                 //Pesiak na druhom konci hracej dosky si moze zmenit figurku podla vlastneho vyberu
-                if ( ( !(movingFigure.getState() == "W Pawn") &&  pickIdenxY( (int)(((Rectangle)(event.getSource())).getLayoutY())) >= 8 ) ||
-                        ( !(movingFigure.getState() == "B Pawn") &&  pickIdenxY( (int)(((Rectangle)(event.getSource())).getLayoutY())) <= 1) ){
-
+                if ( ( movingFigure.getState().equals("W Pawn") &&  pickIdenxY( (int)(((Rectangle)(event.getSource())).getLayoutY())) >= 8 ) ||
+                        ( movingFigure.getState().equals("B Pawn") &&  pickIdenxY( (int)(((Rectangle)(event.getSource())).getLayoutY())) <= 1) ){
                     try{
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("chooseBox.fxml"));
                         Parent root = (Parent) loader.load();
                         ChooseBoxController cbc = loader.getController();
 
-                        cbc.setChangeFigure( game, movingFigure.getState(), movingFigure.getCol(), movingFigure.getRow());
-
                         Stage stage = new Stage();
-
+                        cbc.setChangeFigure( board, movingFigure);
+                        stage.initStyle(StageStyle.TRANSPARENT);
                         stage.setTitle("Výber figúrky");
                         stage.setScene(new Scene(root));
                         stage.show();
 
-                        stage.setOnCloseRequest( e -> {
-                            e.consume();
-                            Boolean answer = ConfirmBox.display("Ukončiť výber","Naozaj chcete zatvoriť výber?");
-                            if (answer) stage.close();
+                        stage.setOnHidden(e -> {
+                            resetFigures();
+                            setFiguresOnBoard();
                         });
-
                     } catch (Exception ex){
                         ex.printStackTrace();
                     }
-
                 }
 
                 if (movingFigure.getColor() == Field.Color.W){
@@ -687,6 +661,12 @@ public class NewGameTab implements Initializable {
                 else if (movingFigure.getColor() == Field.Color.B){
                     movingBlack = false;
                     movingWhite = true;
+                }
+                try {
+                    writeIntoFile(game.getHistory());
+                    printView();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
             } else { //Figúrka mimo hraciu dosku
@@ -739,18 +719,7 @@ public class NewGameTab implements Initializable {
 
             if (clearFigure(bishopsB, x, y)) return;
 
-            if (pickIdenxX((int)queenB.getLayoutX()) == x && pickIdenxY((int)queenB.getLayoutY()) == y) {
-                timeline.getKeyFrames().add(
-                        new KeyFrame(Duration.millis(100),
-                                new KeyValue(queenB.layoutXProperty(), 0.0d),
-                                new KeyValue(queenB.layoutYProperty(), 0.0d),
-                                new KeyValue(queenB.opacityProperty(), 0.0d)
-                        )
-                );
-                queenB.setOpacity(0.0d);
-                timeline.play();
-                return;
-            }
+            if (clearFigure(queensB, x, y)) return;
 
             if (pickIdenxX((int)kingB.getLayoutX()) == x && pickIdenxY((int)kingB.getLayoutY()) == y) {
                 timeline.getKeyFrames().add(
@@ -774,18 +743,7 @@ public class NewGameTab implements Initializable {
 
             if (clearFigure(bishopsW, x, y)) return;
 
-            if (pickIdenxX((int)queenW.getLayoutX()) == x && pickIdenxY((int)queenW.getLayoutY()) == y) {
-                timeline.getKeyFrames().add(
-                        new KeyFrame(Duration.millis(100),
-                                new KeyValue(queenW.layoutXProperty(), 0.0d),
-                                new KeyValue(queenW.layoutYProperty(), 0.0d),
-                                new KeyValue(queenW.opacityProperty(), 0.0d)
-                        )
-                );
-                queenW.setOpacity(0.0d);
-                timeline.play();
-                return;
-            }
+            if (clearFigure(queensW, x, y)) return;
 
             if (pickIdenxX((int)kingW.getLayoutX()) == x && pickIdenxY((int)kingW.getLayoutY())== y) {
                 timeline.getKeyFrames().add(

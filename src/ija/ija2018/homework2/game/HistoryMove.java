@@ -34,7 +34,7 @@ public class HistoryMove {
 	public void mate() {
 		this.mate=true;
 	}
-	
+
 	public String toString() {
 		String move = "";
 		if (moved instanceof Rook) {

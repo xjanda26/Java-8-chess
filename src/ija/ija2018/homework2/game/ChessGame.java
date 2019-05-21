@@ -65,6 +65,10 @@ public class ChessGame implements Game{
     //Figure deleted=null;
     
     public List<HistoryMove> moves;
+
+    public String getHistory(){
+    	return this.moves.toString();
+	}
     
     public ChessGame(Board b) {
     	whiteAllowedDirections = new HashSet<Direction>();

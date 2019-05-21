@@ -1,16 +1,19 @@
 package ija.ija2018.homework2.view;
 
-import ija.ija2018.homework2.common.Game;
+import ija.ija2018.homework2.common.Field;
+import ija.ija2018.homework2.common.Figure;
+import ija.ija2018.homework2.game.*;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-
 
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 
-import java.awt.event.ActionEvent;
+import javafx.event.ActionEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -18,8 +21,6 @@ import java.util.ResourceBundle;
  *
  * @author Adam Janda <xjanda26@stud.fit.vutbr.cz>
  * */
-
-
 
 public class ChooseBoxController implements Initializable {
     @FXML  Button btnWRook;
@@ -44,10 +45,9 @@ public class ChooseBoxController implements Initializable {
 
     @FXML  Button btnConfirm;
 
-    private Game game;
-    private String changedFigure;
-    private int col;
-    private int row;
+    private Board board;
+    private Figure figure;
+    private Stage stage;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -64,41 +64,97 @@ public class ChooseBoxController implements Initializable {
     }
 
     @FXML public void actionWRook (ActionEvent event){
+        if (figure.getColor() == Field.Color.W) {
+            Figure newFigure = new Rook(Field.Color.W);
+            newFigure.setCoords(figure.getCol(), figure.getRow());
 
+            board.getField(figure.getCol(), figure.getRow()).setFigure(newFigure);
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            stage.close();
+        }
     }
 
     @FXML public void actionWKnight (ActionEvent event){
+        if (figure.getColor() == Field.Color.W) {
+            Figure newFigure = new Knight(Field.Color.W);
+            newFigure.setCoords(figure.getCol(), figure.getRow());
+
+            board.getField(figure.getCol(), figure.getRow()).setFigure(newFigure);
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            stage.close();
+        }
 
     }
 
     @FXML public void actionWBishop (ActionEvent event){
+        if (figure.getColor() == Field.Color.W) {
+            Figure newFigure = new Bishop(Field.Color.W);
+            newFigure.setCoords(figure.getCol(), figure.getRow());
 
+            board.getField(figure.getCol(), figure.getRow()).setFigure(newFigure);
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            stage.close();
+        }
     }
 
     @FXML public void actionWQueen (ActionEvent event){
+        if (figure.getColor() == Field.Color.W) {
+            Figure newFigure = new Queen(Field.Color.W);
+            newFigure.setCoords(figure.getCol(), figure.getRow());
+
+            board.getField(figure.getCol(), figure.getRow()).setFigure(newFigure);
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            stage.close();
+        }
 
     }
 
     @FXML public void actionBRook (ActionEvent event){
+        if (figure.getColor() == Field.Color.B) {
+            Figure newFigure = new Rook(Field.Color.B);
+            newFigure.setCoords(figure.getCol(), figure.getRow());
 
+            board.getField(figure.getCol(), figure.getRow()).setFigure(newFigure);
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            stage.close();
+        }
     }
 
     @FXML public void actionBKnight (ActionEvent event){
+        if (figure.getColor() == Field.Color.B) {
+            Figure newFigure = new Knight(Field.Color.B);
+            newFigure.setCoords(figure.getCol(), figure.getRow());
 
+            board.getField(figure.getCol(), figure.getRow()).setFigure(newFigure);
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            stage.close();
+        }
     }
 
     @FXML public void actionBBishop (ActionEvent event){
+        if (figure.getColor() == Field.Color.B) {
+            Figure newFigure = new Bishop(Field.Color.B);
+            newFigure.setCoords(figure.getCol(), figure.getRow());
 
+            board.getField(figure.getCol(), figure.getRow()).setFigure(newFigure);
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            stage.close();
+        }
     }
 
     @FXML public void actionBQueen (ActionEvent event){
+        if (figure.getColor() == Field.Color.B) {
+            Figure newFigure = new Queen(Field.Color.B);
+            newFigure.setCoords(figure.getCol(), figure.getRow());
 
+            board.getField(figure.getCol(), figure.getRow()).setFigure(newFigure);
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            stage.close();
+        }
     }
 
-    public void setChangeFigure (Game game, String state, int col, int row){
-        this.game = game;
-        this.changedFigure = state;
-        this.col = col;
-        this.row = row;
+    public void setChangeFigure (Board board, Figure movingFigure){
+        this.board = board;
+        this.figure = movingFigure;
     }
 }

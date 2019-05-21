@@ -15,20 +15,20 @@
          <children>
             <HBox alignment="CENTER" prefHeight="150.0" prefWidth="350.0">
                <children>
-                  <Button fx:id="btnWRook" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0">
+                  <Button fx:id="btnWRook" contentDisplay="CENTER" mnemonicParsing="false" onAction="#actionWRook" prefHeight="50.0" prefWidth="50.0">
                      <graphic>
                         <ImageView fx:id="imageWRook" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic></Button>
-                  <Button fx:id="btnWKnight" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0">
+                  <Button fx:id="btnWKnight" mnemonicParsing="false" onAction="#actionWKnight" prefHeight="50.0" prefWidth="50.0">
                      <graphic>
                         <ImageView fx:id="imageWKnight" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic></Button>
-                  <Button fx:id="btnWBishop" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0">
+                  <Button fx:id="btnWBishop" contentDisplay="CENTER" mnemonicParsing="false" onAction="#actionWBishop" prefHeight="50.0" prefWidth="50.0">
                      <graphic>
                         <ImageView fx:id="imageWBishop" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                   </Button>
-                  <Button fx:id="btnWQueen" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0">
+                  <Button fx:id="btnWQueen" mnemonicParsing="false" onAction="#actionWQueen" prefHeight="50.0" prefWidth="50.0">
                      <graphic>
                         <ImageView fx:id="imageWQueen" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
@@ -37,22 +37,22 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="150.0" prefWidth="350.0">
                <children>
-                  <Button fx:id="btnBRook" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0">
+                  <Button fx:id="btnBRook" contentDisplay="CENTER" mnemonicParsing="false" onAction="#actionBRook" prefHeight="50.0" prefWidth="50.0">
                      <graphic>
                         <ImageView fx:id="imageBRook" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                   </Button>
-                  <Button fx:id="btnBKnight" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0">
+                  <Button fx:id="btnBKnight" mnemonicParsing="false" onAction="#actionBKnight" prefHeight="50.0" prefWidth="50.0">
                      <graphic>
                         <ImageView fx:id="imageBKnight" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                   </Button>
-                  <Button fx:id="btnBBishop" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0">
+                  <Button fx:id="btnBBishop" contentDisplay="CENTER" mnemonicParsing="false" onAction="#actionBBishop" prefHeight="50.0" prefWidth="50.0">
                      <graphic>
                         <ImageView fx:id="imageBBishop" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                   </Button>
-                  <Button fx:id="btnBQueen" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0">
+                  <Button fx:id="btnBQueen" mnemonicParsing="false" onAction="#actionBQueen" prefHeight="50.0" prefWidth="50.0">
                      <graphic>
                         <ImageView fx:id="imageBQueen" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
