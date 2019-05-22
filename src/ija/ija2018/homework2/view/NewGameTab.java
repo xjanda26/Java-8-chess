@@ -6,6 +6,7 @@ import ija.ija2018.homework2.common.Figure;
 import ija.ija2018.homework2.game.Board;
 import ija.ija2018.homework2.common.Game;
 
+import ija.ija2018.homework2.game.WrongMoveException;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -461,6 +462,8 @@ public class NewGameTab implements Initializable {
 
         board = new Board(8);
         game = GameFactory.createChessGame(board);
+        //String nameOfFile = selectedFile.getName();
+        //System.out.println("Toto je file nema: "+ nameOfFile);
         // if (selectedFile.length() != 0) game.loadgame(selectedFile.getName());
 
         panes.add(row0);
@@ -486,7 +489,7 @@ public class NewGameTab implements Initializable {
      * Ak nebol spravený žiadny krok alebo hra sa vrátila do východzieho bodu, nič nerobí.
      * */
     @FXML public void actionUndo() throws IOException{
-        if (step > 0){
+       /* if (step > 0){
             step--;
             game.undo();
             undoCounter++;
@@ -528,7 +531,7 @@ public class NewGameTab implements Initializable {
                     ex.printStackTrace();
                 }
             }
-        }
+        }*/
     }
 
     @FXML public void actionRedo(){
@@ -550,9 +553,14 @@ public class NewGameTab implements Initializable {
      *
      * @param file  Súbor, ktorý sa má pracovať.
      * */
-    public void setFile(File file) throws IOException {
+    public void setFile(File file) throws IOException, WrongMoveException {
         this.selectedFile = file;
+        String fileName = this.selectedFile.getName();
+        System.out.println("Toto je meno suboru " + fileName);
 
+        if (selectedFile.length() != 0) {
+            game.loadgame(fileName);
+        }
         printView();
     }
 
@@ -603,9 +611,6 @@ public class NewGameTab implements Initializable {
                 writer.append(" ");
             }
         }
-
-        //if (line%2 == 0)
-
         writer.close();
     }
 
@@ -783,7 +788,8 @@ public class NewGameTab implements Initializable {
 
                 //Výpis krokovania
                 try {
-                    writeIntoFile(game.getHistory(), realStep);
+                    System.out.println(" toto je history: " + game.getHistory());
+                    //writeIntoFile(game.getHistory(), realStep);
                     printView();
                 } catch (IOException e) {
                     e.printStackTrace();

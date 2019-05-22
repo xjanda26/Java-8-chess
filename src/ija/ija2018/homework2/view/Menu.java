@@ -1,5 +1,6 @@
 package ija.ija2018.homework2.view;
 
+import ija.ija2018.homework2.game.WrongMoveException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -45,7 +46,7 @@ public class Menu implements Initializable {
           selectionModel = tabPane.getSelectionModel();
     }
 
-    @FXML public void newGame (ActionEvent event) {
+    @FXML public void newGame (ActionEvent event) throws WrongMoveException {
             tabNewGame = new Tab();
 
             try {
@@ -75,7 +76,7 @@ public class Menu implements Initializable {
                 }
                 else {
                     newTab.setFile(selectedFile);
-                    selectedFile = null;
+                    //selectedFile = null;
 
                     tabNewGame.setContent(root);
 
@@ -93,7 +94,7 @@ public class Menu implements Initializable {
             selectionModel.selectLast();
         }
 
-    @FXML public void loadGame(ActionEvent event) throws IOException {
+    @FXML public void loadGame(ActionEvent event) throws IOException, WrongMoveException{
         FileChooser fc = new FileChooser();
         fc.setInitialDirectory(new File("lib"));
         fc.setTitle("Náčítať hru");
