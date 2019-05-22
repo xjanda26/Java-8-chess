@@ -34,4 +34,8 @@ public class Pawn extends AbstractFigure implements Figure{
     public boolean wasMoved() {
     	return firstMove;
     }
+    
+    public void movedBack() {
+    	this.firstMove=false;
+    }
 }

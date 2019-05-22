@@ -34,7 +34,7 @@ public class HistoryMove {
 	public void mate() {
 		this.mate=true;
 	}
-
+	
 	public String toString() {
 		String move = "";
 		if (moved instanceof Rook) {
@@ -75,10 +75,10 @@ public class HistoryMove {
 		
 		char fromCol = (char)(movedFromField.getCol()+96);
 		char toCol = (char)(movedToField.getCol()+96);
-		
-		move += fromCol + Integer.toString(movedFromField.getRow()) + deleted==null?"":"x" + toCol + Integer.toString(movedToField.getRow()) + tochange + (check?"+":"") + (mate?"#":"");       
+		StringBuilder output = new StringBuilder(); 
+		output.append(move).append(fromCol).append(Integer.toString(movedFromField.getRow())).append((deleted==null?"":"x")).append(toCol).append(Integer.toString(movedToField.getRow())).append(tochange).append((check?"+":"")).append((mate?"#":""));
 	
-		return move;
+		return output.toString();
 	}
 		
 	

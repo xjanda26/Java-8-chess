@@ -21,6 +21,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.hamcrest.core.IsInstanceOf;
+
 import ija.ija2018.homework2.common.Field;
 import ija.ija2018.homework2.common.Figure;
 import ija.ija2018.homework2.common.Game;
@@ -44,8 +46,8 @@ public class ChessGame implements Game{
     Set<Rook> whiteRooks = null;
     Set<Rook> blackRooks = null;
     
-    Set<Bishop> whiteBishopss = null;
-    Set<Bishop> blackBishopss = null;
+    Set<Bishop> whiteBishops = null;
+    Set<Bishop> blackBishops = null;
     
     Set<Knight> whiteKnights = null;
     Set<Knight> blackKnights = null;
@@ -56,19 +58,17 @@ public class ChessGame implements Game{
     Figure whiteKing;
     Figure blackKing;
     
-    Set<Queen> whiteQueen;
+    Set<Queen> whiteQueens;
     Set<Queen> blackQueens;
     
     private int actualMove = -1; 
+    
+    private Figure toChange = new Rook(Color.W);
     //int fromX,fromY, toX, toY;
     //int deletedFromX,deletedFromY;
     //Figure deleted=null;
     
     public List<HistoryMove> moves;
-
-    public String getHistory(){
-    	return this.moves.toString();
-	}
     
     public ChessGame(Board b) {
     	whiteAllowedDirections = new HashSet<Direction>();
@@ -90,8 +90,8 @@ public class ChessGame implements Game{
         whiteRooks = new HashSet<Rook>();
         blackRooks = new HashSet<Rook>();
         
-        whiteBishopss = new HashSet<Bishop>();
-        blackBishopss = new HashSet<Bishop>();
+        whiteBishops = new HashSet<Bishop>();
+        blackBishops = new HashSet<Bishop>();
         
         whiteKnights = new HashSet<Knight>();
         blackKnights = new HashSet<Knight>();
@@ -99,7 +99,7 @@ public class ChessGame implements Game{
         whitePawns = new HashSet<Pawn>();
         blackPawns = new HashSet<Pawn>();
         
-        whiteQueen = new HashSet<Queen>();
+        whiteQueens = new HashSet<Queen>();
         blackQueens = new HashSet<Queen>();
         /*for (int i = 0; i < b.getSize();i+=2){
             Field tmp = b.getField(i+1, 1);
@@ -115,15 +115,15 @@ public class ChessGame implements Game{
         board.getField(8, 1).setFigure(tmp); //veza vpravo dole
         board.getField(8, 1).get().setCoords(8, 1);
         tmp = new Bishop(Field.Color.W);
-        whiteBishopss.add((Bishop)tmp);
+        whiteBishops.add((Bishop)tmp);
         board.getField(3, 1).setFigure(tmp); //strelec vlavo dole
         board.getField(3, 1).get().setCoords(3, 1);
         tmp = new Bishop(Field.Color.W);
-        whiteBishopss.add((Bishop)tmp);
+        whiteBishops.add((Bishop)tmp);
         board.getField(6, 1).setFigure(tmp); //strelec vpravo dole
         board.getField(6, 1).get().setCoords(6, 1);
         tmp = new Queen(Field.Color.W);
-        whiteQueen.add((Queen)tmp);
+        whiteQueens.add((Queen)tmp);
         board.getField(4, 1).setFigure(tmp); //kralovna dole biela
         board.getField(4, 1).get().setCoords(4, 1);
         tmp = new King(Field.Color.W);
@@ -156,11 +156,11 @@ public class ChessGame implements Game{
         board.getField(8, 8).setFigure(tmp);
         board.getField(8,8).get().setCoords(8, 8);
         tmp = new Bishop(Field.Color.B);
-        blackBishopss.add((Bishop)tmp);
+        blackBishops.add((Bishop)tmp);
         board.getField(3, 8).setFigure(tmp); //strelec vlavo hore
         board.getField(3, 8).get().setCoords(3, 8);
         tmp = new Bishop(Field.Color.B);
-        blackBishopss.add((Bishop)tmp);
+        blackBishops.add((Bishop)tmp);
         board.getField(6, 8).setFigure(tmp); //strelec vpravo hore
         board.getField(6, 8).get().setCoords(6, 8);
         tmp = new Queen(Field.Color.B);
@@ -188,6 +188,50 @@ public class ChessGame implements Game{
             tmp1.get().setCoords(i,b.getSize()-1);
         }
     }
+    
+    public void setChange(Figure figure) {
+    	if (figure instanceof Bishop) {
+    		if (figure.getColor() == Color.B) {
+    			blackBishops.add((Bishop)figure);
+    		}
+    		if (figure.getColor() == Color.W) {
+    			whiteBishops.add((Bishop)figure);
+    		}
+    	}
+    	if (figure instanceof Knight) {
+    		if (figure.getColor() == Color.B) {
+    			blackKnights.add((Knight)figure);
+    		}
+    		if (figure.getColor() == Color.W) {
+    			whiteKnights.add((Knight)figure);
+    		}
+    	}
+    	if (figure instanceof Pawn) {
+    		if (figure.getColor() == Color.B) {
+    			blackPawns.add((Pawn)figure);
+    		}
+    		if (figure.getColor() == Color.W) {
+    			whitePawns.add((Pawn)figure);
+    		}
+    	}
+    	if (figure instanceof Queen) {
+    		if (figure.getColor() == Color.B) {
+    			blackQueens.add((Queen)figure);
+    		}
+    		if (figure.getColor() == Color.W) {
+    			whiteQueens.add((Queen)figure);
+    		}
+    	}
+    	if (figure instanceof Rook) {
+    		if (figure.getColor() == Color.B) {
+    			blackRooks.add((Rook)figure);
+    		}
+    		if (figure.getColor() == Color.W) {
+    			whiteRooks.add((Rook)figure);
+    		}
+    	}
+    	this.toChange=figure;
+    }
 
     @Override
     public boolean move(Figure figure, Field field) {
@@ -213,6 +257,18 @@ public class ChessGame implements Game{
     	
     	if (returnCode) {
     		actualMove++;
+    		if(figure.getColor() == Color.B) {
+    			if (!blackInCheck()) {
+    				undo();
+    				return false;
+    			}
+    		}
+    		else {
+    			if (!whiteInCheck()) {
+    				undo();
+    				return false;
+    			}
+    		}
     	}
     	
     	return returnCode;
@@ -246,9 +302,19 @@ public class ChessGame implements Game{
     	    			int toY = field.getRow();
     	    			Figure deleted = null;
     	    			moves.add(new HistoryMove(deleted,null,figure,board.getField(fromX, fromY),board.getField(toX, toY),board));
-    	    			field.setFigure(figure);
+    	    			if (toChange !=null && (toY==1 || toY==8)) {
+    	    				moves.get(moves.size()-1).changed=toChange;
+    	    				field.setFigure(toChange);
+    	    				toChange.setCoords(field.getCol(), field.getRow());
+    	    				figure.setCoords(0, 0);
+    	    				toChange = null;
+    	    			}
+    	    			else {
+    	    				field.setFigure(figure);
+    	    				figure.setCoords(field.getCol(), field.getRow());
+    	    			}
     	        		fieldWithFigure.setFigure(null);
-    	        		figure.setCoords(field.getCol(), field.getRow());
+    	        		
     	        		figure.moved();
     					return true;
     				}
@@ -265,9 +331,17 @@ public class ChessGame implements Game{
 	    			int toY = field.getRow();
 	    			Figure deleted = null;
 	    			moves.add(new HistoryMove(deleted,null,figure,board.getField(fromX, fromY),board.getField(toX, toY),board));
-	    			field.setFigure(figure);
-	        		fieldWithFigure.setFigure(null);
-	        		figure.setCoords(field.getCol(), field.getRow());
+	    			if (toChange !=null && (toY==1 || toY==8)) {
+	    				moves.get(moves.size()-1).changed=toChange;
+	    				field.setFigure(toChange);
+	    				toChange.setCoords(field.getCol(), field.getRow());
+	    				figure.setCoords(0, 0);
+	    				toChange = null;
+	    			}
+	    			else {
+	    				field.setFigure(figure);
+	    				figure.setCoords(field.getCol(), field.getRow());
+	    			}
 	        		figure.moved();
 					return true;
 	    		}
@@ -287,10 +361,17 @@ public class ChessGame implements Game{
 	    			int deletedFromY = neighbors.get(key).get().getRow();
 	    			moves.add(new HistoryMove(deleted,board.getField(deletedFromX, deletedFromY),figure,board.getField(fromX, fromY),board.getField(toX, toY),board));
 	    			// setting figure to new field
-					field.setFigure(figure);
-					fieldWithFigure.setFigure(null);
-					// setting new coordinates to the figure
-	        		figure.setCoords(field.getCol(), field.getRow());
+	    			if (toChange !=null && (toY==1 || toY==8)) {
+	    				moves.get(moves.size()-1).changed=toChange;
+	    				field.setFigure(toChange);
+	    				toChange.setCoords(field.getCol(), field.getRow());
+	    				figure.setCoords(0, 0);
+	    				toChange = null;
+	    			}
+	    			else {
+	    				field.setFigure(figure);
+	    				figure.setCoords(field.getCol(), field.getRow());
+	    			}
 	        		// removing figure
 	        		deleted.setCoords(0, 0);
 	        		figure.moved();
@@ -1175,7 +1256,19 @@ public class ChessGame implements Game{
     		lastMove.deleted.setCoords(lastMove.deletedFromField.getCol(), lastMove.deletedFromField.getRow());
     		lastMove.deletedFromField.setFigure(lastMove.deleted);
     	}
+    	if (lastMove.moved instanceof Pawn) {
+    		if(lastMove.moved.getColor() == Color.B) {
+    			if (lastMove.moved.getRow() == 7)
+    				((Pawn)lastMove.moved).movedBack();
+    		}
+    		else {
+    			if (lastMove.moved.getRow() == 2)
+    				((Pawn)lastMove.moved).movedBack();
+    		}
+    	
+    	}
     	lastMove.moved.setCoords(lastMove.movedFromField.getCol(), lastMove.movedFromField.getRow());
+    	moves.remove(actualMove);
     	actualMove--;
     }
     
@@ -1198,6 +1291,9 @@ public class ChessGame implements Game{
     		lastMove.moved.setCoords(0, 0);
     		lastMove.movedToField.setFigure(lastMove.changed);
     		lastMove.changed.setCoords(lastMove.movedToField.getCol(), lastMove.movedToField.getRow());
+    	}
+    	if(lastMove.moved instanceof Pawn) {
+    		((Pawn)lastMove.moved).moved();
     	}
     	actualMove++;
     }
@@ -1371,7 +1467,7 @@ public class ChessGame implements Game{
 	            		   		    		   		
 	            		   		Field to_field = board.getField(to_column, to_row);
 	            		   		Queen toBeMoved = null;
-	            		   		for (Queen queen: whiteQueen) {
+	            		   		for (Queen queen: whiteQueens) {
 	            		   			if (help_column != -1) {
 	            		   				if (queen.getCol() != help_column) {
 	            		   					continue;
@@ -1650,7 +1746,7 @@ public class ChessGame implements Game{
 	            		   		    		   		
 	            		   		Field to_field = board.getField(to_column, to_row);
 	            		   		Figure toBeMoved = null;
-	            		   		for (Bishop bishop: whiteBishopss) {
+	            		   		for (Bishop bishop: whiteBishops) {
 	            		   			if (help_column != -1) {
 	            		   				if (bishop.getCol() != help_column) {
 	            		   					continue;
@@ -2457,7 +2553,7 @@ public class ChessGame implements Game{
 	            		   		    		   		
 	            		   		Field to_field = board.getField(to_column, to_row);
 	            		   		Figure toBeMoved = null;
-	            		   		for (Bishop bishop: blackBishopss) {
+	            		   		for (Bishop bishop: blackBishops) {
 	            		   			if (help_column != -1) {
 	            		   				if (bishop.getCol() != help_column) {
 	            		   					continue;
@@ -2831,6 +2927,30 @@ public class ChessGame implements Game{
 	}
 
 
+    public String getHistory(){
+    	StringBuilder output = new StringBuilder();
+    	for (int i = 0; i<moves.size()-1;i+=2) {
+    		if ((i/2)+1 == actualMove) {
+    			output.append("-> ");
+    		}
+    		output.append((i / 2)+1);
+    		output.append(". ");
+    		output.append(moves.get(i).toString());
+    		output.append(" ");
+    		output.append(moves.get(i+1).toString());
+    		output.append("\n");
+    	}
+    	if (moves.size() == 1) {
+    		output.append("-> ");
+    	}
+    	if (moves.size() % 2 > 0) {
+    		output.append(moves.size()/2+1);
+    		output.append(". ");
+    		output.append(moves.get(moves.size()-1).toString());
+    	}
+    	return output.toString();
+	}
+	
 	private static Set<Direction> leftJoinDirectionSets(Set<Direction> left, Set<Direction> right) {
 		Set<Direction> result = new HashSet<Field.Direction>();
 		for(Direction dir: left) {
@@ -2853,7 +2973,9 @@ public class ChessGame implements Game{
     
 	private Set<Field> reachableFields(Figure figure){
 		Set<Field> reachable = new HashSet<Field>();
-		
+		if(figure.getCol() < 1 || figure.getCol() >8) {
+			return reachable;
+		}
 		for (Field[] row: board.getFields()) {
 			for (Field field: row) {
 				if (dryMove(figure,field) > 0) {
@@ -2874,7 +2996,7 @@ public class ChessGame implements Game{
 				return false;
 			}
 		}
-		for (Figure figure:blackBishopss) {
+		for (Figure figure:blackBishops) {
 			reachable = reachableFields(figure);
 			if (reachable.contains(whiteKingPosition)) {
 				return false;
@@ -2910,7 +3032,7 @@ public class ChessGame implements Game{
 				return false;
 			}
 		}
-		for (Figure figure:whiteBishopss) {
+		for (Figure figure:whiteBishops) {
 			reachable = reachableFields(figure);
 			if (reachable.contains(blackKingPosition)) {
 				return false;
@@ -2922,7 +3044,7 @@ public class ChessGame implements Game{
 				return false;
 			}
 		}
-		for (Figure figure:whiteQueen) {
+		for (Figure figure:whiteQueens) {
 			reachable = reachableFields(figure);
 			if (reachable.contains(blackKingPosition)) {
 				return false;
@@ -2947,7 +3069,7 @@ public class ChessGame implements Game{
 		for (Figure figure:blackPawns) {
 			kingSurroundings = leftJoinFieldSets(kingSurroundings, reachableFields(figure));
 		}
-		for (Figure figure:blackBishopss) {
+		for (Figure figure:blackBishops) {
 			kingSurroundings = leftJoinFieldSets(kingSurroundings, reachableFields(figure));
 		}
 		for (Figure figure:blackKnights) {
@@ -2972,13 +3094,13 @@ public class ChessGame implements Game{
 		for (Figure figure:whitePawns) {
 			kingSurroundings = leftJoinFieldSets(kingSurroundings, reachableFields(figure));
 		}
-		for (Figure figure:whiteBishopss) {
+		for (Figure figure:whiteBishops) {
 			kingSurroundings = leftJoinFieldSets(kingSurroundings, reachableFields(figure));
 		}
 		for (Figure figure:whiteKnights) {
 			kingSurroundings = leftJoinFieldSets(kingSurroundings, reachableFields(figure));
 		}
-		for (Figure figure:whiteQueen) {
+		for (Figure figure:whiteQueens) {
 			kingSurroundings = leftJoinFieldSets(kingSurroundings, reachableFields(figure));
 		}
 		for (Figure figure:whiteRooks) {

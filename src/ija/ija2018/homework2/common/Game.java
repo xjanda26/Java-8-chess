@@ -24,7 +24,7 @@ public interface Game {
 
 	public boolean loadgame(String filename) throws IOException, WrongMoveException;
 
-    public String getHistory();
-
-    void redo();
+	void redo();
+	
+	public String getHistory();
 }
