@@ -1,6 +1,5 @@
 package ija.ija2018.homework2.view;
 
-import ija.ija2018.homework2.game.WrongMoveException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import ija.ija2018.homework2.game.WrongMoveException;
 
 /**
  *
@@ -43,10 +44,12 @@ public class Menu implements Initializable {
 
     @Override
     public void initialize (URL location, ResourceBundle recources){
-          selectionModel = tabPane.getSelectionModel();
+        //btnNewGame.setOnMouseClicked(addTabNewGame);
+
+        selectionModel = tabPane.getSelectionModel();
     }
 
-    @FXML public void newGame (ActionEvent event) throws WrongMoveException {
+    @FXML public void newGame (ActionEvent event) {
             tabNewGame = new Tab();
 
             try {
@@ -60,6 +63,7 @@ public class Menu implements Initializable {
                 NewGameTab newTab = loader.getController();
 
                 if ( selectedFile == null) {
+
                     String path = "lib/newgame" + gameCounter + ".txt";
                     file = new File(path);
                     file.getParentFile().mkdirs();
@@ -75,8 +79,14 @@ public class Menu implements Initializable {
                     });
                 }
                 else {
+                	if(newTab.getGame().loadgame(selectedFile))
+                		System.out.println("podarilo sa nacitat hru");
+                	else 
+                		System.err.println("nepodarilo sa nacitat hru");
+                	newTab.resetFigures();
+                	newTab.setFiguresOnBoard();
                     newTab.setFile(selectedFile);
-                    //selectedFile = null;
+                    selectedFile = null;
 
                     tabNewGame.setContent(root);
 
@@ -87,14 +97,17 @@ public class Menu implements Initializable {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            } catch (WrongMoveException e1) {
+				// TODO Pridat hlasku o zle zapisanej hre
+				e1.printStackTrace();
+			}
 
             tabPane.getTabs().add(tabNewGame);
             NewGameTab.tabIndex = tabPane.getTabs().indexOf(tabNewGame);
             selectionModel.selectLast();
         }
 
-    @FXML public void loadGame(ActionEvent event) throws IOException, WrongMoveException{
+    @FXML public void loadGame(ActionEvent event) throws IOException {
         FileChooser fc = new FileChooser();
         fc.setInitialDirectory(new File("lib"));
         fc.setTitle("Náčítať hru");

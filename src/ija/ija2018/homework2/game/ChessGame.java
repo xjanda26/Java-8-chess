@@ -5,6 +5,7 @@
  */
 package ija.ija2018.homework2.game;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.nio.file.Files;
@@ -1238,12 +1239,12 @@ public class ChessGame implements Game{
     }
     
     @Override
-    public void undo() {
+    public boolean undo() {
     	if (moves.size() == 0) {
-    		return;
+    		return false;
     	}
     	if (actualMove == -1) {
-    		return;
+    		return false;
     	}
     	HistoryMove lastMove = moves.get(actualMove);
     	lastMove.movedFromField.setFigure(lastMove.moved);
@@ -1268,17 +1269,53 @@ public class ChessGame implements Game{
     	
     	}
     	lastMove.moved.setCoords(lastMove.movedFromField.getCol(), lastMove.movedFromField.getRow());
-    	moves.remove(actualMove);
+    	for (int i = moves.size()-1; i >= actualMove; i--) {
+    		moves.remove(i);
+    	}
     	actualMove--;
+    	return true;
+    }
+    public boolean dryUndo() {
+    	if (moves.size() == 0) {
+    		return false;
+    	}
+    	if (actualMove == -1) {
+    		return false;
+    	}
+    	HistoryMove lastMove = moves.get(actualMove);
+    	lastMove.movedFromField.setFigure(lastMove.moved);
+    	lastMove.moved.setCoords(lastMove.movedFromField.getCol(), lastMove.movedFromField.getRow());
+    	lastMove.movedToField.setFigure(lastMove.deleted);
+    	if(lastMove.changed!=null) {
+    		lastMove.changed.setCoords(0, 0);
+    	}
+    	if(lastMove.deleted != null) {
+    		lastMove.deleted.setCoords(lastMove.deletedFromField.getCol(), lastMove.deletedFromField.getRow());
+    		lastMove.deletedFromField.setFigure(lastMove.deleted);
+    	}
+    	if (lastMove.moved instanceof Pawn) {
+    		if(lastMove.moved.getColor() == Color.B) {
+    			if (lastMove.moved.getRow() == 7)
+    				((Pawn)lastMove.moved).movedBack();
+    		}
+    		else {
+    			if (lastMove.moved.getRow() == 2)
+    				((Pawn)lastMove.moved).movedBack();
+    		}
+    	
+    	}
+    	lastMove.moved.setCoords(lastMove.movedFromField.getCol(), lastMove.movedFromField.getRow());
+    	actualMove--;
+    	return true;
     }
     
     @Override
-    public void redo() {
+    public boolean redo() {
     	if (actualMove+1 == moves.size()) {
-    		return;
+    		return false;
     	}
-    	if(actualMove == -1) {
-    		return;
+    	if(moves.size() == 0) {
+    		return false;
     	}
     	HistoryMove lastMove = moves.get(actualMove+1);
     	if (lastMove.deleted != null) {
@@ -1296,17 +1333,26 @@ public class ChessGame implements Game{
     		((Pawn)lastMove.moved).moved();
     	}
     	actualMove++;
+    	return true;
     }
  
     
-	public boolean loadgame(String filename) throws IOException, WrongMoveException {
+	public boolean loadgame(File filename) throws IOException, WrongMoveException {
 		
-		List<String> lines = Files.readAllLines(Paths.get(filename));
+		List<String> lines = Files.readAllLines(Paths.get(filename.getAbsolutePath()));
 		
 		for (String line: lines) {
 			String arrayString[] = line.split("\\s+");
-			String moveW = arrayString[1];
-			String moveB = arrayString[2];
+			String moveW;
+			String moveB;
+			try {
+			moveW = arrayString[1];
+			moveB = arrayString[2];
+			}
+			catch (ArrayIndexOutOfBoundsException e) {
+				e.printStackTrace();
+				return false;
+			}
 			
 			switch (moveW.charAt(0)) {
             case 'K':  moveW = moveW.substring(1, moveW.length());
@@ -2923,6 +2969,9 @@ public class ChessGame implements Game{
 			
 			
 		}
+		while (actualMove > -1) {
+			dryUndo();
+		}
 		return true;
 	}
 
@@ -2930,9 +2979,7 @@ public class ChessGame implements Game{
     public String getHistory(){
     	StringBuilder output = new StringBuilder();
     	for (int i = 0; i<moves.size()-1;i+=2) {
-    		if ((i/2)+1 == actualMove) {
-    			output.append("-> ");
-    		}
+    		
     		output.append((i / 2)+1);
     		output.append(". ");
     		output.append(moves.get(i).toString());
@@ -2940,9 +2987,7 @@ public class ChessGame implements Game{
     		output.append(moves.get(i+1).toString());
     		output.append("\n");
     	}
-    	if (moves.size() == 1) {
-    		output.append("-> ");
-    	}
+    	
     	if (moves.size() % 2 > 0) {
     		output.append(moves.size()/2+1);
     		output.append(". ");

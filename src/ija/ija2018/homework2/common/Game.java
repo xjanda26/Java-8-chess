@@ -8,6 +8,7 @@ package ija.ija2018.homework2.common;
 import ija.ija2018.homework2.common.Figure;
 import ija.ija2018.homework2.game.WrongMoveException;
 
+import java.io.File;
 import java.io.IOException;
 
 import ija.ija2018.homework2.common.Field;
@@ -20,11 +21,13 @@ public interface Game {
     
     public boolean move(Figure figure, Field field);
     
-    void undo();
+    boolean undo();
 
-	public boolean loadgame(String filename) throws IOException, WrongMoveException;
+	public boolean loadgame(File filename) throws IOException, WrongMoveException;
 
-	void redo();
+	boolean redo();
+	
+	boolean dryUndo();
 	
 	public String getHistory();
 }
