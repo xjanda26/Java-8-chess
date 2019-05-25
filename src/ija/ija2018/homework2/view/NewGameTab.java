@@ -6,7 +6,7 @@ import ija.ija2018.homework2.common.Figure;
 import ija.ija2018.homework2.game.Board;
 import ija.ija2018.homework2.common.Game;
 
-import ija.ija2018.homework2.game.WrongMoveException;
+import ija.ija2018.homework2.game.HistoryMove;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -34,11 +34,16 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.io.*;
 import java.net.URL;
-import java.util.*;
+import java.util.ResourceBundle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import java.lang.*;
+import java.util.Scanner;
 
 /**
  *
@@ -195,11 +200,8 @@ public class NewGameTab implements Initializable {
     private Board board;
     private Figure movingFigure;
     private File selectedFile;
-
     private int boardSize;
-    private int realStep = 0;
     private int step = 0;
-    private int undoCounter = 0;
 
 
     private int pawnWCounter = 0;
@@ -228,11 +230,7 @@ public class NewGameTab implements Initializable {
     private Image blackQueen;
     private Image blackKing ;
 
-    /**
-     *
-     * Metóda vykreslí a nastaví figúrky podľa objektu 'board'.
-     * */
-    private void setFiguresOnBoard(){
+    public void setFiguresOnBoard(){
 
         pawnWCounter = 0;
         rookWCounter = 0;
@@ -372,13 +370,6 @@ public class NewGameTab implements Initializable {
         previousPlace.setOpacity(0.0d);
     }
 
-    /**
-     *
-     * Metóda nastaví listu štvorcov súradnice 0,0 a priehľadnosť.
-     * Použivané v metóde 'resetFigures'
-     *
-     * @param list List štvrocv, ktorého elementom sa nastavia súradnice na 0,0 a priehľadnosť.
-     * */
     private void resetListFigures(List<Rectangle> list){
         for (Rectangle rec : list){
             rec.setOpacity(0.0d);
@@ -387,12 +378,7 @@ public class NewGameTab implements Initializable {
         }
     }
 
-    /**
-     *
-     * Metóda nastaví všetkým figúrkam na hracej ploche súradnice 0,0 a priehľadnosť.
-     * Využíva metódu 'resetListFigures'
-     * */
-    private void resetFigures(){
+    public void resetFigures(){
         resetListFigures(pawnsW);
         resetListFigures(rooksW);
         resetListFigures(knightsW);
@@ -414,30 +400,6 @@ public class NewGameTab implements Initializable {
         kingB.setLayoutX(0);
         kingB.setLayoutY(0);
         kingB.setOpacity(0.0d);
-    }
-
-    private void copyLastLine() throws IOException{
-        String line = "";
-        String current = "";
-        try {
-            BufferedReader input = new BufferedReader(new FileReader(selectedFile));
-
-            while ( (current = input.readLine()) != null ){
-                line = current;
-            }
-
-            input.close();
-        } catch (IOException ex){
-            ex.printStackTrace();
-        }
-
-        int index = line.indexOf(" ",line.indexOf(" ") + 1);
-        String finStr = line.substring(0,index);
-
-        BufferedWriter writer = new BufferedWriter(new FileWriter(selectedFile, true));
-        writer.append(finStr);
-        writer.append(" ");
-        writer.close();
     }
 
     /**
@@ -462,9 +424,6 @@ public class NewGameTab implements Initializable {
 
         board = new Board(8);
         game = GameFactory.createChessGame(board);
-        //String nameOfFile = selectedFile.getName();
-        //System.out.println("Toto je file nema: "+ nameOfFile);
-        // if (selectedFile.length() != 0) game.loadgame(selectedFile.getName());
 
         panes.add(row0);
         panes.add(row1);
@@ -480,35 +439,8 @@ public class NewGameTab implements Initializable {
         setFiguresOnBoard();
     }
 
-    /**
-     *
-     * Metóda implementuje tlačitko Undo. Po použití resetuje hraciu plochu a vykreslí
-     * ju podľa objektu 'board', ktorý bol zmenení.
-     * Prenastaví pravidlo, ktorá farba je na ťahu.
-     *
-     * Ak nebol spravený žiadny krok alebo hra sa vrátila do východzieho bodu, nič nerobí.
-     * */
-    @FXML public void actionUndo() throws IOException{
-       /* if (step > 0){
-            step--;
-            game.undo();
-            undoCounter++;
-
-            if (undoCounter%2 == 0){
-                realStep--;
-                byte b;
-                RandomAccessFile f = new RandomAccessFile(selectedFile, "rw");
-                long length = f.length();
-                if (length != 0) {
-                    do {
-                        length -= 1;
-                        f.seek(length);
-                        b = f.readByte();
-                    } while (b != 10 && length > 0);
-                    f.setLength(length);
-                }
-                f.close();
-            }
+    @FXML public void actionUndo(){
+        if (game.undo()) {
 
             boolean tmp;
 
@@ -517,57 +449,30 @@ public class NewGameTab implements Initializable {
             movingBlack = tmp;
             resetFigures();
             setFiguresOnBoard();
-
-            if (movingWhite){
-                realStep--;
-                BufferedWriter writer = new BufferedWriter(new FileWriter(selectedFile, true));
-                writer.append("\n");
-                writer.close();
-
-            }else {
-                try {
-                    copyLastLine();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }*/
+        }
     }
 
     @FXML public void actionRedo(){
+    	
+        if (game.redo()) {
 
-        boolean tmp;
-        if (step < realStep) {
-            game.redo();
-            tmp = movingWhite;
-            movingWhite = movingBlack;
-            movingBlack = tmp;
-            resetFigures();
-            setFiguresOnBoard();
+	        boolean tmp;
+	
+	        tmp = movingWhite;
+	        movingWhite = movingBlack;
+	        movingBlack = tmp;
+	        resetFigures();
+	        setFiguresOnBoard();
         }
     }
 
-    /**
-     *
-     * Metóda nastavuje súbor, ktorý bude slúžiť pre zápis/čítanie histórie krokov.
-     *
-     * @param file  Súbor, ktorý sa má pracovať.
-     * */
-    public void setFile(File file) throws IOException, WrongMoveException {
-        this.selectedFile = file;
-        String fileName = this.selectedFile.getName();
-        System.out.println("Toto je meno suboru " + fileName);
 
-        if (selectedFile.length() != 0) {
-            game.loadgame(fileName);
-        }
+    public void setFile(File file) throws IOException {
+        this.selectedFile = file;
+
         printView();
     }
 
-    /**
-     *
-     * Metóda pre vypísanie histórie krokov do ListView v GUI aplikácie.
-     * */
     public void printView () throws FileNotFoundException{
         Scanner scan = new Scanner(selectedFile);
         ArrayList<String> listS = new ArrayList<>();
@@ -581,36 +486,14 @@ public class NewGameTab implements Initializable {
         for (String line: listS ) {
             listView.getItems().add(line);
         }
+        
     }
 
-    /**
-     *
-     * Metóda implementuje vpisovanie do súboru s históriou krokov.
-     * PO novom vpísaní presunie kurzor na nový riadok.
-     *
-     * @param str   Reťazec, ktorý sa má vypísať do súboru
-     * */
-    public void writeIntoFile(String str, int line) throws IOException{
-        str = str.replace("[","");
-        str = str.replace("]","");
-        str = str.replace(" ","");
-        List<String> sepStr = Arrays.asList(str.split(","));
-
+    public void writeIntoFile(String str) throws IOException{
         BufferedWriter writer = new BufferedWriter(new FileWriter(selectedFile, true));
+        writer.append(str);
+        writer.newLine();
 
-        if (step%2 == 0){
-            for (String writeStr : sepStr.subList((line-1)*2+1+ undoCounter,sepStr.size())){
-                writer.append(writeStr);
-                writer.append(" ");
-            }
-            writer.newLine();
-        } else {
-            for (String writeStr : sepStr.subList((line-1)*2,sepStr.size())){
-                writer.append(""+line+". ");
-                writer.append(writeStr);
-                writer.append(" ");
-            }
-        }
         writer.close();
     }
 
@@ -684,12 +567,9 @@ public class NewGameTab implements Initializable {
     }
 
     /**
-     *  Po uvoľnení tlačidla myši sa figúrka pokúsi dopadnúť na miesto, nad ktorým sa nachádza.
+     *  Po pustení tlačidla myši sa figúrka pokúsi dopadnúť na miesto, nad ktorým sa nachádza.
      *  Pri úspechu presunie figúrku na nové miesto podĺa pravidiel šachu.
      *  Pri neúspechu presunie metóda figúrku naspäť kde bola pred presunom.
-     *
-     *  Pri dosiahnutí pešiaka posledného riadku, ktorý je mu naproti v smere pohybu pešiaka,
-     *  povolí hráčovi si vymeniť figúrku v novom okne.
      *
      * @param event     Udalosť myši, ktorá spúšťa metódu
      * */
@@ -758,7 +638,7 @@ public class NewGameTab implements Initializable {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("chooseBox.fxml"));
                         Parent root = (Parent) loader.load();
                         ChooseBoxController cbc = loader.getController();
-                    //Vytvorenie nového okna pre výber figúrok
+
                         Stage stage = new Stage();
                         cbc.setChangeFigure( board, movingFigure);
                         stage.initStyle(StageStyle.TRANSPARENT);
@@ -775,21 +655,16 @@ public class NewGameTab implements Initializable {
                     }
                 }
 
-                //Nastavenie povolenia ďalšieho kroku
                 if (movingFigure.getColor() == Field.Color.W){
                     movingWhite = false;
                     movingBlack = true;
-                    realStep++;
                 }
                 else if (movingFigure.getColor() == Field.Color.B){
                     movingBlack = false;
                     movingWhite = true;
                 }
-
-                //Výpis krokovania
                 try {
-                    System.out.println(" toto je history: " + game.getHistory());
-                    //writeIntoFile(game.getHistory(), realStep);
+                    writeIntoFile(game.getHistory());
                     printView();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -983,5 +858,9 @@ public class NewGameTab implements Initializable {
             }
         }
         return pickedRectangle;
+    }
+    
+    public Game getGame() {
+    	return game;
     }
 }
