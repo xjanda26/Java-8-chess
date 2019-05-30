@@ -244,7 +244,7 @@ public class NewGameTab implements Initializable {
      *
      * Metóda vykreslí a nastaví figúrky podľa objektu 'board'.
      * */
-    private void setFiguresOnBoard(){
+    public void setFiguresOnBoard(){
 
         pawnWCounter = 0;
         rookWCounter = 0;
@@ -404,7 +404,7 @@ public class NewGameTab implements Initializable {
      * Metóda nastaví všetkým figúrkam na hracej ploche súradnice 0,0 a priehľadnosť.
      * Využíva metódu 'resetListFigures'
      * */
-    private void resetFigures(){
+    public void resetFigures(){
         resetListFigures(pawnsW);
         resetListFigures(rooksW);
         resetListFigures(knightsW);
@@ -487,6 +487,10 @@ public class NewGameTab implements Initializable {
         boardSize = board.getSize();
 
         setFiguresOnBoard();
+    }
+
+    public Game getGame(){
+        return this.game;
     }
 
     /**
