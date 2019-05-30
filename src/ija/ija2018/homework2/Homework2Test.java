@@ -8,7 +8,9 @@ import ija.ija2018.homework2.common.Field;
 import ija.ija2018.homework2.common.Figure;
 import ija.ija2018.homework2.common.Game;
 import ija.ija2018.homework2.game.Board;
+import ija.ija2018.homework2.game.WrongMoveException;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.junit.Assert;
@@ -51,6 +53,15 @@ public class Homework2Test {
 	        	Assert.assertEquals("V stlpci j = "+Integer.toString(j)+" je "+tmp.getState(), j, tmp.getRow());
 	        }
         
+        try {
+			game.loadgame(new File("C:\\Users\\bukov\\eclipse-workspace\\projekt\\input.txt"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (WrongMoveException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         /*try {
 			//game.loadgame("C:\\Apps\\eclipse\\blabla.txt");

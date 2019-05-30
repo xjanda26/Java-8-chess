@@ -21,12 +21,13 @@ public interface Game {
     
     public boolean move(Figure figure, Field field);
     
-    void undo();
+    boolean undo();
 
-	public boolean loadgame(String filename) throws IOException, WrongMoveException;
-	//public boolean loadgame(File inputFile) throws IOException, WrongMoveException;
+	public boolean loadgame(File filename) throws IOException, WrongMoveException;
 
-	void redo();
+	boolean redo();
+	
+	boolean dryUndo();
 	
 	public String getHistory();
 }
