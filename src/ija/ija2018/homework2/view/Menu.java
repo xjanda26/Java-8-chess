@@ -76,7 +76,7 @@ public class Menu implements Initializable {
                 }
                 else {
                     newTab.setFile(selectedFile);
-                    //selectedFile = null;
+                    selectedFile = null;
 
                     tabNewGame.setContent(root);
 

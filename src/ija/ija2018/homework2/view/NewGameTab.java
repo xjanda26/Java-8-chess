@@ -36,7 +36,9 @@ import javafx.util.Duration;
 
 import java.io.*;
 import java.net.URL;
+
 import java.util.*;
+
 
 import java.lang.*;
 
@@ -174,6 +176,11 @@ public class NewGameTab implements Initializable {
     @FXML Button btnUndo;
     @FXML Button btnRedo;
 
+    @FXML Button btnStepBegin;
+    @FXML Button btnStepBack;
+    @FXML Button btnStepForward;
+    @FXML Button btnStepEnd;
+
     private final List<Pane> panes = new ArrayList<>();
     private final List<Rectangle> pawnsB = new ArrayList<>();
     private final List<Rectangle> rooksB = new ArrayList<>();
@@ -191,15 +198,20 @@ public class NewGameTab implements Initializable {
     private boolean movingWhite = true;
     private boolean movingBlack = false;
     private boolean movePass = true;
+    private boolean historyPlay = false;
+    private boolean undoUsed = false;
+
     private Game game;
+    private Game oldGame = null;
     private Board board;
+    private Board oldBoard = null;
+
     private Figure movingFigure;
     private File selectedFile;
 
     private int boardSize;
     private int realStep = 0;
     private int step = 0;
-    private int undoCounter = 0;
 
 
     private int pawnWCounter = 0;
@@ -462,9 +474,6 @@ public class NewGameTab implements Initializable {
 
         board = new Board(8);
         game = GameFactory.createChessGame(board);
-        //String nameOfFile = selectedFile.getName();
-        //System.out.println("Toto je file nema: "+ nameOfFile);
-        // if (selectedFile.length() != 0) game.loadgame(selectedFile.getName());
 
         panes.add(row0);
         panes.add(row1);
@@ -532,18 +541,123 @@ public class NewGameTab implements Initializable {
                 }
             }
         }*/
+       if (!historyPlay){
+           //System.out.println("Undo stary step: "+step);
+
+           if (step > 0){
+
+               game.undo();
+
+               boolean tmp;
+
+               tmp = movingWhite;
+               movingWhite = movingBlack;
+               movingBlack = tmp;
+               resetFigures();
+               setFiguresOnBoard();
+
+               PrintWriter writer = new PrintWriter(this.selectedFile);
+               writer.print("");
+               writer.close();
+
+               writer = new PrintWriter(this.selectedFile);
+               writer.print(this.game.getHistory());
+               writer.close();
+
+               listView.getItems().clear();
+               printView();
+               step--;
+               //System.out.println("Novy step: "+step);
+           }
+       }
     }
 
-    @FXML public void actionRedo(){
-
-        boolean tmp;
-        if (step < realStep) {
+    @FXML public void actionRedo() throws IOException{
+        if (undoUsed) {
             game.redo();
+
+            boolean tmp;
             tmp = movingWhite;
             movingWhite = movingBlack;
             movingBlack = tmp;
+
+            step ++;
             resetFigures();
             setFiguresOnBoard();
+
+            PrintWriter writer = new PrintWriter(this.selectedFile);
+            writer.print("");
+            writer.close();
+
+            writer = new PrintWriter(this.selectedFile);
+            writer.print(this.game.getHistory());
+            writer.close();
+        }
+
+    }
+
+    @FXML public void actionBegin(){
+        if (oldGame == null){
+            oldGame = this.game;
+            oldBoard = this.board;
+        }
+
+        historyPlay = true;
+        this.board = new Board(oldBoard.getSize());
+        this.game = GameFactory.createChessGame(this.board);
+        resetFigures();
+        setFiguresOnBoard();
+    }
+
+    @FXML public void actionStepBack(){
+        if (historyPlay){
+            this.game.undo();
+            resetFigures();
+            setFiguresOnBoard();
+        } else {
+            oldBoard = this.board;
+            oldGame = this.game;
+
+            this.board = new Board(oldBoard.getSize());
+            this.game = GameFactory.createChessGame(this.board);
+            resetFigures();
+            setFiguresOnBoard();
+            historyPlay = true;
+
+            this.game.undo();
+        }
+    }
+
+    @FXML public void actionStepForward(){
+        if (historyPlay) {
+            this.game.redo();
+            resetFigures();
+            setFiguresOnBoard();
+        } else {
+            oldBoard = this.board;
+            oldGame = this.game;
+
+            this.board = new Board(oldBoard.getSize());
+            this.game = GameFactory.createChessGame(this.board);
+            resetFigures();
+            setFiguresOnBoard();
+            historyPlay = true;
+
+            this.game.redo();
+        }
+    }
+
+    @FXML public void actionStepEnd(){
+        if (historyPlay){
+            this.board = oldBoard;
+            this.game = oldGame;
+
+            oldGame = null;
+            oldBoard = null;
+
+            resetFigures();
+            setFiguresOnBoard();
+            historyPlay = false;
         }
     }
 
@@ -555,13 +669,30 @@ public class NewGameTab implements Initializable {
      * */
     public void setFile(File file) throws IOException, WrongMoveException {
         this.selectedFile = file;
-        String fileName = this.selectedFile.getName();
-        System.out.println("Toto je meno suboru " + fileName);
-
         if (selectedFile.length() != 0) {
-            game.loadgame(fileName);
+            System.out.println("Spustam load");
+
+            if (this.selectedFile.exists() ) System.out.println("Existuje");
+            else System.out.println("Neexistuje");
+            //game.loadgame("file: lib/loadGame1.txt");//TODO -- pri robit nacitanie
+            //game.loadgame(this.selectedFile);
         }
         printView();
+    }
+
+    public void deleteLastLine(File file) throws IOException{
+        byte b;
+        RandomAccessFile f = new RandomAccessFile(file, "rw");
+        long length = f.length();
+        if (length != 0) {
+            do {
+                length -= 1;
+                f.seek(length);
+                b = f.readByte();
+            } while (b != 10 && length > 0);
+            f.setLength(length);
+        }
+        f.close();
     }
 
     /**
@@ -590,28 +721,26 @@ public class NewGameTab implements Initializable {
      *
      * @param str   Reťazec, ktorý sa má vypísať do súboru
      * */
-    public void writeIntoFile(String str, int line) throws IOException{
-        str = str.replace("[","");
-        str = str.replace("]","");
-        str = str.replace(" ","");
-        List<String> sepStr = Arrays.asList(str.split(","));
+    public void writeIntoFile(String str) throws IOException{
+        //System.out.println("Toto chcem vypisat: "+ str); //TODO metoda writeIntoFile
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(selectedFile, true));
+        String[] lines = str.split("\n");
 
-        if (step%2 == 0){
-            for (String writeStr : sepStr.subList((line-1)*2+1+ undoCounter,sepStr.size())){
-                writer.append(writeStr);
-                writer.append(" ");
-            }
+        //if (lines != null) System.out.println("Posledne je toto: "+lines[lines.length - 1]);
+
+
+        if (!movingBlack){
+            deleteLastLine(this.selectedFile);
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter(this.selectedFile, true));
+            writer.append(lines[lines.length - 1]);
             writer.newLine();
-        } else {
-            for (String writeStr : sepStr.subList((line-1)*2,sepStr.size())){
-                writer.append(""+line+". ");
-                writer.append(writeStr);
-                writer.append(" ");
-            }
+            writer.close();
+        } else if (!movingWhite){
+            BufferedWriter writer = new BufferedWriter(new FileWriter(this.selectedFile, true));
+            writer.append(lines[lines.length - 1]);
+            writer.close();
         }
-        writer.close();
     }
 
     /**
@@ -649,7 +778,6 @@ public class NewGameTab implements Initializable {
             event.consume();
         }
     }
-
 
     /**
      * Metóda implementujúca výber novej polohy pre figúrku pri držaní tlačidla myši.
@@ -750,6 +878,7 @@ public class NewGameTab implements Initializable {
                 );
                 previousPlace.setOpacity(0.0d);
                 step++;
+                System.out.println("Step je :" + step);// TODO vymaz
 
                 //Pesiak na druhom konci hracej dosky si moze zmenit figurku podla vlastneho vyberu
                 if ( ( movingFigure.getState().equals("W Pawn") &&  pickIdenxY( (int)(((Rectangle)(event.getSource())).getLayoutY())) >= 8 ) ||
@@ -786,10 +915,9 @@ public class NewGameTab implements Initializable {
                     movingWhite = true;
                 }
 
-                //Výpis krokovania
+                //Výpis krokovania //TODO --vypis v lands
                 try {
-                    System.out.println(" toto je history: " + game.getHistory());
-                    //writeIntoFile(game.getHistory(), realStep);
+                    writeIntoFile(game.getHistory());
                     printView();
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -5,16 +5,12 @@
  */
 package ija.ija2018.homework2.game;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -1302,8 +1298,23 @@ public class ChessGame implements Game{
 	public boolean loadgame(String filename) throws IOException, WrongMoveException {
 		
 		List<String> lines = Files.readAllLines(Paths.get(filename));
-		
-		for (String line: lines) {
+		/*public boolean loadgame(File inputFile) throws IOException, WrongMoveException {
+
+			Scanner scan = new Scanner(inputFile);
+			ArrayList<String> lines = new ArrayList<>();
+
+			while (scan.hasNextLine()) {
+				String str = scan.nextLine();
+				//lines.add(scan.nextLine());
+				lines.add(str);
+				System.out.println(str);
+			}
+			scan.close();*/
+
+			//lines = Files.readAllLines(Paths.get(inputFile.getName()));
+
+
+			for (String line: lines) {
 			String arrayString[] = line.split("\\s+");
 			String moveW = arrayString[1];
 			String moveB = arrayString[2];

@@ -234,11 +234,20 @@
                   <ListView fx:id="listView" prefHeight="352.0" prefWidth="200.0" />
                </children>
             </HBox>
+            <Pane prefHeight="54.0" prefWidth="770.0" />
             <HBox>
                <children>
                   <Button fx:id="btnUndo" mnemonicParsing="false" onAction="#actionUndo" text="Undo" />
-                  <Pane prefHeight="25.0" prefWidth="136.0" />
+                  <Pane prefHeight="25.0" prefWidth="26.0" />
                   <Button fx:id="btnRedo" mnemonicParsing="false" onAction="#actionRedo" text="Redo" />
+                  <Pane prefHeight="25.0" prefWidth="44.0" />
+                  <Button fx:id="btnStepBegin" mnemonicParsing="false" onAction="#actionBegin" text="Začiatok" />
+                  <Pane prefHeight="25.0" prefWidth="25.0" />
+                  <Button fx:id="btnStepBack" mnemonicParsing="false" onAction="#actionStepBack" text="Krok dozadu" />
+                  <Pane prefHeight="25.0" prefWidth="8.0" />
+                  <Button fx:id="btnStepForward" mnemonicParsing="false" onAction="#actionStepForward" text="Krok dopredu" />
+                  <Pane prefHeight="25.0" prefWidth="25.0" />
+                  <Button fx:id="btnStepEnd" mnemonicParsing="false" onAction="#actionStepEnd" text="Koniec" />
                </children>
             </HBox>
          </children>
