@@ -1342,7 +1342,9 @@ public class ChessGame implements Game{
 		List<String> lines = Files.readAllLines(Paths.get(filename.getAbsolutePath()));
 		
 		for (String line: lines) {
+
 			String arrayString[] = line.split("\\s+");
+
 			String moveW;
 			String moveB;
 			try {

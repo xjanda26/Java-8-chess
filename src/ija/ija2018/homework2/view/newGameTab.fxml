@@ -6,7 +6,9 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -248,6 +250,15 @@
                   <Button fx:id="btnStepForward" mnemonicParsing="false" onAction="#actionStepForward" text="Krok dopredu" />
                   <Pane prefHeight="25.0" prefWidth="25.0" />
                   <Button fx:id="btnStepEnd" mnemonicParsing="false" onAction="#actionStepEnd" text="Koniec" />
+                  <Pane prefHeight="25.0" prefWidth="26.0" />
+                  <Button fx:id="btnSwitch" mnemonicParsing="false" onAction="#actionAutoBtn" text="Automatic Off" />
+                  <Pane prefHeight="25.0" prefWidth="26.0" />
+                  <VBox alignment="CENTER" prefHeight="31.0" prefWidth="122.0">
+                     <children>
+                        <Label text="Rýchlosť prehrávania" />
+                        <Slider fx:id="slider" max="200.0" value="100.0" />
+                     </children>
+                  </VBox>
                </children>
             </HBox>
          </children>

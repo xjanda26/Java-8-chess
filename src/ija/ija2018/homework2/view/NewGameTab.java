@@ -10,6 +10,7 @@ import ija.ija2018.homework2.game.WrongMoveException;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -21,6 +22,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -35,17 +37,56 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.*;
+import java.lang.reflect.*;
 import java.net.URL;
 
 import java.util.*;
 
-
 import java.lang.*;
+
 
 /**
  *
  * @author Adam Janda <xjanda26@stud.fit.vutbr.cz>
  * */
+
+class RunnableT implements Runnable {
+    private Thread t;
+    private Game gameR;
+    private int sleepTime;
+    private int stepPlay;
+    private NewGameTab tab;
+
+    RunnableT (Game game, int sleepTime, int stepPlay, NewGameTab resAset){
+        this.gameR = game;
+        this.sleepTime = sleepTime;
+        this.stepPlay = stepPlay;
+        this.tab = resAset;
+    }
+
+    public void run() {
+        try {
+            System.out.println("RUNnable run");
+
+            while (stepPlay > 0){
+                stepPlay--;
+                this.gameR.dryUndo();
+                //Platform.runLater();
+                Thread.sleep(sleepTime);
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void start (){System.out.println("thread Start");
+        if (t == null){
+            t = new Thread(this);
+            t.start();
+        }
+    }
+}
 
 public class NewGameTab implements Initializable {
 
@@ -175,11 +216,13 @@ public class NewGameTab implements Initializable {
 
     @FXML Button btnUndo;
     @FXML Button btnRedo;
+    @FXML Button btnSwitch;
 
     @FXML Button btnStepBegin;
     @FXML Button btnStepBack;
     @FXML Button btnStepForward;
     @FXML Button btnStepEnd;
+    @FXML Slider slider;
 
     private final List<Pane> panes = new ArrayList<>();
     private final List<Rectangle> pawnsB = new ArrayList<>();
@@ -200,6 +243,7 @@ public class NewGameTab implements Initializable {
     private boolean movePass = true;
     private boolean historyPlay = false;
     private boolean undoUsed = false;
+    private boolean autoPlay = true;
 
     private Game game;
     private Game oldGame = null;
@@ -212,6 +256,10 @@ public class NewGameTab implements Initializable {
     private int boardSize;
     private int realStep = 0;
     private int step = 0;
+    private int stepPlay = 0;
+
+    private int cnt = 0;
+    private int speedOfAnimation = 100;
 
 
     private int pawnWCounter = 0;
@@ -239,6 +287,7 @@ public class NewGameTab implements Initializable {
     private Image blackBishop ;
     private Image blackQueen;
     private Image blackKing ;
+
 
     /**
      *
@@ -452,6 +501,43 @@ public class NewGameTab implements Initializable {
         writer.close();
     }
 
+    private void turnRule() throws IOException{
+        BufferedReader input = new BufferedReader(new FileReader(selectedFile));
+        String last = null, line;
+
+        this.step = 0;
+
+        while ((line = input.readLine()) != null) {
+            last = line;
+            this.step++;
+        }
+
+        String trim = last.trim();
+        int number = trim.split("\\s+").length;
+
+        if (last != null){
+            if (number % 2 == 0) {
+                movingBlack = true;
+                movingWhite = false;
+                step = (step - 1) * 2 + 1;
+            } else {
+                movingBlack = false;
+                movingWhite = true;
+                step *= 2;
+            }
+        }else {
+            movingWhite = true;
+            movingBlack = false;
+            step = 0;
+        }
+
+    }
+
+    public void resetAndSet(){
+        resetFigures();
+        setFiguresOnBoard();
+    }
+
     /**
      *
      * Metóda inicializuje zákldné rozloženie hracej dosky
@@ -487,10 +573,24 @@ public class NewGameTab implements Initializable {
         boardSize = board.getSize();
 
         setFiguresOnBoard();
+        actionAutoBtn();
     }
 
     public Game getGame(){
         return this.game;
+    }
+
+    private void clearViewList() throws IOException{
+        PrintWriter writer = new PrintWriter(this.selectedFile);
+        writer.print("");
+        writer.close();
+
+        writer = new PrintWriter(this.selectedFile);
+        writer.print(this.game.getHistory());
+        writer.close();
+
+        listView.getItems().clear();
+        printView();
     }
 
     /**
@@ -546,8 +646,6 @@ public class NewGameTab implements Initializable {
             }
         }*/
         if (!historyPlay){
-            //System.out.println("Undo stary step: "+step);
-
             if (step > 0){
 
                 game.undo();
@@ -560,25 +658,15 @@ public class NewGameTab implements Initializable {
                 resetFigures();
                 setFiguresOnBoard();
 
-                PrintWriter writer = new PrintWriter(this.selectedFile);
-                writer.print("");
-                writer.close();
-
-                writer = new PrintWriter(this.selectedFile);
-                writer.print(this.game.getHistory());
-                writer.close();
-
-                listView.getItems().clear();
-                printView();
+                clearViewList();
                 step--;
-                //System.out.println("Novy step: "+step);
             }
         }
     }
 
     @FXML public void actionRedo() throws IOException{
-        if (undoUsed) {
-            game.redo();
+
+            this.game.redo();
 
             boolean tmp;
             tmp = movingWhite;
@@ -589,79 +677,207 @@ public class NewGameTab implements Initializable {
             resetFigures();
             setFiguresOnBoard();
 
-            PrintWriter writer = new PrintWriter(this.selectedFile);
-            writer.print("");
-            writer.close();
+            clearViewList();
 
-            writer = new PrintWriter(this.selectedFile);
-            writer.print(this.game.getHistory());
-            writer.close();
-        }
 
     }
 
-    @FXML public void actionBegin(){
-        if (oldGame == null){
-            oldGame = this.game;
-            oldBoard = this.board;
-        }
-
+    @FXML public void actionBegin() throws InterruptedException{
         historyPlay = true;
-        this.board = new Board(oldBoard.getSize());
+        /*oldBoard = this.board;
+        oldGame = this.game;
+
+        this.board = new Board(board.getSize());
         this.game = GameFactory.createChessGame(this.board);
-        resetFigures();
-        setFiguresOnBoard();
+        stepPlay = 0;*/
+        stepPlay = step;
+
+        /*while (stepPlay > 0){
+            System.out.println("stepBegin while ");
+
+            stepPlay--;
+
+            if (autoPlay){
+
+                resetAndSet();
+            } else this.game.dryUndo();
+        }
+
+        if (!autoPlay){
+            System.out.println("===========================");
+            resetAndSet();
+        }*/
+
+        if (autoPlay){System.out.println("zapinam thread");
+            /*RunnableT r1 = new RunnableT(this.game, (int)slider.getValue(), stepPlay,this);
+            r1.start();
+            System.out.println("resetandset");
+            resetAndSet();*/
+
+            /*new Thread(){
+
+                public void run(){
+                    while (stepPlay > 0){
+                        this.game.dryUndo();
+                        Platform.runLater(() -> {
+                            resetAndSet();
+                        });
+                        try {
+                            Thread.sleep((int)slider.getValue());
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }.start();*/
+        } else {
+            while (stepPlay > 0) {
+                stepPlay--;
+                this.game.dryUndo();
+            }
+            resetAndSet();
+        }
+
     }
 
-    @FXML public void actionStepBack(){
-        if (historyPlay){
-            this.game.undo();
-            resetFigures();
-            setFiguresOnBoard();
-        } else {
-            oldBoard = this.board;
-            oldGame = this.game;
-
-            this.board = new Board(oldBoard.getSize());
-            this.game = GameFactory.createChessGame(this.board);
-            resetFigures();
-            setFiguresOnBoard();
-            historyPlay = true;
-
-            this.game.undo();
+    public class AnimationThread extends Thread {
+        @Override
+        public void run() {
+            System.out.println("Som animation thread");
+            game.dryUndo();
+            resetAndSet();
         }
     }
 
-    @FXML public void actionStepForward(){
+    @FXML public void actionStepBack() {
+        if (!historyPlay){
+            historyPlay = true;
+            stepPlay = step;
+        }
+
+        /*BufferedReader input = new BufferedReader(new FileReader(selectedFile));
+        String last = null, secondLast = null, line;
+            //nacitanie poslednych dvoch riadkov zo soboru krokov
+        while ((line = input.readLine()) != null) {
+            secondLast = last;
+            last = line;
+        }
+        input.close();
+            //spocitanie slov na poslednom riadku, pri parnom pocte sa posledne posunul biely, pri neparnom cierny
+        String trim = last.trim();
+        int number = trim.split("\\s+").length;*/
+
+        /*if (stepPlay > 0){
+            Scanner scan = new Scanner(selectedFile);
+            ArrayList<String> listS = new ArrayList<>();
+
+            int i = 0;
+            //nacitam riadky po riadok, po ktory prehravam hru
+            while (scan.hasNextLine() && i < (stepPlay / 2 + stepPlay % 2)) {
+                listS.add(scan.nextLine());
+                i++;
+            }
+            scan.close();
+
+            String trim = listS.get(listS.size()-1).trim();
+            int numberOfWords = trim.split("\\s+").length;
+            // ak je na poslednom nacitam riadku parny pocet slov, posledne siel biely => mozem zmazat tento riadok
+            // ak je na poslednom nacitam riadku neparny pocet sov, posledne siel cierny => mozem zmazat len cast riadku s presunom cierneho
+            if (numberOfWords % 2 == 0){
+                listS.remove(listS.size() - 1);
+            } else {
+                String newLastLine = listS.get(listS.size() - 1);
+                String[] splitedLastLine = newLastLine.split("\\s+");
+                newLastLine = splitedLastLine[0] + " " + splitedLastLine[1];
+                listS.remove(listS.size() - 1);
+                listS.add(newLastLine);
+            }
+
+            String path = "lib/tmp" + (cnt++) + ".txt";
+            File tmpFile = new File(path);
+            tmpFile.getParentFile().mkdirs();
+            tmpFile.createNewFile();
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter(tmpFile, true));
+            for (String str : listS){
+                writer.append(str);
+                writer.newLine();
+            }
+            writer.close();
+
+            deleteLastLine(tmpFile);
+
+            Board playBoard = new Board(8);
+            this.game = GameFactory.createChessGame(playBoard);
+
+            this.game.loadgame(tmpFile);
+
+            resetFigures();
+            setFiguresOnBoard();
+
+            //tmpFile.delete();
+            stepPlay--;
+        }*/
+        if (step > 0){
+            this.game.dryUndo();
+            stepPlay--;
+            resetFigures();
+            setFiguresOnBoard();
+        }
+    }
+
+    @FXML public void actionStepForward() {
         if (historyPlay) {
             this.game.redo();
             resetFigures();
             setFiguresOnBoard();
-        } else {
-            oldBoard = this.board;
-            oldGame = this.game;
-
-            this.board = new Board(oldBoard.getSize());
-            this.game = GameFactory.createChessGame(this.board);
-            resetFigures();
-            setFiguresOnBoard();
-            historyPlay = true;
-
-            this.game.redo();
         }
     }
 
-    @FXML public void actionStepEnd(){
+    @FXML public void actionStepEnd() {
         if (historyPlay){
-            this.board = oldBoard;
-            this.game = oldGame;
-
-            oldGame = null;
-            oldBoard = null;
-
-            resetFigures();
-            setFiguresOnBoard();
             historyPlay = false;
+            /*if (this.selectedFile.length() != 0){
+                while (stepPlay != step){
+                    this.game.redo();
+                    stepPlay++;
+                }
+
+                resetFigures();
+                setFiguresOnBoard();
+                turnRule();
+            }*/
+
+            while (stepPlay < step){
+                this.game.redo();
+                stepPlay++;
+                if (autoPlay){
+                    try {
+                        Thread.sleep(200 - (int)slider.getValue());
+                    } catch (InterruptedException ex){
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            }
+
+            if (!autoPlay){
+                resetFigures();
+                setFiguresOnBoard();
+            }
+        }
+    }
+
+    @FXML public void actionAutoBtn(){
+        if (autoPlay){
+            System.out.println("Auto set to off");
+            btnSwitch.setText("Automatic Off");
+            btnSwitch.setStyle("-fx-background-color: red");
+            this.autoPlay = false;
+        } else {
+            System.out.println("Auto set to On");
+           btnSwitch.setText("Automatic On");
+           btnSwitch.setStyle("-fx-background-color: green");
+           this.autoPlay = true;
         }
     }
 
@@ -678,8 +894,11 @@ public class NewGameTab implements Initializable {
 
             if (this.selectedFile.exists() ) System.out.println("Existuje");
             else System.out.println("Neexistuje");
-            //game.loadgame("file: lib/loadGame1.txt");//TODO -- pri robit nacitanie
-            //game.loadgame(this.selectedFile);
+
+            game.loadgame(this.selectedFile);
+            resetFigures();
+            setFiguresOnBoard();
+            turnRule();
         }
         printView();
     }
@@ -726,12 +945,7 @@ public class NewGameTab implements Initializable {
      * @param str   Reťazec, ktorý sa má vypísať do súboru
      * */
     public void writeIntoFile(String str) throws IOException{
-        //System.out.println("Toto chcem vypisat: "+ str); //TODO metoda writeIntoFile
-
         String[] lines = str.split("\n");
-
-        //if (lines != null) System.out.println("Posledne je toto: "+lines[lines.length - 1]);
-
 
         if (!movingBlack){
             deleteLastLine(this.selectedFile);
@@ -757,27 +971,32 @@ public class NewGameTab implements Initializable {
      * */
     @FXML
     public void figureStarts(MouseEvent event) {
-        movingFigure = board.getField(pickIdenxX((int)(((Rectangle)(event.getSource())).getLayoutX())), pickIdenxY((int)(((Rectangle)(event.getSource())).getLayoutY()))).get();
-        if (movingFigure.getColor() == Field.Color.W && movingWhite){
-            ((Rectangle)(event.getSource())).setOpacity(0.4d);
-            offset = new Point2D(event.getX(), event.getY());
+        if (!historyPlay){
+            movingFigure = board.getField(pickIdenxX((int)(((Rectangle)(event.getSource())).getLayoutX())), pickIdenxY((int)(((Rectangle)(event.getSource())).getLayoutY()))).get();
+            if (movingFigure.getColor() == Field.Color.W && movingWhite){
+                ((Rectangle)(event.getSource())).setOpacity(0.4d);
+                offset = new Point2D(event.getX(), event.getY());
 
-            previousPlace.setOpacity(1.0d);
-            previousPlace.setLayoutX( ((Rectangle)(event.getSource())).getLayoutX() );
-            previousPlace.setLayoutY( ((Rectangle)(event.getSource())).getLayoutY() );
-            movePass = true;
-        }
-        else if (movingFigure.getColor() == Field.Color.B && movingBlack){
-            ((Rectangle)(event.getSource())).setOpacity(0.4d);
-            offset = new Point2D(event.getX(), event.getY());
+                previousPlace.setOpacity(1.0d);
+                previousPlace.setLayoutX( ((Rectangle)(event.getSource())).getLayoutX() );
+                previousPlace.setLayoutY( ((Rectangle)(event.getSource())).getLayoutY() );
+                movePass = true;
+            }
+            else if (movingFigure.getColor() == Field.Color.B && movingBlack){
+                ((Rectangle)(event.getSource())).setOpacity(0.4d);
+                offset = new Point2D(event.getX(), event.getY());
 
-            previousPlace.setOpacity(1.0d);
-            previousPlace.setLayoutX( ((Rectangle)(event.getSource())).getLayoutX() );
-            previousPlace.setLayoutY( ((Rectangle)(event.getSource())).getLayoutY() );
-            movePass = true;
+                previousPlace.setOpacity(1.0d);
+                previousPlace.setLayoutX( ((Rectangle)(event.getSource())).getLayoutX() );
+                previousPlace.setLayoutY( ((Rectangle)(event.getSource())).getLayoutY() );
+                movePass = true;
+            }
+            else {
+                movePass = false;
+                event.consume();
+            }
         }
         else {
-            //final Timeline timeline = new Timeline();
             movePass = false;
             event.consume();
         }
