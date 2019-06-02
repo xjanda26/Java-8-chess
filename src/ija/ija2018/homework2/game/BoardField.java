@@ -61,6 +61,7 @@ public class BoardField implements Field{
     }
 
 
+    public void removeFigure(){this.figure = null;}
 
 	@Override
 	public int getCol() {

@@ -49,6 +49,9 @@ public class ChooseBoxController implements Initializable {
     private Figure figure;
     private Stage stage;
 
+    private int desCol;
+    private int desRow;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         imageWRook.setImage(new Image("file:lib/white-rook.png"));
@@ -66,9 +69,10 @@ public class ChooseBoxController implements Initializable {
     @FXML public void actionWRook (ActionEvent event){
         if (figure.getColor() == Field.Color.W) {
             Figure newFigure = new Rook(Field.Color.W);
-            newFigure.setCoords(figure.getCol(), figure.getRow());
+            newFigure.setCoords(this.desCol, this.desRow);
 
-            board.getField(figure.getCol(), figure.getRow()).setFigure(newFigure);
+            Field some = board.getField(this.desCol, this.desRow);
+            some.setFigure(newFigure);
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             stage.close();
         }
@@ -77,9 +81,9 @@ public class ChooseBoxController implements Initializable {
     @FXML public void actionWKnight (ActionEvent event){
         if (figure.getColor() == Field.Color.W) {
             Figure newFigure = new Knight(Field.Color.W);
-            newFigure.setCoords(figure.getCol(), figure.getRow());
+            newFigure.setCoords(this.desCol, this.desRow);
 
-            board.getField(figure.getCol(), figure.getRow()).setFigure(newFigure);
+            board.getField(this.desCol, this.desRow).setFigure(newFigure);
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             stage.close();
         }
@@ -89,9 +93,9 @@ public class ChooseBoxController implements Initializable {
     @FXML public void actionWBishop (ActionEvent event){
         if (figure.getColor() == Field.Color.W) {
             Figure newFigure = new Bishop(Field.Color.W);
-            newFigure.setCoords(figure.getCol(), figure.getRow());
+            newFigure.setCoords(this.desCol, this.desRow);
 
-            board.getField(figure.getCol(), figure.getRow()).setFigure(newFigure);
+            board.getField(this.desCol, this.desRow).setFigure(newFigure);
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             stage.close();
         }
@@ -100,9 +104,9 @@ public class ChooseBoxController implements Initializable {
     @FXML public void actionWQueen (ActionEvent event){
         if (figure.getColor() == Field.Color.W) {
             Figure newFigure = new Queen(Field.Color.W);
-            newFigure.setCoords(figure.getCol(), figure.getRow());
+            newFigure.setCoords(this.desCol, this.desRow);
 
-            board.getField(figure.getCol(), figure.getRow()).setFigure(newFigure);
+            board.getField(this.desCol, this.desRow).setFigure(newFigure);
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             stage.close();
         }
@@ -112,9 +116,9 @@ public class ChooseBoxController implements Initializable {
     @FXML public void actionBRook (ActionEvent event){
         if (figure.getColor() == Field.Color.B) {
             Figure newFigure = new Rook(Field.Color.B);
-            newFigure.setCoords(figure.getCol(), figure.getRow());
+            newFigure.setCoords(this.desCol, this.desRow);
 
-            board.getField(figure.getCol(), figure.getRow()).setFigure(newFigure);
+            board.getField(this.desCol, this.desRow).setFigure(newFigure);
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             stage.close();
         }
@@ -123,9 +127,9 @@ public class ChooseBoxController implements Initializable {
     @FXML public void actionBKnight (ActionEvent event){
         if (figure.getColor() == Field.Color.B) {
             Figure newFigure = new Knight(Field.Color.B);
-            newFigure.setCoords(figure.getCol(), figure.getRow());
+            newFigure.setCoords(this.desCol, this.desRow);
 
-            board.getField(figure.getCol(), figure.getRow()).setFigure(newFigure);
+            board.getField(this.desCol, this.desRow).setFigure(newFigure);
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             stage.close();
         }
@@ -134,9 +138,9 @@ public class ChooseBoxController implements Initializable {
     @FXML public void actionBBishop (ActionEvent event){
         if (figure.getColor() == Field.Color.B) {
             Figure newFigure = new Bishop(Field.Color.B);
-            newFigure.setCoords(figure.getCol(), figure.getRow());
+            newFigure.setCoords(this.desCol, this.desRow);
 
-            board.getField(figure.getCol(), figure.getRow()).setFigure(newFigure);
+            board.getField(this.desCol, this.desRow).setFigure(newFigure);
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             stage.close();
         }
@@ -145,16 +149,18 @@ public class ChooseBoxController implements Initializable {
     @FXML public void actionBQueen (ActionEvent event){
         if (figure.getColor() == Field.Color.B) {
             Figure newFigure = new Queen(Field.Color.B);
-            newFigure.setCoords(figure.getCol(), figure.getRow());
+            newFigure.setCoords(this.desCol, this.desRow);
 
-            board.getField(figure.getCol(), figure.getRow()).setFigure(newFigure);
+            board.getField(this.desCol, this.desRow).setFigure(newFigure);
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             stage.close();
         }
     }
 
-    public void setChangeFigure (Board board, Figure movingFigure){
+    public void setChangeFigure (Board board, Figure movingFigure, int col, int row){
         this.board = board;
         this.figure = movingFigure;
+        this.desCol = col;
+        this.desRow = row;
     }
 }

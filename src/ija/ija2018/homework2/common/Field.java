@@ -16,6 +16,8 @@ import java.util.Set;
 public interface Field {
     
     public boolean isEmpty();
+
+    public void removeFigure();
     
     public Figure get();
     

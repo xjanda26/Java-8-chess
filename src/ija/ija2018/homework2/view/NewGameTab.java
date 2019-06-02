@@ -49,8 +49,6 @@ import java.lang.*;
  * @author Adam Janda <xjanda26@stud.fit.vutbr.cz>
  * */
 
-
-
 public class NewGameTab implements Initializable {
 
     public static int tabIndex = 0;
@@ -402,6 +400,7 @@ public class NewGameTab implements Initializable {
             rec.setLayoutX(0.0d);
             rec.setLayoutY(0.0d);
         }
+        list.clear();
     }
 
     /**
@@ -512,7 +511,7 @@ public class NewGameTab implements Initializable {
         return this.game;
     }
 
-    private void clearViewList() throws IOException{
+    private void writeIntoFile() throws IOException{
         PrintWriter writer = new PrintWriter(this.selectedFile);
         writer.print("");
         writer.close();
@@ -590,7 +589,7 @@ public class NewGameTab implements Initializable {
                 resetFigures();
                 setFiguresOnBoard();
 
-                clearViewList();
+                writeIntoFile();
                 step--;
             }
         }
@@ -609,7 +608,7 @@ public class NewGameTab implements Initializable {
             resetFigures();
             setFiguresOnBoard();
 
-            clearViewList();
+            writeIntoFile();
         }
     }
 
@@ -792,7 +791,7 @@ public class NewGameTab implements Initializable {
      *
      * @param str   Reťazec, ktorý sa má vypísať do súboru
      * */
-    private void writeIntoFile(String str) throws IOException{
+    /*private void writeIntoFile(String str) throws IOException{
         String[] lines = str.split("\n");
 
         if (!movingBlack){
@@ -807,7 +806,7 @@ public class NewGameTab implements Initializable {
             writer.append(lines[lines.length - 1]);
             writer.close();
         }
-    }
+    }*/
 
     /**
      *
@@ -949,18 +948,20 @@ public class NewGameTab implements Initializable {
                 );
                 previousPlace.setOpacity(0.0d);
                 step++;
-                System.out.println("Step je :" + step);// TODO vymaz
+                //System.out.println("Step je :" + step);// TODO vymaz
 
                 //Pesiak na druhom konci hracej dosky si moze zmenit figurku podla vlastneho vyberu
                 if ( ( movingFigure.getState().equals("W Pawn") &&  pickIdenxY( (int)(((Rectangle)(event.getSource())).getLayoutY())) >= 8 ) ||
                         ( movingFigure.getState().equals("B Pawn") &&  pickIdenxY( (int)(((Rectangle)(event.getSource())).getLayoutY())) <= 1) ){
                     try{
+
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("chooseBox.fxml"));
                         Parent root = (Parent) loader.load();
                         ChooseBoxController cbc = loader.getController();
                         //Vytvorenie nového okna pre výber figúrok
                         Stage stage = new Stage();
-                        cbc.setChangeFigure( this.board, this.movingFigure);
+
+                        cbc.setChangeFigure( this.board, this.movingFigure, pickIdenxX((int) ( ((Rectangle)(event.getSource())).getLayoutX() )), pickIdenxY(( (int) (((Rectangle)(event.getSource())).getLayoutY()))));
                         stage.initStyle(StageStyle.TRANSPARENT);
                         stage.setTitle("Výber figúrky");
                         stage.setScene(new Scene(root));
@@ -987,8 +988,8 @@ public class NewGameTab implements Initializable {
 
                 //Výpis krokovania //TODO --vypis v lands
                 try {
-                    writeIntoFile(game.getHistory());
-                    printView();
+                    writeIntoFile();
+                    //printView();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -1005,6 +1006,7 @@ public class NewGameTab implements Initializable {
             }
             ((Rectangle)(event.getSource())).setOpacity(1.0d);
             timeline.play();
+
         }
     }
 
@@ -1023,6 +1025,9 @@ public class NewGameTab implements Initializable {
                 );
                 rec.setOpacity(0.0d);
                 timeline.play();
+
+                this.board.getField(pickIdenxX( (int)previousPlace.getLayoutX()) , pickIdenxY( (int)previousPlace.getLayoutY()) ).removeFigure();
+
                 return true;
             }
         }
