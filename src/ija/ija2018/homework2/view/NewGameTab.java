@@ -614,39 +614,42 @@ public class NewGameTab implements Initializable {
     }
 
     @FXML public void actionBegin() {
-        historyPlay = true;
-        stepPlay = step;
-
-        if (autoPlay){
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    for (int i = stepPlay; i >= 0; i--) {
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                game.dryUndo();
-                                resetAndSet();
-
-                            }
-                        });
-                        try {
-                            Thread.sleep(500 - (int)slider.getValue());
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        stepPlay--;
-                    }
-                }
-            }).start();
-        } else {
-            while (stepPlay > 0) {
-                stepPlay--;
-                this.game.dryUndo();
-            }
-            resetAndSet();
+        if (!historyPlay){
+            historyPlay = true;
+            stepPlay=step;
         }
 
+        if (stepPlay > 0){
+            if (autoPlay){
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = stepPlay; i > 0; i--) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    game.dryUndo();
+                                    resetAndSet();
+
+                                }
+                            });
+                            try {
+                                Thread.sleep(500 - (int)slider.getValue());
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            stepPlay--;
+                        }
+                    }
+                }).start();
+            } else {
+                for (int i = stepPlay; i > 0; i--){
+                    stepPlay--;
+                    this.game.dryUndo();
+                }
+                resetAndSet();
+            }
+        }
     }
 
     @FXML public void actionStepBack() {
