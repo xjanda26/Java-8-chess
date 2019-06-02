@@ -83,8 +83,7 @@ public class Menu implements Initializable {
                 		System.out.println("podarilo sa nacitat hru");
                 	else 
                 		System.err.println("nepodarilo sa nacitat hru");
-                	newTab.resetFigures();
-                	newTab.setFiguresOnBoard();
+                	newTab.resetAndSet();
                     newTab.setFile(selectedFile);
                     selectedFile = null;
 

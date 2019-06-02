@@ -433,7 +433,6 @@ public class NewGameTab implements Initializable {
         kingB.setOpacity(0.0d);
     }
 
-
     private void turnRule() throws IOException{
         BufferedReader input = new BufferedReader(new FileReader(selectedFile));
         String last = null, line;
@@ -466,7 +465,7 @@ public class NewGameTab implements Initializable {
 
     }
 
-    private void resetAndSet(){
+    public void resetAndSet(){
         resetFigures();
         setFiguresOnBoard();
     }
@@ -717,12 +716,10 @@ public class NewGameTab implements Initializable {
 
     @FXML public void actionAutoBtn(){
         if (autoPlay){
-            System.out.println("Auto set to off");
             btnSwitch.setText("Automatic Off");
             btnSwitch.setStyle("-fx-background-color: red");
             this.autoPlay = false;
         } else {
-            System.out.println("Auto set to On");
            btnSwitch.setText("Automatic On");
            btnSwitch.setStyle("-fx-background-color: green");
            this.autoPlay = true;
