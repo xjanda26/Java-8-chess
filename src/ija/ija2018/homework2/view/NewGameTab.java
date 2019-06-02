@@ -37,7 +37,6 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.*;
-import java.lang.reflect.*;
 import java.net.URL;
 
 import java.util.*;
@@ -50,43 +49,7 @@ import java.lang.*;
  * @author Adam Janda <xjanda26@stud.fit.vutbr.cz>
  * */
 
-class RunnableT implements Runnable {
-    private Thread t;
-    private Game gameR;
-    private int sleepTime;
-    private int stepPlay;
-    private NewGameTab tab;
 
-    RunnableT (Game game, int sleepTime, int stepPlay, NewGameTab resAset){
-        this.gameR = game;
-        this.sleepTime = sleepTime;
-        this.stepPlay = stepPlay;
-        this.tab = resAset;
-    }
-
-    public void run() {
-        try {
-            System.out.println("RUNnable run");
-
-            while (stepPlay > 0){
-                stepPlay--;
-                this.gameR.dryUndo();
-                //Platform.runLater();
-                Thread.sleep(sleepTime);
-            }
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void start (){System.out.println("thread Start");
-        if (t == null){
-            t = new Thread(this);
-            t.start();
-        }
-    }
-}
 
 public class NewGameTab implements Initializable {
 
@@ -242,24 +205,17 @@ public class NewGameTab implements Initializable {
     private boolean movingBlack = false;
     private boolean movePass = true;
     private boolean historyPlay = false;
-    private boolean undoUsed = false;
     private boolean autoPlay = true;
 
     private Game game;
-    private Game oldGame = null;
     private Board board;
-    private Board oldBoard = null;
 
     private Figure movingFigure;
     private File selectedFile;
 
     private int boardSize;
-    private int realStep = 0;
     private int step = 0;
     private int stepPlay = 0;
-
-    private int cnt = 0;
-    private int speedOfAnimation = 100;
 
 
     private int pawnWCounter = 0;
@@ -293,7 +249,7 @@ public class NewGameTab implements Initializable {
      *
      * Metóda vykreslí a nastaví figúrky podľa objektu 'board'.
      * */
-    public void setFiguresOnBoard(){
+    private void setFiguresOnBoard(){
 
         pawnWCounter = 0;
         rookWCounter = 0;
@@ -453,7 +409,7 @@ public class NewGameTab implements Initializable {
      * Metóda nastaví všetkým figúrkam na hracej ploche súradnice 0,0 a priehľadnosť.
      * Využíva metódu 'resetListFigures'
      * */
-    public void resetFigures(){
+    private void resetFigures(){
         resetListFigures(pawnsW);
         resetListFigures(rooksW);
         resetListFigures(knightsW);
@@ -477,29 +433,6 @@ public class NewGameTab implements Initializable {
         kingB.setOpacity(0.0d);
     }
 
-    private void copyLastLine() throws IOException{
-        String line = "";
-        String current = "";
-        try {
-            BufferedReader input = new BufferedReader(new FileReader(selectedFile));
-
-            while ( (current = input.readLine()) != null ){
-                line = current;
-            }
-
-            input.close();
-        } catch (IOException ex){
-            ex.printStackTrace();
-        }
-
-        int index = line.indexOf(" ",line.indexOf(" ") + 1);
-        String finStr = line.substring(0,index);
-
-        BufferedWriter writer = new BufferedWriter(new FileWriter(selectedFile, true));
-        writer.append(finStr);
-        writer.append(" ");
-        writer.close();
-    }
 
     private void turnRule() throws IOException{
         BufferedReader input = new BufferedReader(new FileReader(selectedFile));
@@ -533,7 +466,7 @@ public class NewGameTab implements Initializable {
 
     }
 
-    public void resetAndSet(){
+    private void resetAndSet(){
         resetFigures();
         setFiguresOnBoard();
     }
@@ -665,7 +598,7 @@ public class NewGameTab implements Initializable {
     }
 
     @FXML public void actionRedo() throws IOException{
-
+        if (!historyPlay){
             this.game.redo();
 
             boolean tmp;
@@ -678,58 +611,35 @@ public class NewGameTab implements Initializable {
             setFiguresOnBoard();
 
             clearViewList();
-
-
+        }
     }
 
-    @FXML public void actionBegin() throws InterruptedException{
+    @FXML public void actionBegin() {
         historyPlay = true;
-        /*oldBoard = this.board;
-        oldGame = this.game;
-
-        this.board = new Board(board.getSize());
-        this.game = GameFactory.createChessGame(this.board);
-        stepPlay = 0;*/
         stepPlay = step;
 
-        /*while (stepPlay > 0){
-            System.out.println("stepBegin while ");
+        if (autoPlay){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = stepPlay; i >= 0; i--) {
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                game.dryUndo();
+                                resetAndSet();
 
-            stepPlay--;
-
-            if (autoPlay){
-
-                resetAndSet();
-            } else this.game.dryUndo();
-        }
-
-        if (!autoPlay){
-            System.out.println("===========================");
-            resetAndSet();
-        }*/
-
-        if (autoPlay){System.out.println("zapinam thread");
-            /*RunnableT r1 = new RunnableT(this.game, (int)slider.getValue(), stepPlay,this);
-            r1.start();
-            System.out.println("resetandset");
-            resetAndSet();*/
-
-            /*new Thread(){
-
-                public void run(){
-                    while (stepPlay > 0){
-                        this.game.dryUndo();
-                        Platform.runLater(() -> {
-                            resetAndSet();
+                            }
                         });
                         try {
-                            Thread.sleep((int)slider.getValue());
+                            Thread.sleep(500 - (int)slider.getValue());
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        stepPlay--;
                     }
                 }
-            }.start();*/
+            }).start();
         } else {
             while (stepPlay > 0) {
                 stepPlay--;
@@ -740,84 +650,12 @@ public class NewGameTab implements Initializable {
 
     }
 
-    public class AnimationThread extends Thread {
-        @Override
-        public void run() {
-            System.out.println("Som animation thread");
-            game.dryUndo();
-            resetAndSet();
-        }
-    }
-
     @FXML public void actionStepBack() {
         if (!historyPlay){
             historyPlay = true;
             stepPlay = step;
         }
 
-        /*BufferedReader input = new BufferedReader(new FileReader(selectedFile));
-        String last = null, secondLast = null, line;
-            //nacitanie poslednych dvoch riadkov zo soboru krokov
-        while ((line = input.readLine()) != null) {
-            secondLast = last;
-            last = line;
-        }
-        input.close();
-            //spocitanie slov na poslednom riadku, pri parnom pocte sa posledne posunul biely, pri neparnom cierny
-        String trim = last.trim();
-        int number = trim.split("\\s+").length;*/
-
-        /*if (stepPlay > 0){
-            Scanner scan = new Scanner(selectedFile);
-            ArrayList<String> listS = new ArrayList<>();
-
-            int i = 0;
-            //nacitam riadky po riadok, po ktory prehravam hru
-            while (scan.hasNextLine() && i < (stepPlay / 2 + stepPlay % 2)) {
-                listS.add(scan.nextLine());
-                i++;
-            }
-            scan.close();
-
-            String trim = listS.get(listS.size()-1).trim();
-            int numberOfWords = trim.split("\\s+").length;
-            // ak je na poslednom nacitam riadku parny pocet slov, posledne siel biely => mozem zmazat tento riadok
-            // ak je na poslednom nacitam riadku neparny pocet sov, posledne siel cierny => mozem zmazat len cast riadku s presunom cierneho
-            if (numberOfWords % 2 == 0){
-                listS.remove(listS.size() - 1);
-            } else {
-                String newLastLine = listS.get(listS.size() - 1);
-                String[] splitedLastLine = newLastLine.split("\\s+");
-                newLastLine = splitedLastLine[0] + " " + splitedLastLine[1];
-                listS.remove(listS.size() - 1);
-                listS.add(newLastLine);
-            }
-
-            String path = "lib/tmp" + (cnt++) + ".txt";
-            File tmpFile = new File(path);
-            tmpFile.getParentFile().mkdirs();
-            tmpFile.createNewFile();
-
-            BufferedWriter writer = new BufferedWriter(new FileWriter(tmpFile, true));
-            for (String str : listS){
-                writer.append(str);
-                writer.newLine();
-            }
-            writer.close();
-
-            deleteLastLine(tmpFile);
-
-            Board playBoard = new Board(8);
-            this.game = GameFactory.createChessGame(playBoard);
-
-            this.game.loadgame(tmpFile);
-
-            resetFigures();
-            setFiguresOnBoard();
-
-            //tmpFile.delete();
-            stepPlay--;
-        }*/
         if (step > 0){
             this.game.dryUndo();
             stepPlay--;
@@ -829,40 +667,50 @@ public class NewGameTab implements Initializable {
     @FXML public void actionStepForward() {
         if (historyPlay) {
             this.game.redo();
+            stepPlay++;
             resetFigures();
             setFiguresOnBoard();
+
+            if (stepPlay == step){
+                historyPlay = false;
+            }
         }
     }
 
     @FXML public void actionStepEnd() {
         if (historyPlay){
             historyPlay = false;
-            /*if (this.selectedFile.length() != 0){
-                while (stepPlay != step){
-                    this.game.redo();
-                    stepPlay++;
-                }
 
-                resetFigures();
-                setFiguresOnBoard();
-                turnRule();
-            }*/
+            if (autoPlay){
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = stepPlay; i <= step; i++) {
+                            if (stepPlay >= 0) {
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        game.redo();
+                                        resetAndSet();
+                                    }
+                                });
 
-            while (stepPlay < step){
-                this.game.redo();
-                stepPlay++;
-                if (autoPlay){
-                    try {
-                        Thread.sleep(200 - (int)slider.getValue());
-                    } catch (InterruptedException ex){
-                        Thread.currentThread().interrupt();
+                                try {
+                                    Thread.sleep(500 - (int)slider.getValue());
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            stepPlay++;
+                        }
                     }
+                }).start();
+            } else {
+                while (stepPlay < step) {
+                    stepPlay++;
+                    this.game.redo();
                 }
-            }
-
-            if (!autoPlay){
-                resetFigures();
-                setFiguresOnBoard();
+                resetAndSet();
             }
         }
     }
@@ -903,7 +751,7 @@ public class NewGameTab implements Initializable {
         printView();
     }
 
-    public void deleteLastLine(File file) throws IOException{
+    private void deleteLastLine(File file) throws IOException{
         byte b;
         RandomAccessFile f = new RandomAccessFile(file, "rw");
         long length = f.length();
@@ -922,7 +770,7 @@ public class NewGameTab implements Initializable {
      *
      * Metóda pre vypísanie histórie krokov do ListView v GUI aplikácie.
      * */
-    public void printView () throws FileNotFoundException{
+    private void printView () throws FileNotFoundException{
         Scanner scan = new Scanner(selectedFile);
         ArrayList<String> listS = new ArrayList<>();
 
@@ -944,7 +792,7 @@ public class NewGameTab implements Initializable {
      *
      * @param str   Reťazec, ktorý sa má vypísať do súboru
      * */
-    public void writeIntoFile(String str) throws IOException{
+    private void writeIntoFile(String str) throws IOException{
         String[] lines = str.split("\n");
 
         if (!movingBlack){
@@ -1112,7 +960,7 @@ public class NewGameTab implements Initializable {
                         ChooseBoxController cbc = loader.getController();
                         //Vytvorenie nového okna pre výber figúrok
                         Stage stage = new Stage();
-                        cbc.setChangeFigure( board, movingFigure);
+                        cbc.setChangeFigure( this.board, this.movingFigure);
                         stage.initStyle(StageStyle.TRANSPARENT);
                         stage.setTitle("Výber figúrky");
                         stage.setScene(new Scene(root));
@@ -1131,7 +979,6 @@ public class NewGameTab implements Initializable {
                 if (movingFigure.getColor() == Field.Color.W){
                     movingWhite = false;
                     movingBlack = true;
-                    realStep++;
                 }
                 else if (movingFigure.getColor() == Field.Color.B){
                     movingBlack = false;

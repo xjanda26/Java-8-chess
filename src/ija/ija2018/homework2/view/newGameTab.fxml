@@ -256,7 +256,7 @@
                   <VBox alignment="CENTER" prefHeight="31.0" prefWidth="122.0">
                      <children>
                         <Label text="Rýchlosť prehrávania" />
-                        <Slider fx:id="slider" max="200.0" value="100.0" />
+                        <Slider fx:id="slider" max="350.0" value="175.0" />
                      </children>
                   </VBox>
                </children>
