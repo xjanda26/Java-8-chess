@@ -730,6 +730,9 @@ public class ChessGame implements Game{
 			}
 			for (Direction dir: Direction.values()) {
 				Field pole = null;
+				if(field.getField(dir)== null) {
+					continue;
+				}
 				if(field.getField(dir).equals(board.getField(figure.getCol(), figure.getRow()))) {
 					pole = field.getField(dir); // zabranime aby sme prehladavali pole na ktorom stoji kral
 				}
@@ -1340,20 +1343,36 @@ public class ChessGame implements Game{
 	public boolean loadgame(File filename) throws IOException, WrongMoveException {
 		
 		List<String> lines = Files.readAllLines(Paths.get(filename.getAbsolutePath()));
-		
+		boolean lastline = false;
 		for (String line: lines) {
 
+			if (lastline) {
+				throw new WrongMoveException("Zle zapisany tah");
+			}
+			
 			String arrayString[] = line.split("\\s+");
 
-			String moveW;
-			String moveB;
+			String moveW="";
+			String moveB="";
 			try {
 			moveW = arrayString[1];
-			moveB = arrayString[2];
+			
 			}
 			catch (ArrayIndexOutOfBoundsException e) {
 				e.printStackTrace();
+				// undo vsetko a skonci chybou
+				for (int i = 0; i<moves.size();i++) {
+					undo();
+				}
+				moves.clear();
 				return false;
+			}
+			
+			try {
+				moveB = arrayString[2];
+			}
+			catch (ArrayIndexOutOfBoundsException e) {
+				// do nothing
 			}
 			
 			switch (moveW.charAt(0)) {
@@ -2162,7 +2181,10 @@ public class ChessGame implements Game{
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
-
+			if (moveB.equals("")) {
+				lastline = true;
+				continue;
+			}
 			switch (moveB.charAt(0)) {
             case 'K':  moveB = moveB.substring(1, moveB.length());
             		   if (moveB.matches("([a-h])([1-8])(x?)([a-h])([1-8])([D,V,S,J]?)([+,#]?)")) {	//dlha notacia
@@ -2963,7 +2985,7 @@ public class ChessGame implements Game{
 		          		   		}
 	            		 }
 			            else {
-			            	throw new WrongMoveException("Zle zapisany tah "+ line);
+			            	throw new WrongMoveException("Zle zapisant tah");
 			            }
                      break;
         }
