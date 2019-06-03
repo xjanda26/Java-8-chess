@@ -30,6 +30,7 @@ import ija.ija2018.homework2.game.WrongMoveException;
  * @author Adam Janda <xjanda26@stud.fit.vutbr.cz>
  * */
 
+
 public class Menu implements Initializable {
 
     @FXML private Button btnNewGame;

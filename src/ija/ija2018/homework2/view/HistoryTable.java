@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
  * @Author: Adam Janda <xjanda26@stud.fit.vutbr.cz>
  */
 
+
 /**
  * Predstavuje jeden riadok v tabuľke výpisov.
  * Trieda obsahuje getteri a setteri pre jednotlivé hodnoty riadku.

@@ -43,7 +43,6 @@ import java.util.*;
 
 import java.lang.*;
 
-
 /**
  *
  * @author Adam Janda <xjanda26@stud.fit.vutbr.cz>
