@@ -11,6 +11,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -20,9 +24,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -34,6 +37,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 import javafx.util.Duration;
 
 import java.io.*;
@@ -52,6 +56,13 @@ import java.lang.*;
 public class NewGameTab implements Initializable {
 
     public static int tabIndex = 0;
+
+    @FXML public TableView<HistoryTable> tableView;
+
+    @FXML public TableColumn<HistoryTable,String> colTurn;
+    @FXML public TableColumn<HistoryTable,String> colWhite;
+    @FXML public TableColumn<HistoryTable,String> colBlack;
+    private ObservableList<HistoryTable> list;
 
     @FXML Rectangle kingW;
 
@@ -241,6 +252,7 @@ public class NewGameTab implements Initializable {
     private Image blackBishop ;
     private Image blackQueen;
     private Image blackKing ;
+
 
 
     /**
@@ -503,12 +515,89 @@ public class NewGameTab implements Initializable {
 
         boardSize = board.getSize();
 
+        colTurn.setCellValueFactory(new PropertyValueFactory<>("Turn"));
+        colWhite.setCellValueFactory(new PropertyValueFactory<>("HistoryWhite"));
+        colBlack.setCellValueFactory(new PropertyValueFactory<>("HistoryBlack"));
+
+        tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tableView.getSelectionModel().setCellSelectionEnabled(true);
+
         setFiguresOnBoard();
         actionAutoBtn();
     }
 
     public Game getGame(){
         return this.game;
+    }
+
+    public void tableHighlight( int col, int row){
+        //Object obj = tableView.getColumns().get(col).getCellObservableValue(row).getValue();
+
+        if (col == 1){
+            System.out.println("nastavujem white stplpec");
+            colWhite.setCellFactory(new Callback<TableColumn<HistoryTable, String>, TableCell<HistoryTable, String>>() {
+                @Override
+                public TableCell<HistoryTable, String> call(TableColumn<HistoryTable, String> param) {
+                    return new TableCell<HistoryTable, String>(){
+                        protected void updateItem (String item) {
+                            String whiteStatus = param.getTableView().getItems().get(row).getHistoryWhite();
+                            setTextFill(Color.BLACK);
+                            setStyle("-fx-background-color: turquoise");
+                            setText(whiteStatus);
+                        }
+                    };
+                }
+            }); System.out.println("highlight = printujem");
+            tableView.refresh();
+        }
+        else if (col == 2) {
+            System.out.println("nastavujem black stplpec");
+            colBlack.setCellFactory(new Callback<TableColumn<HistoryTable, String>, TableCell<HistoryTable, String>>() {
+                @Override
+                public TableCell<HistoryTable, String> call(TableColumn<HistoryTable, String> param) {
+                    return new TableCell<HistoryTable, String>(){
+                        protected void updateItem (String item) {
+                            String blackStatus = param.getTableView().getItems().get(row).getHistoryWhite();
+                            setTextFill(Color.YELLOW);
+                            setStyle("-fx-background-color: turquoise");
+                            setText(blackStatus);
+                        }
+                    };
+                }
+            });
+            System.out.println("highlight = printujem");
+            //tableView.refresh();
+        }
+        else {
+            System.out.println("tableHighlight stlpec nie je ani 1 ani 2");
+            return;
+        }
+    }
+
+    @FXML public void tableOnClick(MouseEvent event){
+        TablePosition tablePosition = tableView.getSelectionModel().getSelectedCells().get(0);
+        int row = tablePosition.getRow();
+        int col = tablePosition.getColumn();
+
+        if (!historyPlay){
+            historyPlay = true;
+            stepPlay=step;
+        }
+
+        int rowCounter = row*2 + col;
+
+        int difference = stepPlay - rowCounter;
+
+        if (col > 0) {
+            if (difference > 0){
+                for (int i = 0;i < difference; i++){
+                    stepPlay--;
+                    this.game.dryUndo();
+                }
+                resetAndSet();
+            }
+        }
+        //tableHighlight(col,row);
     }
 
     private void writeIntoFile() throws IOException{
@@ -520,7 +609,7 @@ public class NewGameTab implements Initializable {
         writer.print(this.game.getHistory());
         writer.close();
 
-        listView.getItems().clear();
+        tableView.getItems().clear();
         printView();
     }
 
@@ -662,6 +751,7 @@ public class NewGameTab implements Initializable {
             stepPlay--;
             resetFigures();
             setFiguresOnBoard();
+
         }
     }
 
@@ -750,6 +840,8 @@ public class NewGameTab implements Initializable {
         printView();
     }
 
+
+
     private void deleteLastLine(File file) throws IOException{
         byte b;
         RandomAccessFile f = new RandomAccessFile(file, "rw");
@@ -778,9 +870,17 @@ public class NewGameTab implements Initializable {
         }
         scan.close();
 
-        listView.getItems().clear();
-        for (String line: listS ) {
-            listView.getItems().add(line);
+        for (String line : listS){
+            String words[] = line.split("\\s+");
+            if (words.length == 2){
+                HistoryTable newRow = new HistoryTable(words[0], words[1],"");
+                tableView.getItems().add(newRow);
+            }
+            else if (words.length == 3) {
+                HistoryTable newRow = new HistoryTable(words[0], words[1],words[2]);
+                tableView.getItems().add(newRow);
+            }
+            else return;
         }
     }
 
