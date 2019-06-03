@@ -460,20 +460,15 @@ public class NewGameTab implements Initializable {
 
         if (last != null){
             if (number % 2 == 0) {
-                movingBlack = true;
-                movingWhite = false;
                 step = (step - 1) * 2 + 1;
             } else {
-                movingBlack = false;
-                movingWhite = true;
                 step *= 2;
             }
-        }else {
+        }
+        else step = 0;
+
             movingWhite = true;
             movingBlack = false;
-            step = 0;
-        }
-
     }
 
     public void resetAndSet(){
@@ -564,8 +559,17 @@ public class NewGameTab implements Initializable {
                 }
                 resetAndSet();
                 setFrame(75 * col, 25 * row + 25);
+            }else if (difference < 0){
+                difference = rowCounter - stepPlay;
+                for (int i = 0; i < difference; i++){
+                    stepPlay++;
+                    this.game.redo();
+                }
+                resetAndSet();
+                setFrame(75 * col, 25 * row + 25);
             }
         }
+
     }
 
     private void writeIntoFile() throws IOException{
@@ -826,8 +830,9 @@ public class NewGameTab implements Initializable {
             game.loadgame(this.selectedFile);
             resetFigures();
             setFiguresOnBoard();
-            //turnRule();
-            this.step = 0;
+            turnRule();
+            this.stepPlay = 0;
+            historyPlay = true;
             setFrame((((step-1)%2)+1) * 75, (((step-1)/2)+1) * 25);
 
         }
