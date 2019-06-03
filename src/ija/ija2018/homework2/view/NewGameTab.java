@@ -253,7 +253,7 @@ public class NewGameTab implements Initializable {
     private Image blackQueen;
     private Image blackKing ;
 
-
+    @FXML private Rectangle frame;
 
     /**
      *
@@ -524,57 +524,23 @@ public class NewGameTab implements Initializable {
 
         setFiguresOnBoard();
         actionAutoBtn();
+
+        frame.setOpacity(0.0d);
     }
 
     public Game getGame(){
         return this.game;
     }
 
-    public void tableHighlight( int col, int row){
-        //Object obj = tableView.getColumns().get(col).getCellObservableValue(row).getValue();
-
-        if (col == 1){
-            System.out.println("nastavujem white stplpec");
-            colWhite.setCellFactory(new Callback<TableColumn<HistoryTable, String>, TableCell<HistoryTable, String>>() {
-                @Override
-                public TableCell<HistoryTable, String> call(TableColumn<HistoryTable, String> param) {
-                    return new TableCell<HistoryTable, String>(){
-                        protected void updateItem (String item) {
-                            String whiteStatus = param.getTableView().getItems().get(row).getHistoryWhite();
-                            setTextFill(Color.BLACK);
-                            setStyle("-fx-background-color: turquoise");
-                            setText(whiteStatus);
-                        }
-                    };
-                }
-            }); System.out.println("highlight = printujem");
-            tableView.refresh();
-        }
-        else if (col == 2) {
-            System.out.println("nastavujem black stplpec");
-            colBlack.setCellFactory(new Callback<TableColumn<HistoryTable, String>, TableCell<HistoryTable, String>>() {
-                @Override
-                public TableCell<HistoryTable, String> call(TableColumn<HistoryTable, String> param) {
-                    return new TableCell<HistoryTable, String>(){
-                        protected void updateItem (String item) {
-                            String blackStatus = param.getTableView().getItems().get(row).getHistoryWhite();
-                            setTextFill(Color.YELLOW);
-                            setStyle("-fx-background-color: turquoise");
-                            setText(blackStatus);
-                        }
-                    };
-                }
-            });
-            System.out.println("highlight = printujem");
-            //tableView.refresh();
-        }
-        else {
-            System.out.println("tableHighlight stlpec nie je ani 1 ani 2");
-            return;
-        }
+    public void setFrame (int column, int row){
+        frame.setOpacity(1.0d);
+        this.frame.setLayoutX(column);
+        this.frame.setLayoutY(row);
     }
 
     @FXML public void tableOnClick(MouseEvent event){
+        System.out.println("Table click");
+
         TablePosition tablePosition = tableView.getSelectionModel().getSelectedCells().get(0);
         int row = tablePosition.getRow();
         int col = tablePosition.getColumn();
@@ -595,9 +561,9 @@ public class NewGameTab implements Initializable {
                     this.game.dryUndo();
                 }
                 resetAndSet();
+                setFrame(75 * col, 25 * row + 25);
             }
         }
-        //tableHighlight(col,row);
     }
 
     private void writeIntoFile() throws IOException{
@@ -680,7 +646,10 @@ public class NewGameTab implements Initializable {
 
                 writeIntoFile();
                 step--;
+                if (step == 0) frame.setOpacity(0.0d);
+                else setFrame((((step-1)%2)+1) * 75, (((step-1)/2)+1) * 25);
             }
+            else frame.setOpacity(0.0d);
         }
     }
 
@@ -718,6 +687,7 @@ public class NewGameTab implements Initializable {
                                 public void run() {
                                     game.dryUndo();
                                     resetAndSet();
+                                    setFrame((((stepPlay-1)%2)+1) * 75, (((stepPlay-1)/2)+1) * 25);
 
                                 }
                             });
@@ -727,6 +697,7 @@ public class NewGameTab implements Initializable {
                                 e.printStackTrace();
                             }
                             stepPlay--;
+                            if (stepPlay == 0) frame.setOpacity(0.0d);
                         }
                     }
                 }).start();
@@ -736,6 +707,8 @@ public class NewGameTab implements Initializable {
                     this.game.dryUndo();
                 }
                 resetAndSet();
+                if (stepPlay == 0) frame.setOpacity(0.0d);
+                else setFrame((((stepPlay-1)%2)+1) * 75, (((stepPlay-1)/2)+1) * 25);
             }
         }
     }
@@ -747,11 +720,15 @@ public class NewGameTab implements Initializable {
         }
 
         if (step > 0){
-            this.game.dryUndo();
-            stepPlay--;
-            resetFigures();
-            setFiguresOnBoard();
-
+            if (stepPlay == 0) frame.setOpacity(0.0d);
+            else {
+                this.game.dryUndo();
+                stepPlay--;
+                resetFigures();
+                setFiguresOnBoard();
+                if (stepPlay == 0) frame.setOpacity(0.0d);
+                else setFrame((((stepPlay-1)%2)+1) * 75, (((stepPlay-1)/2)+1) * 25);
+            }
         }
     }
 
@@ -761,6 +738,8 @@ public class NewGameTab implements Initializable {
             stepPlay++;
             resetFigures();
             setFiguresOnBoard();
+            setFrame((((stepPlay-1)%2)+1) * 75, (((stepPlay-1)/2)+1) * 25);
+            frame.setOpacity(1.0d);
 
             if (stepPlay == step){
                 historyPlay = false;
@@ -773,6 +752,7 @@ public class NewGameTab implements Initializable {
             historyPlay = false;
 
             if (autoPlay){
+                frame.setOpacity(1.0d);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -783,6 +763,7 @@ public class NewGameTab implements Initializable {
                                     public void run() {
                                         game.redo();
                                         resetAndSet();
+                                        setFrame((((stepPlay-1)%2)+1) * 75, (((stepPlay-1)/2)+1) * 25);
                                     }
                                 });
 
@@ -802,6 +783,7 @@ public class NewGameTab implements Initializable {
                     this.game.redo();
                 }
                 resetAndSet();
+                setFrame((((stepPlay-1)%2)+1) * 75, (((stepPlay-1)/2)+1) * 25);
             }
         }
     }
@@ -839,8 +821,6 @@ public class NewGameTab implements Initializable {
         }
         printView();
     }
-
-
 
     private void deleteLastLine(File file) throws IOException{
         byte b;
@@ -881,6 +861,11 @@ public class NewGameTab implements Initializable {
                 tableView.getItems().add(newRow);
             }
             else return;
+
+            if (!historyPlay) {
+                setFrame((((step-1)%2)+1) * 75, (((step-1)/2)+1) * 25);
+            }
+
         }
     }
 

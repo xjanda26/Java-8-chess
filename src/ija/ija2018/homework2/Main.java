@@ -35,7 +35,9 @@ public class Main extends Application{
                 return;
             }
 
-            window.setScene(new Scene(root, Color.TRANSPARENT));
+            Scene scene = new Scene(root, Color.TRANSPARENT);
+            scene.getStylesheets().add("ija/ija2018/homework2/view/style.css");
+            window.setScene(scene);
             window.setTitle("ija-app");
 
             window.setOnCloseRequest(e -> {
