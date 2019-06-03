@@ -13,6 +13,11 @@ import javafx.stage.Stage;
  * @author Adam Janda <xjanda26@stud.fit.vutbr.cz>
  * */
 
+/**
+ * Trieda predstavuje okno výzvy, pri zatvaraní záložiek a okna aplikácie.
+ * Obsahuje metódu display, ktorá vytvorí nové okno so správou a možnosťou odpovedať áno alebo nie.
+ * Vytvorené okno sa dá zatvoriť jedine odpovedaním.
+ */
 public class ConfirmBox {
     static boolean answer;
 

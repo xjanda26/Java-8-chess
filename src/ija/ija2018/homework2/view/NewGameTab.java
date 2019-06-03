@@ -11,10 +11,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -37,7 +34,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Callback;
 import javafx.util.Duration;
 
 import java.io.*;
@@ -62,7 +58,6 @@ public class NewGameTab implements Initializable {
     @FXML public TableColumn<HistoryTable,String> colTurn;
     @FXML public TableColumn<HistoryTable,String> colWhite;
     @FXML public TableColumn<HistoryTable,String> colBlack;
-    private ObservableList<HistoryTable> list;
 
     @FXML Rectangle kingW;
 
@@ -444,6 +439,12 @@ public class NewGameTab implements Initializable {
         kingB.setOpacity(0.0d);
     }
 
+    /**
+     *
+     * Metóda nastavuje pravidlo, ktorá farba je na rade. Nastavuje hodnotu krokov, podľa záznamov
+     * v zdrojovom súbore.
+     * @throws IOException
+     */
     private void turnRule() throws IOException{
         BufferedReader input = new BufferedReader(new FileReader(selectedFile));
         String last = null, line;
@@ -523,19 +524,37 @@ public class NewGameTab implements Initializable {
         frame.setOpacity(0.0d);
     }
 
+    /**
+     * Getter hry
+     * @return Game
+     */
     public Game getGame(){
         return this.game;
     }
 
+    /**
+     * Getter zdrojového súboru ťahov
+     * @return File
+     */
     public File getSelectedFile(){
         return this.selectedFile;
     }
 
+    /**
+     * Nastavuje koordinácie orámovania, ktoré ukazuje na aktuálny krok, v ktorom sa nachádza vykreslená hra.
+     * @param column
+     * @param row
+     */
     public void setFrame (int column, int row){
         frame.setOpacity(1.0d);
         this.frame.setLayoutX(column);
         this.frame.setLayoutY(row);
     }
+
+    /**
+     * Metóda implementuje udalosť pri kliknutí na bunku v tabuľke vypísaných ťahov.
+     * @param event
+     */
 
     @FXML public void tableOnClick(MouseEvent event){
         TablePosition tablePosition = tableView.getSelectionModel().getSelectedCells().get(0);
@@ -572,6 +591,10 @@ public class NewGameTab implements Initializable {
 
     }
 
+    /**
+     * Vymaže obsah súboru a uloží celý obsah premennej, ktorá obsahuje dáta o histórii ťahov.
+     * @throws IOException
+     */
     private void writeIntoFile() throws IOException{
         PrintWriter writer = new PrintWriter(this.selectedFile);
         writer.print("");
@@ -592,51 +615,9 @@ public class NewGameTab implements Initializable {
      * Prenastaví pravidlo, ktorá farba je na ťahu.
      *
      * Ak nebol spravený žiadny krok alebo hra sa vrátila do východzieho bodu, nič nerobí.
+     * @throws IOException
      * */
     @FXML public void actionUndo() throws IOException{
-       /* if (step > 0){
-            step--;
-            game.undo();
-            undoCounter++;
-
-            if (undoCounter%2 == 0){
-                realStep--;
-                byte b;
-                RandomAccessFile f = new RandomAccessFile(selectedFile, "rw");
-                long length = f.length();
-                if (length != 0) {
-                    do {
-                        length -= 1;
-                        f.seek(length);
-                        b = f.readByte();
-                    } while (b != 10 && length > 0);
-                    f.setLength(length);
-                }
-                f.close();
-            }
-
-            boolean tmp;
-
-            tmp = movingWhite;
-            movingWhite = movingBlack;
-            movingBlack = tmp;
-            resetFigures();
-            setFiguresOnBoard();
-
-            if (movingWhite){
-                realStep--;
-                BufferedWriter writer = new BufferedWriter(new FileWriter(selectedFile, true));
-                writer.append("\n");
-                writer.close();
-
-            }else {
-                try {
-                    copyLastLine();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }*/
         if (!historyPlay){
             if (step > 0){
 
@@ -676,6 +657,10 @@ public class NewGameTab implements Initializable {
         }
     }
 
+    /**
+     * Vykreslí hraciu plochu do počiatočnej podoby. Ak je zapnuté automatické prehrávanie, prekresluje hraciu
+     * dosku od najnovšieho ťahu k najstaršiemu.
+     */
     @FXML public void actionBegin() {
         if (!historyPlay){
             historyPlay = true;
@@ -719,6 +704,10 @@ public class NewGameTab implements Initializable {
         }
     }
 
+    /**
+     * Spraví krok späť a vykreslí hraciu plochu. Ak je na začiatku prehrávania, nerobí nič.
+     * Pri kroku späť, upraví pravidlo ťahu farieb.
+     */
     @FXML public void actionStepBack() {
         if (!historyPlay){
             historyPlay = true;
@@ -744,6 +733,10 @@ public class NewGameTab implements Initializable {
         }
     }
 
+    /**
+     * Spraví krok vpred a vykreslí hraciu plochu. Ak je na konci prehrávania, ukončí prehrávanie.
+     * Pri kroku vpred, upraví pravidlo ťahu farieb.
+     */
     @FXML public void actionStepForward() {
         if (historyPlay) {
             this.game.redo();
@@ -765,6 +758,12 @@ public class NewGameTab implements Initializable {
         }
     }
 
+    /**
+     * Vykreslí hraciu plochu do poslednej podoby, ktorá je zaznamenaná. Ak je zapnuté automatické
+     * prehrávanie, prekresluje hraciu dosku od miesta prehrávanie do konca prehrávania.
+     *
+     * Po vykreslení ukončí prehrávanie.
+     */
     @FXML public void actionStepEnd() {
         if (historyPlay){
             historyPlay = false;
@@ -806,6 +805,9 @@ public class NewGameTab implements Initializable {
         }
     }
 
+    /**
+     * Nastavuje možnosť automatického prehrávania.
+     */
     @FXML public void actionAutoBtn(){
         if (autoPlay){
             btnSwitch.setText("Automatic Off");
@@ -840,21 +842,6 @@ public class NewGameTab implements Initializable {
         frame.setOpacity(0.0d);
     }
 
-    private void deleteLastLine(File file) throws IOException{
-        byte b;
-        RandomAccessFile f = new RandomAccessFile(file, "rw");
-        long length = f.length();
-        if (length != 0) {
-            do {
-                length -= 1;
-                f.seek(length);
-                b = f.readByte();
-            } while (b != 10 && length > 0);
-            f.setLength(length);
-        }
-        f.close();
-    }
-
     /**
      *
      * Metóda pre vypísanie histórie krokov do ListView v GUI aplikácie.
@@ -886,30 +873,6 @@ public class NewGameTab implements Initializable {
 
         }
     }
-
-    /**
-     *
-     * Metóda implementuje vpisovanie do súboru s históriou krokov.
-     * PO novom vpísaní presunie kurzor na nový riadok.
-     *
-     * @param str   Reťazec, ktorý sa má vypísať do súboru
-     * */
-    /*private void writeIntoFile(String str) throws IOException{
-        String[] lines = str.split("\n");
-
-        if (!movingBlack){
-            deleteLastLine(this.selectedFile);
-
-            BufferedWriter writer = new BufferedWriter(new FileWriter(this.selectedFile, true));
-            writer.append(lines[lines.length - 1]);
-            writer.newLine();
-            writer.close();
-        } else if (!movingWhite){
-            BufferedWriter writer = new BufferedWriter(new FileWriter(this.selectedFile, true));
-            writer.append(lines[lines.length - 1]);
-            writer.close();
-        }
-    }*/
 
     /**
      *
@@ -1128,6 +1091,17 @@ public class NewGameTab implements Initializable {
         }
     }
 
+    /**
+     * Metóda odstráni figúrku, ktorá sa nachádza na súradniciah x a y.
+     *
+     * Pri odstránení vráti hodnotu true, inak false.
+     *
+     * @param list List figúrok rovnakého typu a farby
+     * @param x     X-ová súradnica cieľového poľa
+     * @param y     Y-ová súradnica cieľového poľa
+     * @return true/false
+     * @used clearFigure
+     */
     private boolean clearFigure(List<Rectangle> list, int x, int y){
         final Timeline timeline = new Timeline();
         timeline.setCycleCount(1);
@@ -1152,6 +1126,11 @@ public class NewGameTab implements Initializable {
         return false;
     }
 
+    /**
+     * Prechádza všetky figúrky a hľadá figúrku so súradnicami x a y.
+     * @param x
+     * @param y
+     */
     public void kickOutFigure(int x, int y){
         final Timeline timeline = new Timeline();
         timeline.setCycleCount(1);

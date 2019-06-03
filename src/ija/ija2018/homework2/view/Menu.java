@@ -14,10 +14,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-
 import java.io.File;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
@@ -46,11 +44,27 @@ public class Menu implements Initializable {
     private File selectedFile = null;
     private File file;
 
+    /**
+     * Inicializuje výber zo záložiek.
+     * @param location
+     * @param recources
+     */
     @Override
     public void initialize (URL location, ResourceBundle recources){
           selectionModel = tabPane.getSelectionModel();
     }
 
+    /**
+     * Vytvorí novú hru po spustení. Nová hra sa vytvorí v novej záložke a pridelí sa dočasný súbor, kde sa budú
+     * ukladať záznami ťahov.
+     *
+     * Pokiaľ hra má pridelený zdrojový súbor, súbor uź je pracovný.
+     *
+     * Po zatvorení záložky s hrou, vypíše upozornenie s možnosťou uloženia hry. Pokiaľ uźívateľ bude chcieť uložiť
+     * postup hry, otvorí sa dialog a môže uložiť postup hry do súboru, na miesto kde si zvolí. V inakšom príapde je
+     * pracovný súbor vymazaný.
+     * @param event
+     */
     @FXML public void newGame (ActionEvent event) {
             tabNewGame = new Tab();
 
@@ -148,6 +162,15 @@ public class Menu implements Initializable {
             selectionModel.selectLast();
         }
 
+    /**
+     * Metóda vytvorí dialog, v ktorom si uživateľ vyberie záznam, ktorý bude chcieť nastaviť ako zdrojový.
+     * Obsah z neho sa prekopíruje do nového súboru a k práci sa používa tento novovytvorený súbor.
+     *
+     * Po prekopírovaní obsahu je ukazovateľ na zdrojový súbor zrušený.
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML public void loadGame(ActionEvent event) throws IOException {
         FileChooser fc = new FileChooser();
         fc.setInitialDirectory(new File("lib"));
@@ -171,6 +194,12 @@ public class Menu implements Initializable {
         newGame(event);
     }
 
+    /**
+     * Prekopíruje obsah zdrojového súboru do súboru cieľového.
+     *
+     * @param source Zdrojový súbor
+     * @param destination Cieľový súbor
+     */
     private void saveFile(File source, File destination){
         try {
             Scanner scan = new Scanner(source);

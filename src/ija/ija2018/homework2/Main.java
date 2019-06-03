@@ -1,6 +1,5 @@
 package ija.ija2018.homework2;
 
-
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.fxml.FXMLLoader;

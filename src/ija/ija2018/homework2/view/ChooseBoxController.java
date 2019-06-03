@@ -52,6 +52,11 @@ public class ChooseBoxController implements Initializable {
     private int desCol;
     private int desRow;
 
+    /**
+     * Inicializuje obrázky pre tlačítka výberu nových figúrok.
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         imageWRook.setImage(new Image("file:lib/white-rook.png"));
@@ -66,6 +71,11 @@ public class ChooseBoxController implements Initializable {
         imageBQueen.setImage(new Image("file:lib/black-queen.png"));
     }
 
+    /**
+     * Implementácia po slačení tlačítka pri výbere figúrky bielej veže.
+     * Po pridelení novej figúrky do hracej plochy, zatvorí okno výberu.
+     * @param event
+     */
     @FXML public void actionWRook (ActionEvent event){
         if (figure.getColor() == Field.Color.W) {
             Figure newFigure = new Rook(Field.Color.W);
@@ -78,6 +88,11 @@ public class ChooseBoxController implements Initializable {
         }
     }
 
+    /**
+     * Implementácia po slačení tlačítka pri výbere figúrky biele jazdca.
+     * Po pridelení novej figúrky do hracej plochy, zatvorí okno výberu.
+     * @param event
+     */
     @FXML public void actionWKnight (ActionEvent event){
         if (figure.getColor() == Field.Color.W) {
             Figure newFigure = new Knight(Field.Color.W);
@@ -90,6 +105,11 @@ public class ChooseBoxController implements Initializable {
 
     }
 
+    /**
+     * Implementácia po slačení tlačítka pri výbere figúrky bieleho strelca.
+     * Po pridelení novej figúrky do hracej plochy, zatvorí okno výberu.
+     * @param event
+     */
     @FXML public void actionWBishop (ActionEvent event){
         if (figure.getColor() == Field.Color.W) {
             Figure newFigure = new Bishop(Field.Color.W);
@@ -101,6 +121,11 @@ public class ChooseBoxController implements Initializable {
         }
     }
 
+    /**
+     * Implementácia po slačení tlačítka pri výbere figúrky bielej kráľovnej.
+     * Po pridelení novej figúrky do hracej plochy, zatvorí okno výberu.
+     * @param event
+     */
     @FXML public void actionWQueen (ActionEvent event){
         if (figure.getColor() == Field.Color.W) {
             Figure newFigure = new Queen(Field.Color.W);
@@ -113,6 +138,11 @@ public class ChooseBoxController implements Initializable {
 
     }
 
+    /**
+     * Implementácia po slačení tlačítka pri výbere figúrky čiernej veže.
+     * Po pridelení novej figúrky do hracej plochy, zatvorí okno výberu.
+     * @param event
+     */
     @FXML public void actionBRook (ActionEvent event){
         if (figure.getColor() == Field.Color.B) {
             Figure newFigure = new Rook(Field.Color.B);
@@ -124,6 +154,11 @@ public class ChooseBoxController implements Initializable {
         }
     }
 
+    /**
+     * Implementácia po slačení tlačítka pri výbere figúrky čierneho jazdca.
+     * Po pridelení novej figúrky do hracej plochy, zatvorí okno výberu.
+     * @param event
+     */
     @FXML public void actionBKnight (ActionEvent event){
         if (figure.getColor() == Field.Color.B) {
             Figure newFigure = new Knight(Field.Color.B);
@@ -135,6 +170,11 @@ public class ChooseBoxController implements Initializable {
         }
     }
 
+    /**
+     * Implementácia po slačení tlačítka pri výbere figúrky čierneho strelca.
+     * Po pridelení novej figúrky do hracej plochy, zatvorí okno výberu.
+     * @param event
+     */
     @FXML public void actionBBishop (ActionEvent event){
         if (figure.getColor() == Field.Color.B) {
             Figure newFigure = new Bishop(Field.Color.B);
@@ -146,6 +186,11 @@ public class ChooseBoxController implements Initializable {
         }
     }
 
+    /**
+     * Implementácia po slačení tlačítka pri výbere figúrky čiernej kráľovnej.
+     * Po pridelení novej figúrky do hracej plochy, zatvorí okno výberu.
+     * @param event
+     */
     @FXML public void actionBQueen (ActionEvent event){
         if (figure.getColor() == Field.Color.B) {
             Figure newFigure = new Queen(Field.Color.B);
@@ -157,6 +202,14 @@ public class ChooseBoxController implements Initializable {
         }
     }
 
+    /**
+     * Nastaví dáta hracej plochy, na ktorej zmena má byť vykonaná, figúrky na miesto ktorej má byť nastavená nová
+     * a súradnice, na ktoré má byť nová figúrka postavená.
+     * @param board
+     * @param movingFigure
+     * @param col
+     * @param row
+     */
     public void setChangeFigure (Board board, Figure movingFigure, int col, int row){
         this.board = board;
         this.figure = movingFigure;
