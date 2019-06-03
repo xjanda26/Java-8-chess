@@ -1361,7 +1361,8 @@ public class ChessGame implements Game{
 			catch (ArrayIndexOutOfBoundsException e) {
 				e.printStackTrace();
 				// undo vsetko a skonci chybou
-				for (int i = 0; i<moves.size();i++) {
+				int tmp = moves.size();
+				for (int i = 0; i<tmp;i++) {
 					undo();
 				}
 				moves.clear();
@@ -1770,7 +1771,7 @@ public class ChessGame implements Game{
 								if ((returnCode == 1 && take_x.isEmpty()) || (returnCode == 2 && !take_x.isEmpty())) {
 	        		   			// mozeme ho posunut, tak ho posunieme aj realne
 	        		   				move(board.getField(from_column, from_row).get(),board.getField(to_column, to_row));
-	        		   				if (check_mate.isEmpty()) {
+	        		   				if (!check_mate.isEmpty()) {
 	        		   					if (check_mate == "+") {
 	        		   						if (!whiteInCheck()) {
 	        		   							throw new WrongMoveException("Pohyb "+line+" nedostane krala do sachu");
