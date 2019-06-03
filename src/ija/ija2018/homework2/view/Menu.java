@@ -17,9 +17,13 @@ import javafx.stage.Stage;
 
 import java.io.File;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 import ija.ija2018.homework2.game.WrongMoveException;
 
@@ -44,9 +48,7 @@ public class Menu implements Initializable {
 
     @Override
     public void initialize (URL location, ResourceBundle recources){
-        //btnNewGame.setOnMouseClicked(addTabNewGame);
-
-        selectionModel = tabPane.getSelectionModel();
+          selectionModel = tabPane.getSelectionModel();
     }
 
     @FXML public void newGame (ActionEvent event) {
@@ -70,19 +72,37 @@ public class Menu implements Initializable {
                     file.createNewFile();
 
                     newTab.setFile(file);
+                    file = null;
 
                     tabNewGame.setContent(root);
 
                     tabNewGame.setOnCloseRequest(e -> {
                         gameCounter--;
-                        file.delete();
+
+                        Boolean answer = ConfirmBox.display("Ukončenie hry","Chcete uložiť hru?");
+                        if(answer) {
+                            FileChooser fileChooser = new FileChooser();
+
+                            //Set extension filter
+                            fileChooser.setInitialDirectory(new File("lib"));
+                            FileChooser.ExtensionFilter extFilter =
+                                    new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+                            fileChooser.getExtensionFilters().add(extFilter);
+
+                            //Show save file dialog
+                            Stage stage = (Stage)  guiWindow.getScene().getWindow();
+                            File file = fileChooser.showSaveDialog(stage);
+
+                            if(file != null){
+                                saveFile(newTab.getSelectedFile(), file);
+                            }
+                        }
+
+                        newTab.getSelectedFile().delete();
                     });
                 }
                 else {
-                	if(newTab.getGame().loadgame(selectedFile))
-                		System.out.println("podarilo sa nacitat hru");
-                	else 
-                		System.err.println("nepodarilo sa nacitat hru");
+
                 	newTab.resetAndSet();
                     newTab.setFile(selectedFile);
                     selectedFile = null;
@@ -91,13 +111,35 @@ public class Menu implements Initializable {
 
                     tabNewGame.setOnCloseRequest(e -> {
                         gameCounter--;
+
+                        Boolean answer = ConfirmBox.display("Ukončenie hry","Chcete uložiť hru?");
+                        if(answer) {
+                            FileChooser fileChooser = new FileChooser();
+
+                            //Set extension filter
+                            fileChooser.setInitialDirectory(new File("lib"));
+                            FileChooser.ExtensionFilter extFilter =
+                                    new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+                            fileChooser.getExtensionFilters().add(extFilter);
+
+                            //Show save file dialog
+                            Stage stage = (Stage)  guiWindow.getScene().getWindow();
+                            File file = fileChooser.showSaveDialog(stage);
+
+                            if(file != null){
+                                saveFile(newTab.getSelectedFile(), file);
+                            }
+                        }
+
+                        newTab.getSelectedFile().delete();
+
                         selectedFile = null;
                     });
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (WrongMoveException e1) {
-				// TODO Pridat hlasku o zle zapisanej hre
+
 				e1.printStackTrace();
 			}
 
@@ -116,6 +158,39 @@ public class Menu implements Initializable {
         if (selectedFile == null) {
             return;
         }
+
+        String path = "lib/loadgame" + gameCounter + ".txt";
+        file = new File(path);
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+
+        saveFile(selectedFile,file);
+
+        selectedFile = file;
+
         newGame(event);
+    }
+
+    private void saveFile(File source, File destination){
+        try {
+            Scanner scan = new Scanner(source);
+            ArrayList<String> listS = new ArrayList<>();
+
+            while (scan.hasNextLine()) {
+                listS.add(scan.nextLine());
+            }
+            scan.close();
+
+            PrintWriter writer = new PrintWriter(destination);
+
+            for (String str : listS){
+                writer.print(str);
+                writer.print("\n");
+            }
+            writer.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
     }
 }

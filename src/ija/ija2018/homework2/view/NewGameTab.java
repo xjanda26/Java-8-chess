@@ -532,6 +532,10 @@ public class NewGameTab implements Initializable {
         return this.game;
     }
 
+    public File getSelectedFile(){
+        return this.selectedFile;
+    }
+
     public void setFrame (int column, int row){
         frame.setOpacity(1.0d);
         this.frame.setLayoutX(column);
@@ -539,8 +543,6 @@ public class NewGameTab implements Initializable {
     }
 
     @FXML public void tableOnClick(MouseEvent event){
-        System.out.println("Table click");
-
         TablePosition tablePosition = tableView.getSelectionModel().getSelectedCells().get(0);
         int row = tablePosition.getRow();
         int col = tablePosition.getColumn();
@@ -726,6 +728,12 @@ public class NewGameTab implements Initializable {
                 stepPlay--;
                 resetFigures();
                 setFiguresOnBoard();
+
+                boolean tmp;
+                tmp = movingWhite;
+                movingWhite = movingBlack;
+                movingBlack = tmp;
+
                 if (stepPlay == 0) frame.setOpacity(0.0d);
                 else setFrame((((stepPlay-1)%2)+1) * 75, (((stepPlay-1)/2)+1) * 25);
             }
@@ -738,6 +746,12 @@ public class NewGameTab implements Initializable {
             stepPlay++;
             resetFigures();
             setFiguresOnBoard();
+
+            boolean tmp;
+            tmp = movingWhite;
+            movingWhite = movingBlack;
+            movingBlack = tmp;
+
             setFrame((((stepPlay-1)%2)+1) * 75, (((stepPlay-1)/2)+1) * 25);
             frame.setOpacity(1.0d);
 
@@ -809,17 +823,16 @@ public class NewGameTab implements Initializable {
     public void setFile(File file) throws IOException, WrongMoveException {
         this.selectedFile = file;
         if (selectedFile.length() != 0) {
-            System.out.println("Spustam load");
-
-            if (this.selectedFile.exists() ) System.out.println("Existuje");
-            else System.out.println("Neexistuje");
-
             game.loadgame(this.selectedFile);
             resetFigures();
             setFiguresOnBoard();
-            turnRule();
+            //turnRule();
+            this.step = 0;
+            setFrame((((step-1)%2)+1) * 75, (((step-1)/2)+1) * 25);
+
         }
         printView();
+        frame.setOpacity(0.0d);
     }
 
     private void deleteLastLine(File file) throws IOException{
@@ -903,30 +916,24 @@ public class NewGameTab implements Initializable {
      * */
     @FXML
     public void figureStarts(MouseEvent event) {
-        if (!historyPlay){
-            movingFigure = board.getField(pickIdenxX((int)(((Rectangle)(event.getSource())).getLayoutX())), pickIdenxY((int)(((Rectangle)(event.getSource())).getLayoutY()))).get();
-            if (movingFigure.getColor() == Field.Color.W && movingWhite){
-                ((Rectangle)(event.getSource())).setOpacity(0.4d);
-                offset = new Point2D(event.getX(), event.getY());
+        movingFigure = board.getField(pickIdenxX((int)(((Rectangle)(event.getSource())).getLayoutX())), pickIdenxY((int)(((Rectangle)(event.getSource())).getLayoutY()))).get();
+        if (movingFigure.getColor() == Field.Color.W && movingWhite){
+            ((Rectangle)(event.getSource())).setOpacity(0.4d);
+            offset = new Point2D(event.getX(), event.getY());
 
-                previousPlace.setOpacity(1.0d);
-                previousPlace.setLayoutX( ((Rectangle)(event.getSource())).getLayoutX() );
-                previousPlace.setLayoutY( ((Rectangle)(event.getSource())).getLayoutY() );
-                movePass = true;
-            }
-            else if (movingFigure.getColor() == Field.Color.B && movingBlack){
-                ((Rectangle)(event.getSource())).setOpacity(0.4d);
-                offset = new Point2D(event.getX(), event.getY());
+            previousPlace.setOpacity(1.0d);
+            previousPlace.setLayoutX( ((Rectangle)(event.getSource())).getLayoutX() );
+            previousPlace.setLayoutY( ((Rectangle)(event.getSource())).getLayoutY() );
+            movePass = true;
+        }
+        else if (movingFigure.getColor() == Field.Color.B && movingBlack){
+            ((Rectangle)(event.getSource())).setOpacity(0.4d);
+            offset = new Point2D(event.getX(), event.getY());
 
-                previousPlace.setOpacity(1.0d);
-                previousPlace.setLayoutX( ((Rectangle)(event.getSource())).getLayoutX() );
-                previousPlace.setLayoutY( ((Rectangle)(event.getSource())).getLayoutY() );
-                movePass = true;
-            }
-            else {
-                movePass = false;
-                event.consume();
-            }
+            previousPlace.setOpacity(1.0d);
+            previousPlace.setLayoutX( ((Rectangle)(event.getSource())).getLayoutX() );
+            previousPlace.setLayoutY( ((Rectangle)(event.getSource())).getLayoutY() );
+            movePass = true;
         }
         else {
             movePass = false;
@@ -1020,6 +1027,30 @@ public class NewGameTab implements Initializable {
                 Point2D rectScene =r.localToScene(r.getX(), r.getY());
                 Point2D parent = boardPane.sceneToLocal(rectScene.getX(), rectScene.getY());
 
+                if (historyPlay){
+                    int dif = step - stepPlay;
+                    if (dif > 0){
+                        System.out.println("menim zapis hry dif: " + dif);
+                        historyPlay = false;
+                        for (int i = 0; i < dif; i++){System.out.println("loop: " + i);
+                            this.game.redo();
+                        }
+
+                        for (int i = 0; i < dif; i++){
+                            this.game.undo();
+                        }
+
+                        step = stepPlay;
+
+                        try {
+                            writeIntoFile();
+                        } catch (IOException e){
+                            e.printStackTrace();
+                        }
+
+                    } else System.out.println("lands rozdiel je mensi ako ");
+                }
+
                 kickOutFigure( pickIdenxX( (int)(((Rectangle)(event.getSource())).getLayoutX())), pickIdenxY( (int)(((Rectangle)(event.getSource())).getLayoutY())) );
 
                 timeline.getKeyFrames().add(
@@ -1033,7 +1064,6 @@ public class NewGameTab implements Initializable {
                 );
                 previousPlace.setOpacity(0.0d);
                 step++;
-                //System.out.println("Step je :" + step);// TODO vymaz
 
                 //Pesiak na druhom konci hracej dosky si moze zmenit figurku podla vlastneho vyberu
                 if ( ( movingFigure.getState().equals("W Pawn") &&  pickIdenxY( (int)(((Rectangle)(event.getSource())).getLayoutY())) >= 8 ) ||
@@ -1071,10 +1101,8 @@ public class NewGameTab implements Initializable {
                     movingWhite = true;
                 }
 
-                //Výpis krokovania //TODO --vypis v lands
                 try {
                     writeIntoFile();
-                    //printView();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
