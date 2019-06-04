@@ -30,4 +30,6 @@ public interface Game {
 	boolean dryUndo();
 	
 	public String getHistory();
+	
+	public void removeStepsFromIndex(int index);
 }
