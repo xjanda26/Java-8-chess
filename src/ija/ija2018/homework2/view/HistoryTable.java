@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 /**
  *
- * @Author: Adam Janda <xjanda26@stud.fit.vutbr.cz>
+ * @Author: Adam Janda xjanda26@stud.fit.vutbr.cz
  */
 
 

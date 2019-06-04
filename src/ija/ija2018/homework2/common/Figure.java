@@ -16,13 +16,13 @@ public interface Figure {
     //prebrane z fora IJA
     /**
      * Vrátí řetězec reprezentující stav figury..
-     * Řetězec je vytvořen podle následujícího formátu: "F[C]col:row",.
+     * Retezec je vytvoren podle následujícího formátu: "F[C]col:row",.
      * kde F je symbol figury (P - pěšec, V - věž),.
      * C je barva figury (W - bílá, B - černá)
      * a col a row jsou indexy pole (čísla sloupce a řádku), na kterém je figura umístěna.
      * Příklad: "P[W]4:2".
      * Pokud není figura na žádném poli, je tato část prázdná, např. pouze "V[B]".
-     * @return Řetězec reprezentující stav figury.
+     * @return Retězec reprezentující stav figury.
      */
     public String getState();
     public void setCoords(int x,int y);

@@ -27,7 +27,7 @@ import ija.ija2018.homework2.game.WrongMoveException;
 
 /**
  *
- * @author Adam Janda <xjanda26@stud.fit.vutbr.cz>
+ * @author Adam Janda xjanda26@stud.fit.vutbr.cz
  * */
 
 
@@ -47,8 +47,8 @@ public class Menu implements Initializable {
 
     /**
      * Inicializuje výber zo záložiek.
-     * @param location
-     * @param recources
+     * @param location Lokacia
+     * @param recources Zdroje
      */
     @Override
     public void initialize (URL location, ResourceBundle recources){
@@ -64,7 +64,7 @@ public class Menu implements Initializable {
      * Po zatvorení záložky s hrou, vypíše upozornenie s možnosťou uloženia hry. Pokiaľ uźívateľ bude chcieť uložiť
      * postup hry, otvorí sa dialog a môže uložiť postup hry do súboru, na miesto kde si zvolí. V inakšom príapde je
      * pracovný súbor vymazaný.
-     * @param event
+     * @param event Udalost
      */
     @FXML public void newGame (ActionEvent event) {
             tabNewGame = new Tab();
@@ -169,8 +169,8 @@ public class Menu implements Initializable {
      *
      * Po prekopírovaní obsahu je ukazovateľ na zdrojový súbor zrušený.
      *
-     * @param event
-     * @throws IOException
+     * @param event Udalost
+     * @throws IOException IOException
      */
     @FXML public void loadGame(ActionEvent event) throws IOException {
         FileChooser fc = new FileChooser();

@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 
 /**
  *
- * @author Adam Janda <xjanda26@stud.fit.vutbr.cz>
+ * @author Adam Janda xjanda26@stud.fit.vutbr.cz
  * */
 
 public class ChooseBoxController implements Initializable {
@@ -53,8 +53,8 @@ public class ChooseBoxController implements Initializable {
 
     /**
      * Inicializuje obrázky pre tlačítka výberu nových figúrok.
-     * @param location
-     * @param resources
+     * @param location Lokacia
+     * @param resources Zdroje
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -73,7 +73,7 @@ public class ChooseBoxController implements Initializable {
     /**
      * Implementácia po slačení tlačítka pri výbere figúrky bielej veže.
      * Po pridelení novej figúrky do hracej plochy, zatvorí okno výberu.
-     * @param event
+     * @param event Udalost
      */
     @FXML public void actionWRook (ActionEvent event){
         if (figure.getColor() == Field.Color.W) {
@@ -90,7 +90,7 @@ public class ChooseBoxController implements Initializable {
     /**
      * Implementácia po slačení tlačítka pri výbere figúrky biele jazdca.
      * Po pridelení novej figúrky do hracej plochy, zatvorí okno výberu.
-     * @param event
+     * @param event Udalost
      */
     @FXML public void actionWKnight (ActionEvent event){
         if (figure.getColor() == Field.Color.W) {
@@ -107,7 +107,7 @@ public class ChooseBoxController implements Initializable {
     /**
      * Implementácia po slačení tlačítka pri výbere figúrky bieleho strelca.
      * Po pridelení novej figúrky do hracej plochy, zatvorí okno výberu.
-     * @param event
+     * @param event Udalost
      */
     @FXML public void actionWBishop (ActionEvent event){
         if (figure.getColor() == Field.Color.W) {
@@ -123,7 +123,7 @@ public class ChooseBoxController implements Initializable {
     /**
      * Implementácia po slačení tlačítka pri výbere figúrky bielej kráľovnej.
      * Po pridelení novej figúrky do hracej plochy, zatvorí okno výberu.
-     * @param event
+     * @param event Udalost
      */
     @FXML public void actionWQueen (ActionEvent event){
         if (figure.getColor() == Field.Color.W) {
@@ -140,7 +140,7 @@ public class ChooseBoxController implements Initializable {
     /**
      * Implementácia po slačení tlačítka pri výbere figúrky čiernej veže.
      * Po pridelení novej figúrky do hracej plochy, zatvorí okno výberu.
-     * @param event
+     * @param event Udalost
      */
     @FXML public void actionBRook (ActionEvent event){
         if (figure.getColor() == Field.Color.B) {
@@ -156,7 +156,7 @@ public class ChooseBoxController implements Initializable {
     /**
      * Implementácia po slačení tlačítka pri výbere figúrky čierneho jazdca.
      * Po pridelení novej figúrky do hracej plochy, zatvorí okno výberu.
-     * @param event
+     * @param event Udalost
      */
     @FXML public void actionBKnight (ActionEvent event){
         if (figure.getColor() == Field.Color.B) {
@@ -172,7 +172,7 @@ public class ChooseBoxController implements Initializable {
     /**
      * Implementácia po slačení tlačítka pri výbere figúrky čierneho strelca.
      * Po pridelení novej figúrky do hracej plochy, zatvorí okno výberu.
-     * @param event
+     * @param event Udalost
      */
     @FXML public void actionBBishop (ActionEvent event){
         if (figure.getColor() == Field.Color.B) {
@@ -188,7 +188,7 @@ public class ChooseBoxController implements Initializable {
     /**
      * Implementácia po slačení tlačítka pri výbere figúrky čiernej kráľovnej.
      * Po pridelení novej figúrky do hracej plochy, zatvorí okno výberu.
-     * @param event
+     * @param event Udalost
      */
     @FXML public void actionBQueen (ActionEvent event){
         if (figure.getColor() == Field.Color.B) {
@@ -204,10 +204,10 @@ public class ChooseBoxController implements Initializable {
     /**
      * Nastaví dáta hracej plochy, na ktorej zmena má byť vykonaná, figúrky na miesto ktorej má byť nastavená nová
      * a súradnice, na ktoré má byť nová figúrka postavená.
-     * @param board
-     * @param movingFigure
-     * @param col
-     * @param row
+     * @param board Hracia doska
+     * @param movingFigure Figurka, ktora je pohybovana
+     * @param col Stlpec
+     * @param row Riadok
      */
     public void setChangeFigure (Board board, Figure movingFigure, int col, int row){
         this.board = board;

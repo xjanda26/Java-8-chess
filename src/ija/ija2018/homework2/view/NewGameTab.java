@@ -45,7 +45,7 @@ import java.lang.*;
 
 /**
  *
- * @author Adam Janda <xjanda26@stud.fit.vutbr.cz>
+ * @author Adam Janda xjanda26@stud.fit.vutbr.cz
  * */
 
 public class NewGameTab implements Initializable {
@@ -442,7 +442,7 @@ public class NewGameTab implements Initializable {
      *
      * Metóda nastavuje pravidlo, ktorá farba je na rade. Nastavuje hodnotu krokov, podľa záznamov
      * v zdrojovom súbore.
-     * @throws IOException
+     * @throws IOException IOException
      */
     private void turnRule() throws IOException{
         BufferedReader input = new BufferedReader(new FileReader(selectedFile));
@@ -541,8 +541,8 @@ public class NewGameTab implements Initializable {
 
     /**
      * Nastavuje koordinácie orámovania, ktoré ukazuje na aktuálny krok, v ktorom sa nachádza vykreslená hra.
-     * @param column
-     * @param row
+     * @param column Stlpec
+     * @param row Riadok
      */
     public void setFrame (int column, int row){
         frame.setOpacity(1.0d);
@@ -552,7 +552,7 @@ public class NewGameTab implements Initializable {
 
     /**
      * Metóda implementuje udalosť pri kliknutí na bunku v tabuľke vypísaných ťahov.
-     * @param event
+     * @param event Udalost
      */
 
     @FXML public void tableOnClick(MouseEvent event){
@@ -600,7 +600,7 @@ public class NewGameTab implements Initializable {
 
     /**
      * Vymaže obsah súboru a uloží celý obsah premennej, ktorá obsahuje dáta o histórii ťahov.
-     * @throws IOException
+     * @throws IOException IOException
      */
     private void writeIntoFile() throws IOException{
         PrintWriter writer = new PrintWriter(this.selectedFile);
@@ -622,7 +622,7 @@ public class NewGameTab implements Initializable {
      * Prenastaví pravidlo, ktorá farba je na ťahu.
      *
      * Ak nebol spravený žiadny krok alebo hra sa vrátila do východzieho bodu, nič nerobí.
-     * @throws IOException
+     * @throws IOException IOException
      * */
     @FXML public void actionUndo() throws IOException{
         if (!historyPlay){
@@ -1008,17 +1008,17 @@ public class NewGameTab implements Initializable {
                         historyPlay = false;
 
 
-                        for (int i = 0; i < dif; i++){
+                        /*for (int i = 0; i < dif; i++){
                             this.game.redo();
                         }
 
                         this.game.undo();
                         for (int i = 0; i < dif; i++){
                             this.game.undo();
-                        }
+                        }*/
 
                         step = stepPlay;
-                        game.move(movingFigure,board.getField(pickIdenxX(( (int) ( ((Rectangle)(event.getSource())).getLayoutX() ))), pickIdenxY(( (int) (((Rectangle)(event.getSource())).getLayoutY()))) ));
+                        //game.move(movingFigure,board.getField(pickIdenxX(( (int) ( ((Rectangle)(event.getSource())).getLayoutX() ))), pickIdenxY(( (int) (((Rectangle)(event.getSource())).getLayoutY()))) ));
 
                     } historyPlay = false;
                 }
@@ -1104,7 +1104,6 @@ public class NewGameTab implements Initializable {
      * @param x     X-ová súradnica cieľového poľa
      * @param y     Y-ová súradnica cieľového poľa
      * @return true/false
-     * @used clearFigure
      */
     private boolean clearFigure(List<Rectangle> list, int x, int y){
         final Timeline timeline = new Timeline();
@@ -1131,8 +1130,8 @@ public class NewGameTab implements Initializable {
 
     /**
      * Prechádza všetky figúrky a hľadá figúrku so súradnicami x a y.
-     * @param x
-     * @param y
+     * @param x Suradnica X
+     * @param y Suradnica Y
      */
     public void kickOutFigure(int x, int y){
         final Timeline timeline = new Timeline();

@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Adam Janda <xjanda26@stud.fit.vutbr.cz>
+ * @author Adam Janda xjanda26@stud.fit.vutbr.cz
  * */
 
 
@@ -32,7 +32,7 @@ public class ConfirmBox {
         label.setText(message);
 
         //Vytvorenie dvoch tlacitok
-        Button yesButton = new Button("Áno");
+        Button yesButton = new Button("Ano");
         Button noButton = new Button("Nie");
 
         yesButton.setOnAction(e -> {

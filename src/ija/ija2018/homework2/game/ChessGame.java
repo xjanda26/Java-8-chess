@@ -22,8 +22,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.hamcrest.core.IsInstanceOf;
-
 import ija.ija2018.homework2.common.Field;
 import ija.ija2018.homework2.common.Figure;
 import ija.ija2018.homework2.common.Game;
