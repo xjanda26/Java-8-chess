@@ -22,6 +22,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.hamcrest.core.IsInstanceOf;
+
 import ija.ija2018.homework2.common.Field;
 import ija.ija2018.homework2.common.Figure;
 import ija.ija2018.homework2.common.Game;
@@ -60,7 +62,7 @@ public class ChessGame implements Game{
     Set<Queen> whiteQueens;
     Set<Queen> blackQueens;
     
-    private int actualMove = -1; 
+    public int actualMove = -1; 
     
     private Figure toChange = new Rook(Color.W);
     //int fromX,fromY, toX, toY;
@@ -232,6 +234,13 @@ public class ChessGame implements Game{
     	this.toChange=figure;
     }
 
+    public void removeStepsFromIndex(int index) {
+    	int tmp = moves.size()-1;
+    	for (int i = tmp; i> index;i-- ) {
+    		moves.remove(i);
+    	}
+    }
+    
     @Override
     public boolean move(Figure figure, Field field) {
     	boolean returnCode;
@@ -300,6 +309,7 @@ public class ChessGame implements Game{
     	    			int toX = field.getCol();
     	    			int toY = field.getRow();
     	    			Figure deleted = null;
+    	    			removeStepsFromIndex(actualMove);
     	    			moves.add(new HistoryMove(deleted,null,figure,board.getField(fromX, fromY),board.getField(toX, toY),board));
     	    			if (toChange !=null && (toY==1 || toY==8)) {
     	    				moves.get(moves.size()-1).changed=toChange;
@@ -329,6 +339,7 @@ public class ChessGame implements Game{
 	    			int toX = field.getCol();
 	    			int toY = field.getRow();
 	    			Figure deleted = null;
+	    			removeStepsFromIndex(actualMove);
 	    			moves.add(new HistoryMove(deleted,null,figure,board.getField(fromX, fromY),board.getField(toX, toY),board));
 	    			if (toChange !=null && (toY==1 || toY==8)) {
 	    				moves.get(moves.size()-1).changed=toChange;
@@ -358,6 +369,7 @@ public class ChessGame implements Game{
 	    			Figure deleted = neighbors.get(key).get();
 	    			int deletedFromX = neighbors.get(key).get().getCol();
 	    			int deletedFromY = neighbors.get(key).get().getRow();
+	    			removeStepsFromIndex(actualMove);
 	    			moves.add(new HistoryMove(deleted,board.getField(deletedFromX, deletedFromY),figure,board.getField(fromX, fromY),board.getField(toX, toY),board));
 	    			// setting figure to new field
 	    			if (toChange !=null && (toY==1 || toY==8)) {
@@ -408,6 +420,7 @@ public class ChessGame implements Game{
     			int toX = field.getCol();
     			int toY = field.getRow();
     			Figure deleted = null;
+    			removeStepsFromIndex(actualMove);
     			moves.add(new HistoryMove(deleted,null,figure,board.getField(fromX, fromY),board.getField(toX, toY),board));
     			// setting figure to new field
 				field.setFigure(figure);
@@ -422,6 +435,7 @@ public class ChessGame implements Game{
     			int toX = field.getCol();
     			int toY = field.getRow();
     			Figure deleted = field.get();
+    			removeStepsFromIndex(actualMove);
     			moves.add(new HistoryMove(deleted,board.getField(deleted.getCol(), deleted.getRow()),figure,board.getField(fromX, fromY),board.getField(toX, toY),board));
     			// setting figure to new field
 				field.setFigure(figure);
@@ -467,6 +481,7 @@ public class ChessGame implements Game{
 			int toX = field.getCol();
 			int toY = field.getRow();
 			Figure deleted = field.get();
+			removeStepsFromIndex(actualMove);
 			moves.add(new HistoryMove(deleted,field,figure,board.getField(fromX, fromY),board.getField(toX, toY),board));
 			// setting figure to new field
 			field.setFigure(figure);
@@ -483,6 +498,7 @@ public class ChessGame implements Game{
 			int toX = field.getCol();
 			int toY = field.getRow();
 			Figure deleted = field.get();
+			removeStepsFromIndex(actualMove);
 			moves.add(new HistoryMove(deleted,null,figure,board.getField(fromX, fromY),board.getField(toX, toY),board));
 			// setting figure to new field
 			field.setFigure(figure);
@@ -552,6 +568,7 @@ public class ChessGame implements Game{
 			int toX = field.getCol();
 			int toY = field.getRow();
 			Figure deleted = field.get();
+			removeStepsFromIndex(actualMove);
 			moves.add(new HistoryMove(deleted,field,figure,board.getField(fromX, fromY),board.getField(toX, toY),board));
 			// setting figure to new field
 			field.setFigure(figure);
@@ -568,6 +585,7 @@ public class ChessGame implements Game{
 			int toX = field.getCol();
 			int toY = field.getRow();
 			Figure deleted = field.get();
+			removeStepsFromIndex(actualMove);
 			moves.add(new HistoryMove(deleted,null,figure,board.getField(fromX, fromY),board.getField(toX, toY),board));
 			// setting figure to new field
 			field.setFigure(figure);
@@ -654,6 +672,7 @@ public class ChessGame implements Game{
 			int toX = field.getCol();
 			int toY = field.getRow();
 			Figure deleted = field.get();
+			removeStepsFromIndex(actualMove);
 			moves.add(new HistoryMove(deleted,field,figure,board.getField(fromX, fromY),board.getField(toX, toY),board));
 			// setting figure to new field
 			field.setFigure(figure);
@@ -670,6 +689,7 @@ public class ChessGame implements Game{
 			int toX = field.getCol();
 			int toY = field.getRow();
 			Figure deleted = field.get();
+			removeStepsFromIndex(actualMove);
 			moves.add(new HistoryMove(deleted,null,figure,board.getField(fromX, fromY),board.getField(toX, toY),board));
 			// setting figure to new field
 			field.setFigure(figure);
@@ -774,6 +794,7 @@ public class ChessGame implements Game{
 				int toX = field.getCol();
 				int toY = field.getRow();
 				Figure deleted = field.get();
+				removeStepsFromIndex(actualMove);
 				moves.add(new HistoryMove(deleted,null,figure,board.getField(fromX, fromY),board.getField(toX, toY),board));
 				// setting figure to new field
 				field.setFigure(figure);
@@ -787,6 +808,7 @@ public class ChessGame implements Game{
 				int toX = field.getCol();
 				int toY = field.getRow();
 				Figure deleted = field.get();
+				removeStepsFromIndex(actualMove);
 				moves.add(new HistoryMove(deleted,field,figure,board.getField(fromX, fromY),board.getField(toX, toY),board));
 				// setting figure to new field
 				field.setFigure(figure);
