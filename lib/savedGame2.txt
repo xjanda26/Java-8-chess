@@ -1,0 +1,4 @@
+1. d2d4 e7e5
+2. d4d5 c7c6
+3. d5xc6 d7d5
+4. c6xb7 Sc8d7

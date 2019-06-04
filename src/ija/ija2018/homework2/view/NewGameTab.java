@@ -708,6 +708,8 @@ public class NewGameTab implements Initializable {
                 if (stepPlay == 0) frame.setOpacity(0.0d);
                 else setFrame((((stepPlay-1)%2)+1) * 75, (((stepPlay-1)/2)+1) * 25);
             }
+            movingWhite = true;
+            movingBlack = false;
         }
     }
 
@@ -788,6 +790,10 @@ public class NewGameTab implements Initializable {
                                         game.redo();
                                         resetAndSet();
                                         setFrame((((stepPlay-1)%2)+1) * 75, (((stepPlay-1)/2)+1) * 25);
+
+                                        boolean tmp = movingWhite;
+                                        movingWhite = movingBlack;
+                                        movingBlack = tmp;
                                     }
                                 });
 
@@ -805,6 +811,10 @@ public class NewGameTab implements Initializable {
                 while (stepPlay < step) {
                     stepPlay++;
                     this.game.redo();
+
+                    boolean tmp = movingWhite;
+                    movingWhite = movingBlack;
+                    movingBlack = tmp;
                 }
                 resetAndSet();
                 setFrame((((stepPlay-1)%2)+1) * 75, (((stepPlay-1)/2)+1) * 25);
@@ -842,6 +852,8 @@ public class NewGameTab implements Initializable {
             turnRule();
             this.stepPlay = 0;
             historyPlay = true;
+            movingWhite = true;
+            movingBlack = false;
             setFrame((((step-1)%2)+1) * 75, (((step-1)/2)+1) * 25);
 
         }
