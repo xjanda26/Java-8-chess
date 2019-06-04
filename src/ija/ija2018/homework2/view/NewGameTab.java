@@ -574,6 +574,10 @@ public class NewGameTab implements Initializable {
                 for (int i = 0;i < difference; i++){
                     stepPlay--;
                     this.game.dryUndo();
+
+                    boolean tmp = movingWhite;
+                    movingWhite = movingBlack;
+                    movingBlack = tmp;
                 }
                 resetAndSet();
                 setFrame(75 * col, 25 * row + 25);
@@ -582,6 +586,10 @@ public class NewGameTab implements Initializable {
                 for (int i = 0; i < difference; i++){
                     stepPlay++;
                     this.game.redo();
+
+                    boolean tmp = movingWhite;
+                    movingWhite = movingBlack;
+                    movingBlack = tmp;
                 }
                 resetAndSet();
                 setFrame(75 * col, 25 * row + 25);
@@ -999,6 +1007,8 @@ public class NewGameTab implements Initializable {
                     if (dif > 0){
                         System.out.println("menim zapis hry dif: " + dif);
                         historyPlay = false;
+                        this.game.undo();
+
                         for (int i = 0; i < dif; i++){System.out.println("loop: " + i);
                             this.game.redo();
                         }
@@ -1008,14 +1018,14 @@ public class NewGameTab implements Initializable {
                         }
 
                         step = stepPlay;
-
+                        game.move(movingFigure,board.getField(pickIdenxX(( (int) ( ((Rectangle)(event.getSource())).getLayoutX() ))), pickIdenxY(( (int) (((Rectangle)(event.getSource())).getLayoutY()))) ));
                         try {
                             writeIntoFile();
                         } catch (IOException e){
                             e.printStackTrace();
                         }
 
-                    } else System.out.println("lands rozdiel je mensi ako ");
+                    } historyPlay = false;
                 }
 
                 kickOutFigure( pickIdenxX( (int)(((Rectangle)(event.getSource())).getLayoutX())), pickIdenxY( (int)(((Rectangle)(event.getSource())).getLayoutY())) );
@@ -1118,6 +1128,10 @@ public class NewGameTab implements Initializable {
                 timeline.play();
 
                 this.board.getField(pickIdenxX( (int)previousPlace.getLayoutX()) , pickIdenxY( (int)previousPlace.getLayoutY()) ).removeFigure();
+                this.board.getField(x,y).setColor(movingFigure.getColor());
+                this.board.getField(x,y).setFigure(movingFigure);
+                //this.board.getField(pickIdenxX( (int)previousPlace.getLayoutX()) , pickIdenxY( (int)previousPlace.getLayoutY()) ).setFigure(movingFigure);
+                //this.board.getField(pickIdenxX( (int)previousPlace.getLayoutX()) , pickIdenxY( (int)previousPlace.getLayoutY()) ).setColor(movingFigure.getColor());
 
                 return true;
             }

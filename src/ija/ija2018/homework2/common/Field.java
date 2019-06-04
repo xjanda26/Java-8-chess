@@ -32,7 +32,9 @@ public interface Field {
     public Field getField(Direction dir);
     
     public HashMap<Direction,Field> getFieldsMap();
-    
+
+    public void setColor(Color color);
+
     public static enum Direction{
 		
 		L,LU,U,RU,R,RD,D,LD;

@@ -46,7 +46,11 @@ public class BoardField implements Field{
     public Figure get(){
         return figure;
     }
-    
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     public void setFigure(Figure f){
         this.figure = f;
     }
