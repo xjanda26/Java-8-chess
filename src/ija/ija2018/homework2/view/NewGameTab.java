@@ -1005,29 +1005,24 @@ public class NewGameTab implements Initializable {
                 if (historyPlay){
                     int dif = step - stepPlay;
                     if (dif > 0){
-                        System.out.println("menim zapis hry dif: " + dif);
                         historyPlay = false;
-                        this.game.undo();
 
-                        for (int i = 0; i < dif; i++){System.out.println("loop: " + i);
+
+                        for (int i = 0; i < dif; i++){
                             this.game.redo();
                         }
 
+                        this.game.undo();
                         for (int i = 0; i < dif; i++){
                             this.game.undo();
                         }
 
                         step = stepPlay;
                         game.move(movingFigure,board.getField(pickIdenxX(( (int) ( ((Rectangle)(event.getSource())).getLayoutX() ))), pickIdenxY(( (int) (((Rectangle)(event.getSource())).getLayoutY()))) ));
-                        try {
-                            writeIntoFile();
-                        } catch (IOException e){
-                            e.printStackTrace();
-                        }
 
                     } historyPlay = false;
                 }
-
+                this.board.getField(pickIdenxX( (int)previousPlace.getLayoutX()) , pickIdenxY( (int)previousPlace.getLayoutY()) ).removeFigure();
                 kickOutFigure( pickIdenxX( (int)(((Rectangle)(event.getSource())).getLayoutX())), pickIdenxY( (int)(((Rectangle)(event.getSource())).getLayoutY())) );
 
                 timeline.getKeyFrames().add(
@@ -1128,11 +1123,6 @@ public class NewGameTab implements Initializable {
                 timeline.play();
 
                 this.board.getField(pickIdenxX( (int)previousPlace.getLayoutX()) , pickIdenxY( (int)previousPlace.getLayoutY()) ).removeFigure();
-                this.board.getField(x,y).setColor(movingFigure.getColor());
-                this.board.getField(x,y).setFigure(movingFigure);
-                //this.board.getField(pickIdenxX( (int)previousPlace.getLayoutX()) , pickIdenxY( (int)previousPlace.getLayoutY()) ).setFigure(movingFigure);
-                //this.board.getField(pickIdenxX( (int)previousPlace.getLayoutX()) , pickIdenxY( (int)previousPlace.getLayoutY()) ).setColor(movingFigure.getColor());
-
                 return true;
             }
         }
